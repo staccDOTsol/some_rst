@@ -5,29 +5,21 @@ Table of Contents
    :maxdepth: 2
 
    README_md
-   BUILD_bazel
    HomeMixerHttpServerWarmupHandler_scala
    HomeMixerServer_scala
    HomeMixerThriftServerWarmupHandler_scala
-   BUILD_bazel
    ConversationServiceCandidatePipelineConfig_scala
    ConversationServiceCandidatePipelineConfigBuilder_scala
    EditedTweetsCandidatePipelineConfig_scala
-   BUILD_bazel
    HomeThriftController_scala
-   BUILD_bazel
    HomeMixerColumn_scala
-   BUILD_bazel
-   BUILD_bazel
    HomeConversationServiceCandidateDecorator_scala
-   BUILD_bazel
    HomeAdsClientEventDetailsBuilder_scala
    HomeClientEventDetailsBuilder_scala
    HomeTimelinesScoreInfoBuilder_scala
    HomeTweetTypePredicates_scala
    ListClientEventDetailsBuilder_scala
    AuthorChildFeedbackActionBuilder_scala
-   BUILD_bazel
    BlockUserChildFeedbackActionBuilder_scala
    DontLikeFeedbackActionBuilder_scala
    EngagerSocialContextBuilder_scala
@@ -51,7 +43,6 @@ Table of Contents
    RetweeterChildFeedbackActionBuilder_scala
    TopicSocialContextBuilder_scala
    UnfollowUserChildFeedbackActionBuilder_scala
-   BUILD_bazel
    FeedbackHistoryQueryFeatureHydrator_scala
    FollowedTopicsQueryFeatureHydrator_scala
    GizmoduckAuthorSafetyFeatureHydrator_scala
@@ -70,23 +61,18 @@ Table of Contents
    TweetypieFeatureHydrator_scala
    AuthorFeaturesAdapter_scala
    Phase2EdgeAggregateFeatureHydrator_scala
-   BUILD_bazel
    FeedbackFatigueFilter_scala
    InvalidSubscriptionTweetFilter_scala
    PredicateFeatureFilter_scala
    KeepBestOutOfNetworkTweetPerAuthorFilter_scala
    ReplyFilter_scala
    RetweetFilter_scala
-   BUILD_bazel
    DismissFatigueGate_scala
    NonEmptySeqFeatureGate_scala
    EditedTweetsCandidatePipelineQueryTransformer_scala
-   BUILD_bazel
    FeedbackFatigueScorer_scala
    VerifiedAuthorScalingScorer_scala
-   BUILD_bazel
    UpdateHomeClientEventDetails_scala
-   BUILD_bazel
    ClientEventsBuilder_scala
    HomeScribeClientEventSideEffect_scala
    HomeScribeServedCandidatesSideEffect_scala
@@ -95,7 +81,6 @@ Table of Contents
    UpdateImpressionBloomFilterSideEffect_scala
    ServedStatsSideEffect_scala
    UpdateTimelinesPersistenceStoreSideEffect_scala
-   BUILD_bazel
    HomeMixerProductContextUnmarshaller_scala
    HomeMixerProductUnmarshaller_scala
    ConversationEntryMarshaller_scala
@@ -103,14 +88,10 @@ Table of Contents
    TweetDetailsMarshaller_scala
    TweetEntryMarshaller_scala
    WhoToFollowEntryMarshaller_scala
-   BUILD_bazel
-   BUILD_bazel
    ContentFeatures_scala
    HomeFeatures_scala
-   BUILD_bazel
    HomeMixerProduct_scala
    HomeMixerProductContext_scala
-   BUILD_bazel
    BlenderClientModule_scala
    FeedbackHistoryClientModule_scala
    HomeMixerFlagsModule_scala
@@ -137,9 +118,7 @@ Table of Contents
    HomeMixerFlagName_scala
    HomeMixerInjectionNames_scala
    DeciderKey_scala
-   BUILD_bazel
    HomeProductPipelineRegistryConfig_scala
-   BUILD_bazel
    FollowingAdsCandidatePipelineBuilder_scala
    FollowingEarlybirdCandidatePipelineConfig_scala
    FollowingEarlybirdQueryTransformer_scala
@@ -147,7 +126,6 @@ Table of Contents
    FollowingWhoToFollowArmCandidatePipelineConfigBuilder_scala
    FollowingQuery_scala
    HomeMixerExternalStrings_scala
-   BUILD_bazel
    ForYouAdsCandidatePipelineBuilder_scala
    ForYouAdsDependentCandidatePipelineBuilder_scala
    ForYouConversationServiceCandidatePipelineConfig_scala
@@ -163,67 +141,49 @@ Table of Contents
    ForYouTweetPreviewsCandidatePipelineConfig_scala
    ForYouWhoToFollowCandidatePipelineConfigBuilder_scala
    ForYouWhoToSubscribeCandidatePipelineConfigBuilder_scala
-   BUILD_bazel
    ScoredTweetsProductCandidateSource_scala
    AuthorEnabledPreviewsFeatureHydrator_scala
-   BUILD_bazel
    FocalTweetFeatureHydrator_scala
    TimelineServiceTweetsQueryFeatureHydrator_scala
    TweetPreviewTweetypieCandidateFeatureHydrator_scala
-   BUILD_bazel
    SocialContextFilter_scala
    TweetPreviewTextFilter_scala
-   BUILD_bazel
    PushToHomeRequestGate_scala
    ForYouQuery_scala
    ForYouParam_scala
    ForYouParamConfig_scala
-   BUILD_bazel
    TweetPreviewsQueryTransformer_scala
-   BUILD_bazel
    TweetPreviewResponseFeatureTransformer_scala
-   BUILD_bazel
-   BUILD_bazel
    ServedCandidateFeatureKeysKafkaSideEffect_scala
    ServedCandidateFeatureKeysKafkaSideEffectBuilder_scala
    ServedCandidateKafkaSideEffect_scala
    ServedCandidateKeysKafkaSideEffect_scala
    ServedCandidateKeysKafkaSideEffectBuilder_scala
    ServedStatsSideEffect_scala
-   BUILD_bazel
    BlenderUsersCandidatePipelineConfig_scala
    BlenderUsersCandidatePipelineQueryTransformer_scala
    ListMemberBasedUsersCandidatePipelineConfig_scala
    ListMemberBasedUsersResponseFeatureTransfromer_scala
    ListRecommendedUsersMixerPipelineConfig_scala
    ListRecommendedUsersProductPipelineConfig_scala
-   BUILD_bazel
    BlenderUsersCandidateSource_scala
    SimilarityBasedUsersCandidateSource_scala
-   BUILD_bazel
    GizmoduckUserFeatureHydrator_scala
    IsListMemberFeatureHydrator_scala
    IsSGSValidUserFeatureHydrator_scala
    ListMembersQueryFeatureHydrator_scala
-   BUILD_bazel
    DropMaxCandidatesByScoreFilter_scala
    PreviouslyServedUsersFilter_scala
-   BUILD_bazel
    ViewerIsListOwnerGate_scala
    ListFeatures_scala
    ListRecommendedUsersQuery_scala
-   BUILD_bazel
    ListTweetsAdsCandidatePipelineBuilder_scala
    ListTweetsMixerPipelineConfig_scala
    ListTweetsProductPipelineConfig_scala
    ListTweetsTimelineServiceCandidatePipelineConfig_scala
-   BUILD_bazel
    ListConversationServiceCandidateDecorator_scala
-   BUILD_bazel
-   BUILD_bazel
    ScoredTweetsProductPipelineConfig_scala
    ScoredTweetsRecommendationPipelineConfig_scala
-   BUILD_bazel
    CachedScoredTweetsCandidatePipelineConfig_scala
    ScoredTweetsBackfillCandidatePipelineConfig_scala
    ScoredTweetsFrsCandidatePipelineConfig_scala
@@ -232,16 +192,13 @@ Table of Contents
    ScoredTweetsPopularVideosCandidatePipelineConfig_scala
    ScoredTweetsCrMixerCandidatePipelineConfig_scala
    ScoredTweetsUtegCandidatePipelineConfig_scala
-   BUILD_bazel
    ScoredTweetsEarlybirdFrsCandidatePipelineConfig_scala
    ScoredTweetsEarlybirdInNetworkCandidatePipelineConfig_scala
-   BUILD_bazel
    CachedScoredTweetsCandidateSource_scala
    ListsCandidateSource_scala
    AncestorFeatureHydrator_scala
    AuthorFeatureHydrator_scala
    AuthorIsCreatorFeatureHydrator_scala
-   BUILD_bazel
    CachedScoredTweetsQueryFeatureHydrator_scala
    EarlybirdFeatureHydrator_scala
    FrsSeedUsersQueryFeatureHydrator_scala
@@ -273,26 +230,18 @@ Table of Contents
    UserStateQueryFeatureHydrator_scala
    UtegFeatureHydrator_scala
    AuthorFeaturesAdapter_scala
-   BUILD_bazel
-   BUILD_bazel
    ContentFeatureAdapter_scala
    InReplyToContentFeatureAdapter_scala
-   BUILD_bazel
    EarlybirdAdapter_scala
    InReplyToEarlybirdAdapter_scala
-   BUILD_bazel
    InferredTopicAdapter_scala
-   BUILD_bazel
    NonMLCandidateFeaturesAdapter_scala
    NonMLCommonFeaturesAdapter_scala
-   BUILD_bazel
    PassThroughAdapter_scala
    SparseAggregatesToDenseAdapter_scala
-   BUILD_bazel
    TwhinEmbeddingsAdapter_scala
    AggregateFeatureInfo_scala
    AggregateFeaturesToDecodeWithMetadata_scala
-   BUILD_bazel
    BaseAggregateQueryFeatureHydrator_scala
    BaseEdgeAggregateFeatureHydrator_scala
    EdgeAggregateFeatures_scala
@@ -301,7 +250,6 @@ Table of Contents
    Phase1EdgeAggregateFeatureHydrator_scala
    Phase2EdgeAggregateFeatureHydrator_scala
    Utils_scala
-   BUILD_bazel
    BaseRealTimeAggregateBulkCandidateFeatureHydrator_scala
    BaseRealTimeAggregateQueryFeatureHydrator_scala
    BaseRealtimeAggregateHydrator_scala
@@ -314,33 +262,25 @@ Table of Contents
    TwitterListEngagementRealTimeAggregateFeatureHydrator_scala
    UserAuthorEngagementRealTimeAggregateFeatureHydrator_scala
    UserEngagementRealTimeAggregatesFeatureHydrator_scala
-   BUILD_bazel
    DuplicateConversationTweetsFilter_scala
    OutOfNetworkCompetitorFilter_scala
    OutOfNetworkCompetitorURLFilter_scala
    RetweetSourceTweetRemovingFilter_scala
    SocialContextFilter_scala
-   BUILD_bazel
    MinCachedTweetsGate_scala
    MinTimeSinceLastRequestGate_scala
-   BUILD_bazel
    ScoredTweetsResponseDomainMarshaller_scala
    ScoredTweetsResponseTransportMarshaller_scala
-   BUILD_bazel
    ScoredTweetsResponse_scala
-   BUILD_bazel
    ScoredTweetsParam_scala
    ScoredTweetsParamConfig_scala
-   BUILD_bazel
    TimelineRankerFrsQueryTransformer_scala
    TimelineRankerInNetworkQueryTransformer_scala
    TimelineRankerQueryTransformer_scala
    TimelineRankerUtegQueryTransformer_scala
-   BUILD_bazel
    EarlybirdFrsQueryTransformer_scala
    EarlybirdInNetworkQueryTransformer_scala
    EarlybirdQueryTransformer_scala
-   BUILD_bazel
    CachedScoredTweetsResponseFeatureTransformer_scala
    ScoredTweetsBackfillResponseFeatureTransformer_scala
    ScoredTweetsInNetworkResponseFeatureTransformer_scala
@@ -348,11 +288,9 @@ Table of Contents
    ScoredTweetsCrMixerResponseFeatureTransformer_scala
    ScoredTweetsTweetMixerResponseFeatureTransformer_scala
    TimelineRankerResponseTransformer_scala
-   BUILD_bazel
    EarlybirdResponseTransformer_scala
    ScoredTweetsEarlybirdFrsResponseFeatureTransformer_scala
    ScoredTweetsEarlybirdInNetworkResponseFeatureTransformer_scala
-   BUILD_bazel
    DiversityDiscountProvider_scala
    DiversityScorer_scala
    HeuristicScorer_scala
@@ -361,39 +299,31 @@ Table of Contents
    PredictedScoreFeature_scala
    RescoringFactorProvider_scala
    WeightedScoresSumScorer_scala
-   BUILD_bazel
    ScoredTweetsDiversityScoringPipelineConfig_scala
    ScoredTweetsRescoreOONScoringPipelineConfig_scala
    ScoredTweetsScoringPipelineConfig_scala
    ScoredTweetsRescoreVerifiedAuthorScoringPipelineConfig_scala
    ScoredTweetsWeightedScoresSumScoringPipelineConfig_scala
-   BUILD_bazel
    KeepBestOutOfNetworkCandidatePerAuthorPerSuggestType_scala
-   BUILD_bazel
    CachedScoredTweetsSideEffect_scala
    ScribeScoredCandidatesSideEffect_scala
    ScribeServedCommonFeaturesAndCandidateFeaturesSideEffect_scala
-   BUILD_bazel
    SubscribedEarlybirdCandidatePipelineConfig_scala
    SubscribedEarlybirdQueryTransformer_scala
    SubscribedEarlybirdResponseFeatureTransformer_scala
    SubscribedMixerPipelineConfig_scala
    SubscribedProductPipelineConfig_scala
-   BUILD_bazel
    SubscribedQuery_scala
-   BUILD_bazel
    SubscribedParam_scala
    SubscribedParamConfig_scala
    HomeMixerAlertConfig_scala
-   BUILD_bazel
    UserLanguagesStore_scala
-   BUILD_bazel
    CachedScoredTweetsHelper_scala
    CandidatesUtil_scala
    DataRecordUtil_scala
    LanguageUtil_scala
-   BUILD_bazel
    EarlybirdRequestUtil_scala
    EarlybirdResponseUtil_scala
    RelevanceSearchUtil_scala
    RequestFields_scala
+   BUILD_bazel
