@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/RescoringFactorProvider.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/RescoringFactorProvider.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-rescoringfactorprovider-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-rescoringfactorprovider-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/RescoringFactorProvider.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/RescoringFactorProvider.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-rescoringfactorprovider-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-rescoringfactorprovider-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -0,0 +1,180</p>
+<p>Content:</p>
+<p>new file mode 100644</p>
+<blockquote>
+<div><p>index 000000000..d9538b66d</p>
+<p class="attribution">—/dev/null</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/RescoringFactorProvider.scala</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.scorer</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+import com.twitter.home_mixer.functional_component.scorer.FeedbackFatigueScorer</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIsBlueVerifiedFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIsCreatorFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.FeedbackHistoryFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InNetworkFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InReplyToTweetIdFeature</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.BlueVerifiedAuthorInNetworkMultiplierParam</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.BlueVerifiedAuthorOutOfNetworkMultiplierParam</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.CreatorInNetworkMultiplierParam</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.CreatorOutOfNetworkMultiplierParam</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.OutOfNetworkScaleFactorParam</p>
+<p>+import com.twitter.home_mixer.util.CandidatesUtil</p>
+<p>+import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>+import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>+import com.twitter.product_mixer.core.model.common.CandidateWithFeatures</p>
+<p>+import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+<p>+import com.twitter.timelineservice.{thriftscala =&gt; tls}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+trait RescoringFactorProvider {</p>
+<ul class="simple">
+<li></li>
+<li><p>def selector(candidate: CandidateWithFeatures[TweetCandidate]): Boolean</p></li>
+<li></li>
+<li><p>def factor(</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>candidate: CandidateWithFeatures[TweetCandidate]</p></li>
+<li><p>): Double</p></li>
+<li></li>
+<li><p>def apply(</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>candidate: CandidateWithFeatures[TweetCandidate],</p></li>
+<li><p>): Double = if (selector(candidate)) factor(query, candidate) else 1.0</p></li>
+</ul>
+<p>+}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+/**</p>
+<ul class="simple">
+<li><ul>
+<li><p>Re-scoring multiplier to apply to authors who are eligible subscription content creators</p></li>
+</ul>
+</li>
+<li><p><a href="#id1"><span class="problematic" id="id2">*</span></a>/</p></li>
+</ul>
+<p>+object RescoreCreators extends RescoringFactorProvider {</p>
+<ul class="simple">
+<li></li>
+<li><p>def selector(candidate: CandidateWithFeatures[TweetCandidate]): Boolean =</p></li>
+<li><p>candidate.features.getOrElse(AuthorIsCreatorFeature, false) &amp;&amp;</p></li>
+<li><p>CandidatesUtil.isOriginalTweet(candidate)</p></li>
+<li></li>
+<li><p>def factor(</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>candidate: CandidateWithFeatures[TweetCandidate]</p></li>
+<li><p>): Double =</p></li>
+<li><p>if (candidate.features.getOrElse(InNetworkFeature, false))</p></li>
+<li><p>query.params(CreatorInNetworkMultiplierParam)</p></li>
+<li><p>else query.params(CreatorOutOfNetworkMultiplierParam)</p></li>
+</ul>
+<p>+}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+/**</p>
+<ul class="simple">
+<li><ul>
+<li><p>Re-scoring multiplier to apply to authors who are verified by Twitter Blue</p></li>
+</ul>
+</li>
+<li><p><a href="#id3"><span class="problematic" id="id4">*</span></a>/</p></li>
+</ul>
+<p>+object RescoreBlueVerified extends RescoringFactorProvider {</p>
+<ul class="simple">
+<li></li>
+<li><p>def selector(candidate: CandidateWithFeatures[TweetCandidate]): Boolean =</p></li>
+<li><p>candidate.features.getOrElse(AuthorIsBlueVerifiedFeature, false) &amp;&amp;</p></li>
+<li><p>CandidatesUtil.isOriginalTweet(candidate)</p></li>
+<li></li>
+<li><p>def factor(</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>candidate: CandidateWithFeatures[TweetCandidate]</p></li>
+<li><p>): Double =</p></li>
+<li><p>if (candidate.features.getOrElse(InNetworkFeature, false))</p></li>
+<li><p>query.params(BlueVerifiedAuthorInNetworkMultiplierParam)</p></li>
+<li><p>else query.params(BlueVerifiedAuthorOutOfNetworkMultiplierParam)</p></li>
+</ul>
+<p>+}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+/**</p>
+<ul class="simple">
+<li><ul>
+<li><p>Re-scoring multiplier to apply to out-of-network tweets</p></li>
+</ul>
+</li>
+<li><p><a href="#id5"><span class="problematic" id="id6">*</span></a>/</p></li>
+</ul>
+<p>+object RescoreOutOfNetwork extends RescoringFactorProvider {</p>
+<ul class="simple">
+<li></li>
+<li><p>def selector(candidate: CandidateWithFeatures[TweetCandidate]): Boolean =</p></li>
+<li><p>!candidate.features.getOrElse(InNetworkFeature, false)</p></li>
+<li></li>
+<li><p>def factor(</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>candidate: CandidateWithFeatures[TweetCandidate]</p></li>
+<li><p>): Double = query.params(OutOfNetworkScaleFactorParam)</p></li>
+</ul>
+<p>+}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+/**</p>
+<ul class="simple">
+<li><ul>
+<li><p>Re-scoring multiplier to apply to reply candidates</p></li>
+</ul>
+</li>
+<li><p><a href="#id7"><span class="problematic" id="id8">*</span></a>/</p></li>
+</ul>
+<p>+object RescoreReplies extends RescoringFactorProvider {</p>
+<ul class="simple">
+<li></li>
+<li><p>private val ScaleFactor = 0.75</p></li>
+<li></li>
+<li><p>def selector(candidate: CandidateWithFeatures[TweetCandidate]): Boolean =</p></li>
+<li><p>candidate.features.getOrElse(InReplyToTweetIdFeature, None).isDefined</p></li>
+<li></li>
+<li><p>def factor(</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>candidate: CandidateWithFeatures[TweetCandidate]</p></li>
+<li><p>): Double = ScaleFactor</p></li>
+</ul>
+<p>+}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+/**</p>
+<ul class="simple">
+<li><ul>
+<li><p>Re-scoring multiplier to calibrate multi-tasks learning model prediction</p></li>
+</ul>
+</li>
+<li><p><a href="#id9"><span class="problematic" id="id10">*</span></a>/</p></li>
+</ul>
+<p>+object RescoreMTLNormalization extends RescoringFactorProvider {</p>
+<ul class="simple">
+<li></li>
+<li><p>private val ScaleFactor = 1.0</p></li>
+<li></li>
+<li><p>def selector(candidate: CandidateWithFeatures[TweetCandidate]): Boolean = {</p></li>
+<li><p>candidate.features.contains(HomeFeatures.FocalTweetAuthorIdFeature)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>def factor(</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>candidate: CandidateWithFeatures[TweetCandidate]</p></li>
+<li><p>): Double = ScaleFactor</p></li>
+</ul>
+<p>+}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+/**</p>
+<ul class="simple">
+<li><ul>
+<li><p>Re-scoring multiplier to apply to multiple tweets from the same author</p></li>
+</ul>
+</li>
+<li><p><a href="#id11"><span class="problematic" id="id12">*</span></a>/</p></li>
+</ul>
+<p>+case class RescoreAuthorDiversity(diversityDiscounts: Map[Long, Double])</p>
+<ul class="simple">
+<li><p>extends RescoringFactorProvider {</p></li>
+<li></li>
+<li><p>def selector(candidate: CandidateWithFeatures[TweetCandidate]): Boolean =</p></li>
+<li><p>diversityDiscounts.contains(candidate.candidate.id)</p></li>
+<li></li>
+<li><p>def factor(</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>candidate: CandidateWithFeatures[TweetCandidate]</p></li>
+<li><p>): Double = diversityDiscounts(candidate.candidate.id)</p></li>
+</ul>
+<p>+}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+case class RescoreFeedbackFatigue(query: PipelineQuery) extends RescoringFactorProvider {</p>
+<ul class="simple">
+<li></li>
+<li><p>def selector(candidate: CandidateWithFeatures[TweetCandidate]): Boolean = true</p></li>
+<li></li>
+<li><p>private val feedbackEntriesByEngagementType =</p></li>
+<li><p>query.features</p></li>
+<li><p>.getOrElse(FeatureMap.empty).getOrElse(FeedbackHistoryFeature, Seq.empty)</p></li>
+<li><p>.filter { entry =&gt;</p></li>
+<li><p>val timeSinceFeedback = query.queryTime.minus(entry.timestamp)</p></li>
+<li><p>timeSinceFeedback &lt; FeedbackFatigueScorer.DurationForFiltering + FeedbackFatigueScorer.DurationForDiscounting &amp;&amp;</p></li>
+<li><p>entry.feedbackType == tls.FeedbackType.SeeFewer</p></li>
+<li><p>}.groupBy(_.engagementType)</p></li>
+<li></li>
+<li><p>private val authorsToDiscount =</p></li>
+<li><p>FeedbackFatigueScorer.getUserDiscounts(</p></li>
+<li><p>query.queryTime,</p></li>
+<li><p>feedbackEntriesByEngagementType.getOrElse(tls.FeedbackEngagementType.Tweet, Seq.empty))</p></li>
+<li></li>
+<li><p>private val likersToDiscount =</p></li>
+<li><p>FeedbackFatigueScorer.getUserDiscounts(</p></li>
+<li><p>query.queryTime,</p></li>
+<li><p>feedbackEntriesByEngagementType.getOrElse(tls.FeedbackEngagementType.Like, Seq.empty))</p></li>
+<li></li>
+<li><p>private val followersToDiscount =</p></li>
+<li><p>FeedbackFatigueScorer.getUserDiscounts(</p></li>
+<li><p>query.queryTime,</p></li>
+<li><p>feedbackEntriesByEngagementType.getOrElse(tls.FeedbackEngagementType.Follow, Seq.empty))</p></li>
+<li></li>
+<li><p>private val retweetersToDiscount =</p></li>
+<li><p>FeedbackFatigueScorer.getUserDiscounts(</p></li>
+<li><p>query.queryTime,</p></li>
+<li><p>feedbackEntriesByEngagementType.getOrElse(tls.FeedbackEngagementType.Retweet, Seq.empty))</p></li>
+<li></li>
+<li><p>def factor(</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>candidate: CandidateWithFeatures[TweetCandidate]</p></li>
+<li><p>): Double = {</p></li>
+<li><p>FeedbackFatigueScorer.getScoreMultiplier(</p></li>
+<li><p>candidate,</p></li>
+<li><p>authorsToDiscount,</p></li>
+<li><p>likersToDiscount,</p></li>
+<li><p>followersToDiscount,</p></li>
+<li><p>retweetersToDiscount</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+</ul>
+<p>+}</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/RescoringFactorProvider_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

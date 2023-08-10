@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ThriftFeatureRepositoryModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ThriftFeatureRepositoryModule.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-thriftfeaturerepositorymodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-thriftfeaturerepositorymodule-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ThriftFeatureRepositoryModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ThriftFeatureRepositoryModule.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-thriftfeaturerepositorymodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-thriftfeaturerepositorymodule-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -281,10 +279,12</p>
+<p>Content:</p>
+<p>index 5a2a8701a..dcbf62451 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ThriftFeatureRepositoryModule.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ThriftFeatureRepositoryModule.scala</p>
+<blockquote>
+<div><p>label = “interests”,</p>
+<p>statsReceiver = statsReceiver,</p>
+<p>idempotency = Idempotent(1.percent),</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>timeoutPerRequest = 100.milliseconds,</p></li>
+<li><p>timeoutTotal = 100.milliseconds</p></li>
+</ul>
+<ul class="simple">
+<li><p>timeoutPerRequest = 350.milliseconds,</p></li>
+<li><p>timeoutTotal = 350.milliseconds</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>}</p>
+<blockquote>
+<div><p>label = “tweetypie-content-repo”,</p>
+<p>statsReceiver = statsReceiver,</p>
+<p>idempotency = Idempotent(1.percent),</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>timeoutPerRequest = 150.milliseconds,</p></li>
+<li><p>timeoutTotal = 250.milliseconds</p></li>
+</ul>
+<ul class="simple">
+<li><p>timeoutPerRequest = 300.milliseconds,</p></li>
+<li><p>timeoutTotal = 500.milliseconds</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>def lookup(tweetIds: Seq[Long]): Future[Seq[Option[tp.Tweet]]] = {</p>
+<blockquote>
+<div><p>includeRetweetedTweet = false,</p>
+<p>includeQuotedTweet = false,</p>
+<p>forUserId = None,</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>// Service needs to be whitelisted</p></li>
+<li><p>// We rely on the VF at the end of serving. No need to filter now.</p>
+<p>safetyLevel = Some(sp.SafetyLevel.FilterNone),</p>
+<p>visibilityPolicy = tp.TweetVisibilityPolicy.NoFiltering</p>
+</li>
+</ul>
+<blockquote>
+<div><p>)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>val request = tp.GetTweetFieldsRequest(</p></li>
+<li><p>tweetIds = tweetIds,</p></li>
+<li><p>options = getTweetFieldsOptions</p></li>
+<li><p>)</p></li>
+</ul>
+<ul>
+<li></li>
+<li><p>val request = tp.GetTweetFieldsRequest(tweetIds = tweetIds, options = getTweetFieldsOptions)</p></li>
+<li><blockquote>
+<div><p>client.getTweetFields(request).map { results =&gt;</p>
+<blockquote>
+<div><p>results.map {</p>
+<blockquote>
+<div><p>case tp.GetTweetFieldsResult(_, tp.TweetFieldsResultState.Found(found), _, _) =&gt;</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<p>val keyValueRepository = toRepositoryBatch(lookup, chunkSize = 20)</p>
+</li>
+</ul>
+<ul>
+<li><p>// Cache</p>
+<p>val cacheClient = MemcachedClientBuilder.buildRawMemcachedClient(</p>
+<blockquote>
+<div><p>numTries = 1,</p>
+</div></blockquote>
+</li>
+<li><p>requestTimeout = 100.milliseconds,</p></li>
+<li><p>globalTimeout = 100.milliseconds,</p></li>
+</ul>
+<ul>
+<li><p>numConnections = 1,</p></li>
+<li><p>requestTimeout = 200.milliseconds,</p></li>
+<li><p>globalTimeout = 200.milliseconds,</p>
+<p>connectTimeout = 200.milliseconds,</p>
+<p>acquisitionTimeout = 200.milliseconds,</p>
+<p>serviceIdentifier = serviceIdentifier,</p>
+<p>statsReceiver = statsReceiver</p>
+</li>
+</ul>
+<blockquote>
+<div><p>)</p>
+</div></blockquote>
+<ul>
+<li><p>val finagleMemcacheFactory =</p>
+<blockquote>
+<div><p>FinagleMemcacheFactory(cacheClient, “/s/cache/home_content_features:twemcaches”)</p>
+</div></blockquote>
+<p>val cacheValueTransformer =</p>
+<blockquote>
+<div><p>tweetIds: Seq[Long],</p>
+<p>viewerId: Long</p>
+</div></blockquote>
+<p>): Future[Seq[Option[eb.ThriftSearchResult]]] = {</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>val request = EarlybirdRequestUtil.getTweetsEBFeaturesRequest(</p></li>
+</ul>
+<ul>
+<li><p>val request = EarlybirdRequestUtil.getTweetsFeaturesRequest(</p>
+<blockquote>
+<div><p>userId = Some(viewerId),</p>
+<p>tweetIds = Some(tweetIds),</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>clientId = Some(clientId.name)</p></li>
+</ul>
+<ul class="simple">
+<li><p>clientId = Some(clientId.name),</p></li>
+<li><p>authorScoreMap = None,</p></li>
+<li><p>tensorflowModel = Some(“timelines_rectweet_replica”)</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>client</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ThriftFeatureRepositoryModule_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

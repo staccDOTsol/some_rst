@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/param/ForYouParam.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/param/ForYouParam.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-param-foryouparam-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-param-foryouparam-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/param/ForYouParam.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/param/ForYouParam.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-param-foryouparam-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-param-foryouparam-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -114,4 +194,22</p>
+<p>Content:</p>
+<p>index 0ed56a3f8..5d117199f 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/param/ForYouParam.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/param/ForYouParam.scala</p>
+<blockquote>
+<div><p>object ForYouParam {</p>
+<blockquote>
+<div><p>val SupportedClientFSName = “for_you_supported_client”</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>object EnableTopicSocialContextFilterParam</p></li>
+<li><p>extends FSParam[Boolean](</p></li>
+<li><p>name = “for_you_enable_topic_social_context_filter”,</p></li>
+<li><p>default = true</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>object EnableVerifiedAuthorSocialContextBypassParam</p></li>
+<li><p>extends FSParam[Boolean](</p></li>
+<li><p>name = “for_you_enable_verified_author_social_context_bypass”,</p></li>
+<li><p>default = true</p></li>
+<li><p>)</p></li>
+<li><p>object EnableTimelineScorerCandidatePipelineParam</p>
+<blockquote>
+<div><p>extends FSParam[Boolean](</p>
+<blockquote>
+<div><p>name = “for_you_enable_timeline_scorer_candidate_pipeline”,</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>default = true</p></li>
+</ul>
+<ul class="simple">
+<li><p>default = false</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>object EnableScoredTweetsCandidatePipelineParam</p>
+<blockquote>
+<div><blockquote>
+<div><p>default = true</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>object EnableWhoToSubscribeCandidatePipelineParam</p></li>
+<li><p>extends FSParam[Boolean](</p></li>
+<li><p>name = “for_you_enable_who_to_subscribe”,</p></li>
+<li><p>default = true</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>object EnableTweetPreviewsCandidatePipelineParam</p></li>
+<li><p>extends FSParam[Boolean](</p></li>
+<li><p>name = “for_you_enable_tweet_previews_candidate_pipeline”,</p></li>
+<li><p>default = true</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>object EnablePushToHomeMixerPipelineParam</p></li>
+<li><p>extends FSParam[Boolean](</p></li>
+<li><p>name = “for_you_enable_push_to_home_mixer_pipeline”,</p></li>
+<li><p>default = false</p></li>
+<li><p>)</p></li>
+<li><p>object EnableScoredTweetsMixerPipelineParam</p>
+<blockquote>
+<div><p>extends FSParam[Boolean](</p>
+<blockquote>
+<div><p>name = “for_you_enable_scored_tweets_mixer_pipeline”,</p>
+<p>max = 500</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+</li>
+</ul>
+<ul>
+<li><p>object TimelineServiceMaxResultsParam</p></li>
+<li><p>extends FSBoundedParam[Int](</p></li>
+<li><p>name = “for_you_timeline_service_max_results”,</p></li>
+<li><p>default = 800,</p></li>
+<li><p>min = 1,</p></li>
+<li><p>max = 800</p></li>
+<li><p>)</p></li>
+<li><p>object AdsNumOrganicItemsParam</p>
+<blockquote>
+<div><p>extends FSBoundedParam[Int](</p>
+<blockquote>
+<div><p>name = “for_you_ads_num_organic_items”,</p>
+<p>enum = WhoToFollowModuleDisplayType</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+</li>
+</ul>
+<ul>
+<li><p>object WhoToFollowDisplayLocationParam</p></li>
+<li><p>extends FSParam[String](</p></li>
+<li><p>name = “for_you_who_to_follow_display_location”,</p></li>
+<li><p>default = “timeline”</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>object WhoToSubscribePositionParam</p></li>
+<li><p>extends FSBoundedParam[Int](</p></li>
+<li><p>name = “for_you_who_to_subscribe_position”,</p></li>
+<li><p>default = 7,</p></li>
+<li><p>min = 0,</p></li>
+<li><p>max = 99</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>object WhoToSubscribeMinInjectionIntervalParam</p></li>
+<li><p>extends FSBoundedParam[Duration](</p></li>
+<li><p>“for_you_who_to_subscribe_min_injection_interval_in_minutes”,</p></li>
+<li><p>default = 1800.minutes,</p></li>
+<li><p>min = 0.minutes,</p></li>
+<li><p>max = 6000.minutes)</p></li>
+<li><p>with HasDurationConversion {</p></li>
+<li><p>override val durationConversion: DurationConversion = DurationConversion.FromMinutes</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object WhoToSubscribeDisplayTypeIdParam</p></li>
+<li><p>extends FSEnumParam[WhoToFollowModuleDisplayType.type](</p></li>
+<li><p>name = “for_you_enable_who_to_subscribe_display_type_id”,</p></li>
+<li><p>default = WhoToFollowModuleDisplayType.Vertical,</p></li>
+<li><p>enum = WhoToFollowModuleDisplayType</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>object TweetPreviewsPositionParam</p></li>
+<li><p>extends FSBoundedParam[Int](</p></li>
+<li><p>name = “for_you_tweet_previews_position”,</p></li>
+<li><p>default = 3,</p></li>
+<li><p>min = 0,</p></li>
+<li><p>max = 99</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>object TweetPreviewsMinInjectionIntervalParam</p></li>
+<li><p>extends FSBoundedParam[Duration](</p></li>
+<li><p>“for_you_tweet_previews_min_injection_interval_in_minutes”,</p></li>
+<li><p>default = 2.hours,</p></li>
+<li><p>min = 0.minutes,</p></li>
+<li><p>max = 600.minutes)</p></li>
+<li><p>with HasDurationConversion {</p></li>
+<li><p>override val durationConversion: DurationConversion = DurationConversion.FromMinutes</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object TweetPreviewsMaxCandidatesParam</p></li>
+<li><p>extends FSBoundedParam[Int](</p></li>
+<li><p>name = “for_you_tweet_previews_max_candidates”,</p></li>
+<li><p>default = 1,</p></li>
+<li><p>min = 0,</p></li>
+<li><p>// NOTE: previews are injected at a fixed position, so max candidates = 1</p></li>
+<li><p>// to avoid bunching of previews.</p></li>
+<li><p>max = 1</p></li>
+<li><p>)</p></li>
+<li><p>object EnableFlipInjectionModuleCandidatePipelineParam</p>
+<blockquote>
+<div><p>extends FSParam[Boolean](</p>
+<blockquote>
+<div><p>name = “for_you_enable_flip_inline_injection_module”,</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+<p>object ClearCacheOnPtr {</p>
+</li>
+</ul>
+<ul>
+<li><blockquote>
+<div><p>object EnableParam</p>
+<blockquote>
+<div><p>extends FSParam[Boolean](</p>
+<blockquote>
+<div><p>name = “for_you_clear_cache_ptr_enable”,</p>
+<p>max = 35</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+</div></blockquote>
+<p>}</p>
+</li>
+</ul>
+<ul class="simple">
+<li></li>
+<li><p>object EnableClearCacheOnPushToHome</p></li>
+<li><p>extends FSParam[Boolean](</p></li>
+<li><p>name = “for_you_enable_clear_cache_push_to_home”,</p></li>
+<li><p>default = false</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>object EnableServedCandidateKafkaPublishingParam</p></li>
+<li><p>extends FSParam[Boolean](</p></li>
+<li><p>name = “for_you_enable_served_candidate_kafka_publishing”,</p></li>
+<li><p>default = true</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>object ExperimentStatsParam</p></li>
+<li><p>extends FSParam[String](</p></li>
+<li><p>name = “for_you_experiment_stats”,</p></li>
+<li><p>default = “”</p></li>
+<li><p>)</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ForYouParam_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

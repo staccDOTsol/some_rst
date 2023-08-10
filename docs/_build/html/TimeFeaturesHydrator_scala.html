@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TimeFeaturesHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TimeFeaturesHydrator.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-timefeatureshydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-timefeatureshydrator-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TimeFeaturesHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TimeFeaturesHydrator.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-timefeatureshydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-timefeatureshydrator-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -1,251 +0,0</p>
+<p>Content:</p>
+<p>deleted file mode 100644</p>
+<blockquote>
+<div><p>index 16661188a..000000000</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TimeFeaturesHydrator.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ /dev/null</p>
+<p>-package com.twitter.home_mixer.functional_component.feature_hydrator</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>-import com.twitter.conversions.DurationOps._</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.EarlybirdFeature</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.NonPollingTimesFeature</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.SourceTweetIdFeature</p>
+<p>-import com.twitter.ml.api.DataRecord</p>
+<p>-import com.twitter.ml.api.RichDataRecord</p>
+<p>-import com.twitter.ml.api.util.FDsl._</p>
+<p>-import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>-import com.twitter.product_mixer.core.feature.Feature</p>
+<p>-import com.twitter.product_mixer.core.feature.FeatureWithDefaultOnFailure</p>
+<p>-import com.twitter.product_mixer.core.feature.datarecord.DataRecordInAFeature</p>
+<p>-import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>-import com.twitter.product_mixer.core.feature.featuremap.FeatureMapBuilder</p>
+<p>-import com.twitter.product_mixer.core.functional_component.feature_hydrator.CandidateFeatureHydrator</p>
+<p>-import com.twitter.product_mixer.core.model.common.identifier.FeatureHydratorIdentifier</p>
+<p>-import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+<p>-import com.twitter.search.common.features.{thriftscala =&gt; sc}</p>
+<p>-import com.twitter.snowflake.id.SnowflakeId</p>
+<p>-import com.twitter.stitch.Stitch</p>
+<p>-import com.twitter.timelines.prediction.features.time_features.AccountAgeInterval</p>
+<p>-import com.twitter.timelines.prediction.features.time_features.TimeDataRecordFeatures._</p>
+<p>-import com.twitter.timelines.prediction.features.time_features.TimeFeatures</p>
+<p>-import com.twitter.util.Duration</p>
+<p>-import scala.collection.Searching._</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>-object TimeFeaturesDataRecordFeature</p>
+<ul class="simple">
+<li><p>extends DataRecordInAFeature[TweetCandidate]</p></li>
+<li><p>with FeatureWithDefaultOnFailure[TweetCandidate, DataRecord] {</p></li>
+<li><p>override def defaultValue: DataRecord = new DataRecord()</p></li>
+</ul>
+<p>-}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>-object TimeFeaturesHydrator extends CandidateFeatureHydrator[PipelineQuery, TweetCandidate] {</p>
+<ul class="simple">
+<li></li>
+<li><p>override val identifier: FeatureHydratorIdentifier = FeatureHydratorIdentifier(“TimeFeatures”)</p></li>
+<li></li>
+<li><p>override val features: Set[Feature[_, _]] = Set(TimeFeaturesDataRecordFeature)</p></li>
+<li></li>
+<li><p>override def apply(</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>candidate: TweetCandidate,</p></li>
+<li><p>existingFeatures: FeatureMap</p></li>
+<li><p>): Stitch[FeatureMap] = {</p></li>
+<li><p>Stitch.value {</p></li>
+<li><p>val richDataRecord = new RichDataRecord()</p></li>
+<li><p>setTimeFeatures(richDataRecord, candidate, existingFeatures, query)</p></li>
+<li><p>FeatureMapBuilder()</p></li>
+<li><p>.add(TimeFeaturesDataRecordFeature, richDataRecord.getRecord)</p></li>
+<li><p>.build()</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private def setTimeFeatures(</p></li>
+<li><p>richDataRecord: RichDataRecord,</p></li>
+<li><p>candidate: TweetCandidate,</p></li>
+<li><p>existingFeatures: FeatureMap,</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>): Unit = {</p></li>
+<li><p>val timeFeaturesOpt = getTimeFeatures(query, candidate, existingFeatures)</p></li>
+<li><p>timeFeaturesOpt.foreach(timeFeatures =&gt; setFeatures(timeFeatures, richDataRecord))</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private[feature_hydrator] def getTimeFeatures(</p></li>
+<li><p>query: PipelineQuery,</p></li>
+<li><p>candidate: TweetCandidate,</p></li>
+<li><p>existingFeatures: FeatureMap,</p></li>
+<li><p>): Option[TimeFeatures] = {</p></li>
+<li><p>for {</p></li>
+<li><p>requestTimestampMs &lt;- Some(query.queryTime.inMilliseconds)</p></li>
+<li><p>tweetId &lt;- Some(candidate.id)</p></li>
+<li><p>viewerId &lt;- query.getOptionalUserId</p></li>
+<li><p>tweetCreationTimeMs &lt;- timeFromTweetOrUserId(tweetId)</p></li>
+<li><p>timeSinceTweetCreation = requestTimestampMs - tweetCreationTimeMs</p></li>
+<li><p>accountAgeDurationOpt = timeFromTweetOrUserId(viewerId).map { viewerAccountCreationTimeMs =&gt;</p></li>
+<li><p>Duration.fromMilliseconds(requestTimestampMs - viewerAccountCreationTimeMs)</p></li>
+<li><p>}</p></li>
+<li><p>timeSinceSourceTweetCreation =</p></li>
+<li><p>existingFeatures</p></li>
+<li><p>.getOrElse(SourceTweetIdFeature, None)</p></li>
+<li><p>.flatMap { sourceTweetId =&gt;</p></li>
+<li><p>timeFromTweetOrUserId(sourceTweetId).map { sourceTweetCreationTimeMs =&gt;</p></li>
+<li><p>requestTimestampMs - sourceTweetCreationTimeMs</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li><p>.getOrElse(timeSinceTweetCreation)</p></li>
+<li><p>if (timeSinceTweetCreation &gt; 0 &amp;&amp; timeSinceSourceTweetCreation &gt; 0)</p></li>
+<li><p>} yield {</p></li>
+<li><p>val timeFeatures = TimeFeatures(</p></li>
+<li><p>timeSinceTweetCreation = timeSinceTweetCreation,</p></li>
+<li><p>timeSinceSourceTweetCreation = timeSinceSourceTweetCreation,</p></li>
+<li><p>timeSinceViewerAccountCreationSecs = accountAgeDurationOpt.map(_.inSeconds),</p></li>
+<li><p>isDay30NewUser = accountAgeDurationOpt.map(_ &lt; 30.days).getOrElse(false),</p></li>
+<li><p>isMonth12NewUser = accountAgeDurationOpt.map(_ &lt; 365.days).getOrElse(false),</p></li>
+<li><p>accountAgeInterval = accountAgeDurationOpt.flatMap(AccountAgeInterval.fromDuration),</p></li>
+<li><p>isTweetRecycled = false // only set in RecyclableTweetCandidateFilter, but it’s not used</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>val timeFeaturesWithLastEngagement = addLastEngagementTimeFeatures(</p></li>
+<li><p>existingFeatures.getOrElse(EarlybirdFeature, None),</p></li>
+<li><p>timeFeatures,</p></li>
+<li><p>timeSinceSourceTweetCreation</p></li>
+<li><p>).getOrElse(timeFeatures)</p></li>
+<li></li>
+<li><p>val nonPollingTimestampsMs =</p></li>
+<li><p>query.features.map(_.getOrElse(NonPollingTimesFeature, Seq.empty))</p></li>
+<li><p>val timeFeaturesWithNonPollingOpt = addNonPollingTimeFeatures(</p></li>
+<li><p>timeFeaturesWithLastEngagement,</p></li>
+<li><p>requestTimestampMs,</p></li>
+<li><p>tweetCreationTimeMs,</p></li>
+<li><p>nonPollingTimestampsMs</p></li>
+<li><p>)</p></li>
+<li><p>timeFeaturesWithNonPollingOpt.getOrElse(timeFeaturesWithLastEngagement)</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private def timeFromTweetOrUserId(tweetOrUserId: Long): Option[Long] = {</p></li>
+<li><p>if (SnowflakeId.isSnowflakeId(tweetOrUserId))</p></li>
+<li><p>Some(SnowflakeId(tweetOrUserId).time.inMilliseconds)</p></li>
+<li><p>else None</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private def addLastEngagementTimeFeatures(</p></li>
+<li><p>tweetFeaturesOpt: Option[sc.ThriftTweetFeatures],</p></li>
+<li><p>timeFeatures: TimeFeatures,</p></li>
+<li><p>timeSinceSourceTweetCreation: Long</p></li>
+<li><p>): Option[TimeFeatures] = {</p></li>
+<li><p>tweetFeaturesOpt.map { tweetFeatures =&gt;</p></li>
+<li><p>val lastFavSinceCreationHrs = tweetFeatures.lastFavSinceCreationHrs.map(_.toDouble)</p></li>
+<li><p>val lastRetweetSinceCreationHrs = tweetFeatures.lastRetweetSinceCreationHrs.map(_.toDouble)</p></li>
+<li><p>val lastReplySinceCreationHrs = tweetFeatures.lastReplySinceCreationHrs.map(_.toDouble)</p></li>
+<li><p>val lastQuoteSinceCreationHrs = tweetFeatures.lastQuoteSinceCreationHrs.map(_.toDouble)</p></li>
+<li></li>
+<li><p>timeFeatures.copy(</p></li>
+<li><p>lastFavSinceCreationHrs = lastFavSinceCreationHrs,</p></li>
+<li><p>lastRetweetSinceCreationHrs = lastRetweetSinceCreationHrs,</p></li>
+<li><p>lastReplySinceCreationHrs = lastReplySinceCreationHrs,</p></li>
+<li><p>lastQuoteSinceCreationHrs = lastQuoteSinceCreationHrs,</p></li>
+<li><p>timeSinceLastFavoriteHrs = getTimeSinceLastEngagementHrs(</p></li>
+<li><p>lastFavSinceCreationHrs,</p></li>
+<li><p>timeSinceSourceTweetCreation</p></li>
+<li><p>),</p></li>
+<li><p>timeSinceLastRetweetHrs = getTimeSinceLastEngagementHrs(</p></li>
+<li><p>lastRetweetSinceCreationHrs,</p></li>
+<li><p>timeSinceSourceTweetCreation</p></li>
+<li><p>),</p></li>
+<li><p>timeSinceLastReplyHrs = getTimeSinceLastEngagementHrs(</p></li>
+<li><p>lastReplySinceCreationHrs,</p></li>
+<li><p>timeSinceSourceTweetCreation</p></li>
+<li><p>),</p></li>
+<li><p>timeSinceLastQuoteHrs = getTimeSinceLastEngagementHrs(</p></li>
+<li><p>lastQuoteSinceCreationHrs,</p></li>
+<li><p>timeSinceSourceTweetCreation</p></li>
+<li><p>)</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private def addNonPollingTimeFeatures(</p></li>
+<li><p>timeFeatures: TimeFeatures,</p></li>
+<li><p>requestTimestampMs: Long,</p></li>
+<li><p>creationTimeMs: Long,</p></li>
+<li><p>nonPollingTimestampsMs: Option[Seq[Long]]</p></li>
+<li><p>): Option[TimeFeatures] = {</p></li>
+<li><p>for {</p></li>
+<li><p>nonPollingTimestampsMs &lt;- nonPollingTimestampsMs</p></li>
+<li><p>lastNonPollingTimestampMs &lt;- nonPollingTimestampsMs.headOption</p></li>
+<li><p>earliestNonPollingTimestampMs &lt;- nonPollingTimestampsMs.lastOption</p></li>
+<li><p>} yield {</p></li>
+<li><p>val timeSinceLastNonPollingRequest = requestTimestampMs - lastNonPollingTimestampMs</p></li>
+<li><p>val tweetAgeRatio = timeSinceLastNonPollingRequest / math.max(</p></li>
+<li><p>1.0,</p></li>
+<li><p>timeFeatures.timeSinceTweetCreation</p></li>
+<li><p>)</p></li>
+<li><p>/*</p></li>
+<li><ul>
+<li><p>Non-polling timestamps are stored in chronological order.</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>The latest timestamps occur first, therefore we need to explicitly search in reverse order.</p></li>
+</ul>
+</li>
+<li><p><a href="#id1"><span class="problematic" id="id2">*</span></a>/</p></li>
+<li><p>val nonPollingRequestsSinceTweetCreation =</p></li>
+<li><p>if (nonPollingTimestampsMs.nonEmpty) {</p></li>
+<li><p>nonPollingTimestampsMs.search(creationTimeMs)(Ordering[Long].reverse).insertionPoint</p></li>
+<li><p>} else {</p></li>
+<li><p>0</p></li>
+<li><p>}</p></li>
+<li><p>/*</p></li>
+<li><ul>
+<li><p>Calculate the average time between non-polling requests; include</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>request time in this calculation as latest timestamp.</p></li>
+</ul>
+</li>
+<li><p><a href="#id3"><span class="problematic" id="id4">*</span></a>/</p></li>
+<li><p>val timeBetweenNonPollingRequestsAvg =</p></li>
+<li><p>(requestTimestampMs - earliestNonPollingTimestampMs) / math</p></li>
+<li><p>.max(1.0, nonPollingTimestampsMs.size)</p></li>
+<li><p>val timeFeaturesWithNonPolling = timeFeatures.copy(</p></li>
+<li><p>timeBetweenNonPollingRequestsAvg = Some(timeBetweenNonPollingRequestsAvg),</p></li>
+<li><p>timeSinceLastNonPollingRequest = Some(timeSinceLastNonPollingRequest),</p></li>
+<li><p>nonPollingRequestsSinceTweetCreation = Some(nonPollingRequestsSinceTweetCreation),</p></li>
+<li><p>tweetAgeRatio = Some(tweetAgeRatio)</p></li>
+<li><p>)</p></li>
+<li><p>timeFeaturesWithNonPolling</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private[this] def getTimeSinceLastEngagementHrs(</p></li>
+<li><p>lastEngagementTimeSinceCreationHrsOpt: Option[Double],</p></li>
+<li><p>timeSinceTweetCreation: Long</p></li>
+<li><p>): Option[Double] = {</p></li>
+<li><p>lastEngagementTimeSinceCreationHrsOpt.map { lastEngagementTimeSinceCreationHrs =&gt;</p></li>
+<li><p>val timeSinceTweetCreationHrs = (timeSinceTweetCreation / (60 * 60 * 1000)).toInt</p></li>
+<li><p>timeSinceTweetCreationHrs - lastEngagementTimeSinceCreationHrs</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private def setFeatures(features: TimeFeatures, richDataRecord: RichDataRecord): Unit = {</p></li>
+<li><p>val record = richDataRecord.getRecord</p></li>
+<li><p>.setFeatureValue(IS_TWEET_RECYCLED, features.isTweetRecycled)</p></li>
+<li><p>.setFeatureValue(TIME_SINCE_TWEET_CREATION, features.timeSinceTweetCreation)</p></li>
+<li><p>.setFeatureValueFromOption(</p></li>
+<li><p>TIME_SINCE_VIEWER_ACCOUNT_CREATION_SECS,</p></li>
+<li><p>features.timeSinceViewerAccountCreationSecs)</p></li>
+<li><p>.setFeatureValue(</p></li>
+<li><p>USER_ID_IS_SNOWFLAKE_ID,</p></li>
+<li><p>features.timeSinceViewerAccountCreationSecs.isDefined</p></li>
+<li><p>)</p></li>
+<li><p>.setFeatureValueFromOption(ACCOUNT_AGE_INTERVAL, features.accountAgeInterval.map(_.id.toLong))</p></li>
+<li><p>.setFeatureValue(IS_30_DAY_NEW_USER, features.isDay30NewUser)</p></li>
+<li><p>.setFeatureValue(IS_12_MONTH_NEW_USER, features.isMonth12NewUser)</p></li>
+<li><p>.setFeatureValueFromOption(LAST_FAVORITE_SINCE_CREATION_HRS, features.lastFavSinceCreationHrs)</p></li>
+<li><p>.setFeatureValueFromOption(</p></li>
+<li><p>LAST_RETWEET_SINCE_CREATION_HRS,</p></li>
+<li><p>features.lastRetweetSinceCreationHrs</p></li>
+<li><p>)</p></li>
+<li><p>.setFeatureValueFromOption(LAST_REPLY_SINCE_CREATION_HRS, features.lastReplySinceCreationHrs)</p></li>
+<li><p>.setFeatureValueFromOption(LAST_QUOTE_SINCE_CREATION_HRS, features.lastQuoteSinceCreationHrs)</p></li>
+<li><p>.setFeatureValueFromOption(TIME_SINCE_LAST_FAVORITE_HRS, features.timeSinceLastFavoriteHrs)</p></li>
+<li><p>.setFeatureValueFromOption(TIME_SINCE_LAST_RETWEET_HRS, features.timeSinceLastRetweetHrs)</p></li>
+<li><p>.setFeatureValueFromOption(TIME_SINCE_LAST_REPLY_HRS, features.timeSinceLastReplyHrs)</p></li>
+<li><p>.setFeatureValueFromOption(TIME_SINCE_LAST_QUOTE_HRS, features.timeSinceLastQuoteHrs)</p></li>
+<li><p>/*</p></li>
+<li><ul>
+<li><p>set features whose values are optional as some users do not have non-polling timestamps</p></li>
+</ul>
+</li>
+<li><p><a href="#id5"><span class="problematic" id="id6">*</span></a>/</p></li>
+<li><p>features.timeBetweenNonPollingRequestsAvg.foreach(</p></li>
+<li><p>record.setFeatureValue(TIME_BETWEEN_NON_POLLING_REQUESTS_AVG, _)</p></li>
+<li><p>)</p></li>
+<li><p>features.timeSinceLastNonPollingRequest.foreach(</p></li>
+<li><p>record.setFeatureValue(TIME_SINCE_LAST_NON_POLLING_REQUEST, _)</p></li>
+<li><p>)</p></li>
+<li><p>features.nonPollingRequestsSinceTweetCreation.foreach(</p></li>
+<li><p>record.setFeatureValue(NON_POLLING_REQUESTS_SINCE_TWEET_CREATION, _)</p></li>
+<li><p>)</p></li>
+<li><p>features.tweetAgeRatio.foreach(record.setFeatureValue(TWEET_AGE_RATIO, _))</p></li>
+<li><p>}</p></li>
+</ul>
+<p>-}</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/TimeFeaturesHydrator_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

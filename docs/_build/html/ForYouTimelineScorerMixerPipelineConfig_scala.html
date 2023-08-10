@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/ForYouTimelineScorerMixerPipelineConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/ForYouTimelineScorerMixerPipelineConfig.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-foryoutimelinescorermixerpipelineconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-foryoutimelinescorermixerpipelineconfig-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/ForYouTimelineScorerMixerPipelineConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/ForYouTimelineScorerMixerPipelineConfig.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-foryoutimelinescorermixerpipelineconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-foryoutimelinescorermixerpipelineconfig-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -266,27 +329,31</p>
+<p>Content:</p>
+<p>index b43c6ed67..441e5796d 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/ForYouTimelineScorerMixerPipelineConfig.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/ForYouTimelineScorerMixerPipelineConfig.scala</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.candidate_pipeline.EditedTweetsCandidatePipelineConfig</p>
+<p>import com.twitter.home_mixer.candidate_pipeline.NewTweetsPillCandidatePipelineConfig</p>
+<p>import com.twitter.home_mixer.functional_component.decorator.urt.builder.AddEntriesWithReplaceAndShowAlertAndCoverInstructionBuilder</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.functional_component.feature_hydrator.FeedbackHistoryQueryFeatureHydrator</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.functional_component.feature_hydrator._</p>
+<p>import com.twitter.home_mixer.functional_component.selector.DebunchCandidates</p>
+<p>import com.twitter.home_mixer.functional_component.selector.UpdateConversationModuleId</p>
+<p>import com.twitter.home_mixer.functional_component.side_effect._</p>
+<p>import com.twitter.home_mixer.model.ClearCacheIncludeInstruction</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.InNetworkFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.param.HomeGlobalParams.EnableImpressionBloomFilter</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.param.HomeGlobalParams.MaxNumberReplaceInstructionsParam</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.param.HomeMixerFlagName.ScribeClientEventsFlag</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.following.model.HomeMixerExternalStrings</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.product.for_you.feature_hydrator.TimelineServiceTweetsQueryFeatureHydrator</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.for_you.model.ForYouQuery</p>
+<p>import com.twitter.home_mixer.product.for_you.param.ForYouParam.ClearCacheOnPtr</p>
+<p>import com.twitter.home_mixer.product.for_you.param.ForYouParam.EnableFlipInjectionModuleCandidatePipelineParam</p>
+<p>import com.twitter.home_mixer.product.for_you.param.ForYouParam.FlipInlineInjectionModulePosition</p>
+<p>import com.twitter.home_mixer.product.for_you.param.ForYouParam.ServerMaxResultsParam</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.product.for_you.param.ForYouParam.TweetPreviewsPositionParam</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.for_you.param.ForYouParam.WhoToFollowPositionParam</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.product.for_you.param.ForYouParam.WhoToSubscribePositionParam</p>
+<p>+import com.twitter.home_mixer.product.for_you.side_effect.ServedCandidateFeatureKeysKafkaSideEffectBuilder</p>
+<p>+import com.twitter.home_mixer.product.for_you.side_effect.ServedCandidateKeysKafkaSideEffectBuilder</p>
+<p>+import com.twitter.home_mixer.product.for_you.side_effect.ServedStatsSideEffect</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.util.CandidatesUtil</p>
+</div></blockquote>
+<p>+import com.twitter.inject.annotations.Flag</p>
+<blockquote>
+<div><p>import com.twitter.logpipeline.client.common.EventPublisher</p>
+<p>import com.twitter.product_mixer.component_library.feature_hydrator.query.async.AsyncQueryFeatureHydrator</p>
+<p>import com.twitter.product_mixer.component_library.feature_hydrator.query.impressed_tweets.ImpressedTweetsQueryFeatureHydrator</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.component_library.feature_hydrator.query.param_gated.AsyncParamGatedQueryFeatureHydrator</p>
+<p>+import com.twitter.product_mixer.component_library.feature_hydrator.query.social_graph.PreviewCreatorsQueryFeatureHydrator</p>
+<p>+import com.twitter.product_mixer.component_library.feature_hydrator.query.social_graph.SGSFollowedUsersQueryFeatureHydrator</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>import com.twitter.product_mixer.component_library.pipeline.candidate.flexible_injection_pipeline.FlipPromptCandidatePipelineConfigBuilder</p>
+</div></blockquote>
+<p>-import com.twitter.product_mixer.component_library.pipeline.candidate.who_to_follow_module.WhoToFollowCandidatePipelineConfig</p>
+<p>+import com.twitter.product_mixer.component_library.pipeline.candidate.who_to_follow_module.WhoToFollowArmCandidatePipelineConfig</p>
+<p>+import com.twitter.product_mixer.component_library.pipeline.candidate.who_to_subscribe_module.WhoToSubscribeCandidatePipelineConfig</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.component_library.premarshaller.urt.UrtDomainMarshaller</p>
+<p>import com.twitter.product_mixer.component_library.premarshaller.urt.builder.ClearCacheInstructionBuilder</p>
+<p>import com.twitter.product_mixer.component_library.premarshaller.urt.builder.OrderedBottomCursorBuilder</p>
+<p>&#64;Singleton</p>
+<p>class ForYouTimelineScorerMixerPipelineConfig &#64;Inject() (</p>
+<blockquote>
+<div><p>forYouTimelineScorerCandidatePipelineConfig: ForYouTimelineScorerCandidatePipelineConfig,</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>forYouPushToHomeTweetCandidatePipelineConfig: ForYouPushToHomeTweetCandidatePipelineConfig,</p>
+<p>forYouConversationServiceCandidatePipelineConfig: ForYouConversationServiceCandidatePipelineConfig,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>forYouAdsCandidatePipelineBuilder: ForYouAdsCandidatePipelineBuilder,</p></li>
+</ul>
+<ul>
+<li><p>forYouAdsDependentCandidatePipelineBuilder: ForYouAdsDependentCandidatePipelineBuilder,</p>
+<p>forYouWhoToFollowCandidatePipelineConfigBuilder: ForYouWhoToFollowCandidatePipelineConfigBuilder,</p>
+</li>
+<li><p>forYouWhoToSubscribeCandidatePipelineConfigBuilder: ForYouWhoToSubscribeCandidatePipelineConfigBuilder,</p>
+<p>flipPromptCandidatePipelineConfigBuilder: FlipPromptCandidatePipelineConfigBuilder,</p>
+<p>editedTweetsCandidatePipelineConfig: EditedTweetsCandidatePipelineConfig,</p>
+<p>newTweetsPillCandidatePipelineConfig: NewTweetsPillCandidatePipelineConfig[ForYouQuery],</p>
+</li>
+<li><p>forYouTweetPreviewsCandidatePipelineConfig: ForYouTweetPreviewsCandidatePipelineConfig,</p>
+<p>dismissInfoQueryFeatureHydrator: DismissInfoQueryFeatureHydrator,</p>
+<p>gizmoduckUserQueryFeatureHydrator: GizmoduckUserQueryFeatureHydrator,</p>
+</li>
+<li><p>impressionBloomFilterQueryFeatureHydrator: ImpressionBloomFilterQueryFeatureHydrator[ForYouQuery],</p>
+<p>manhattanTweetImpressionsQueryFeatureHydrator: TweetImpressionsQueryFeatureHydrator[ForYouQuery],</p>
+<p>memcacheTweetImpressionsQueryFeatureHydrator: ImpressedTweetsQueryFeatureHydrator,</p>
+<p>persistenceStoreQueryFeatureHydrator: PersistenceStoreQueryFeatureHydrator,</p>
+<p>timelineServiceTweetsQueryFeatureHydrator: TimelineServiceTweetsQueryFeatureHydrator,</p>
+<p>lastNonPollingTimeQueryFeatureHydrator: LastNonPollingTimeQueryFeatureHydrator,</p>
+<p>feedbackHistoryQueryFeatureHydrator: FeedbackHistoryQueryFeatureHydrator,</p>
+</li>
+<li><p>previewCreatorsQueryFeatureHydrator: PreviewCreatorsQueryFeatureHydrator,</p></li>
+<li><p>sgsFollowedUsersQueryFeatureHydrator: SGSFollowedUsersQueryFeatureHydrator,</p>
+<p>adsInjector: AdsInjector,</p>
+<p>servedCandidateKeysKafkaSideEffectBuilder: ServedCandidateKeysKafkaSideEffectBuilder,</p>
+<p>servedCandidateFeatureKeysKafkaSideEffectBuilder: ServedCandidateFeatureKeysKafkaSideEffectBuilder,</p>
+<p>updateLastNonPollingTimeSideEffect: UpdateLastNonPollingTimeSideEffect[ForYouQuery, Timeline],</p>
+<p>publishClientSentImpressionsEventBusSideEffect: PublishClientSentImpressionsEventBusSideEffect,</p>
+<p>publishClientSentImpressionsManhattanSideEffect: PublishClientSentImpressionsManhattanSideEffect,</p>
+</li>
+<li><p>publishImpressionBloomFilterSideEffect: PublishImpressionBloomFilterSideEffect,</p>
+<p>updateTimelinesPersistenceStoreSideEffect: UpdateTimelinesPersistenceStoreSideEffect,</p>
+<p>truncateTimelinesPersistenceStoreSideEffect: TruncateTimelinesPersistenceStoreSideEffect,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>homeScribeServedEntriesSideEffect: HomeScribeServedEntriesSideEffect,</p></li>
+</ul>
+<ul>
+<li><p>homeScribeServedCandidatesSideEffect: HomeScribeServedCandidatesSideEffect,</p>
+<p>servedStatsSideEffect: ServedStatsSideEffect,</p>
+<p>clientEventsScribeEventPublisher: EventPublisher[ca.LogEvent],</p>
+<p>externalStrings: HomeMixerExternalStrings,</p>
+<p>&#64;ProductScoped stringCenterProvider: Provider[StringCenter],</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>urtTransportMarshaller: UrtTransportMarshaller)</p></li>
+</ul>
+<ul>
+<li><p>urtTransportMarshaller: UrtTransportMarshaller,</p></li>
+<li><p>&#64;Flag(ScribeClientEventsFlag) enableScribeClientEvents: Boolean)</p>
+<blockquote>
+<div><p>extends MixerPipelineConfig[ForYouQuery, Timeline, urt.TimelineResponse] {</p>
+</div></blockquote>
+<p>override val identifier: MixerPipelineIdentifier = MixerPipelineIdentifier(“ForYouTimelineScorer”)</p>
+<p>private val MaxConsecutiveOutOfNetworkCandidates = 2</p>
+</li>
+<li><p>private val PushToHomeTweetPosition = 0</p></li>
+<li><p>private val dependentCandidatesStep = MixerPipelineConfig.dependentCandidatePipelinesStep</p>
+<p>private val resultSelectorsStep = MixerPipelineConfig.resultSelectorsStep</p>
+<blockquote>
+<div><p>persistenceStoreQueryFeatureHydrator,</p>
+<p>timelineServiceTweetsQueryFeatureHydrator,</p>
+<p>feedbackHistoryQueryFeatureHydrator,</p>
+</div></blockquote>
+</li>
+<li><p>previewCreatorsQueryFeatureHydrator,</p></li>
+<li><p>sgsFollowedUsersQueryFeatureHydrator,</p>
+<p>AsyncQueryFeatureHydrator(dependentCandidatesStep, dismissInfoQueryFeatureHydrator),</p>
+<p>AsyncQueryFeatureHydrator(dependentCandidatesStep, gizmoduckUserQueryFeatureHydrator),</p>
+<p>AsyncQueryFeatureHydrator(dependentCandidatesStep, lastNonPollingTimeQueryFeatureHydrator),</p>
+</li>
+<li><p>AsyncParamGatedQueryFeatureHydrator(</p></li>
+<li><p>EnableImpressionBloomFilter,</p></li>
+<li><p>resultSelectorsStep,</p></li>
+<li><p>impressionBloomFilterQueryFeatureHydrator),</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>AsyncQueryFeatureHydrator(resultSelectorsStep, manhattanTweetImpressionsQueryFeatureHydrator),</p>
+<p>AsyncQueryFeatureHydrator(resultSelectorsStep, memcacheTweetImpressionsQueryFeatureHydrator)</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>private val forYouAdsCandidatePipelineConfig = forYouAdsCandidatePipelineBuilder.build()</p></li>
+</ul>
+<ul class="simple">
+<li><p>private val timelineScorerCandidatePipelineScope =</p></li>
+<li><p>SpecificPipeline(forYouTimelineScorerCandidatePipelineConfig.identifier)</p></li>
+<li></li>
+<li><p>private val forYouAdsCandidatePipelineConfig = forYouAdsDependentCandidatePipelineBuilder</p></li>
+<li><p>.build(timelineScorerCandidatePipelineScope)</p></li>
+</ul>
+<blockquote>
+<div><p>private val forYouWhoToFollowCandidatePipelineConfig =</p>
+<blockquote>
+<div><p>forYouWhoToFollowCandidatePipelineConfigBuilder.build()</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>private val forYouWhoToSubscribeCandidatePipelineConfig =</p></li>
+<li><p>forYouWhoToSubscribeCandidatePipelineConfigBuilder.build()</p></li>
+<li><p>private val flipPromptCandidatePipelineConfig =</p>
+<blockquote>
+<div><p>flipPromptCandidatePipelineConfigBuilder.build[ForYouQuery](</p>
+<blockquote>
+<div><p>supportedClientParam = Some(EnableFlipInjectionModuleCandidatePipelineParam)</p>
+</div></blockquote>
+</div></blockquote>
+<p>override val candidatePipelines: Seq[CandidatePipelineConfig[ForYouQuery, _, _, _]] = Seq(</p>
+<blockquote>
+<div><p>forYouTimelineScorerCandidatePipelineConfig,</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>forYouAdsCandidatePipelineConfig,</p></li>
+</ul>
+<ul>
+<li><p>forYouPushToHomeTweetCandidatePipelineConfig,</p>
+<p>forYouWhoToFollowCandidatePipelineConfig,</p>
+</li>
+<li><p>forYouWhoToSubscribeCandidatePipelineConfig,</p></li>
+<li><p>forYouTweetPreviewsCandidatePipelineConfig,</p>
+<p>flipPromptCandidatePipelineConfig</p>
+</li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>override val dependentCandidatePipelines: Seq[</p>
+<blockquote>
+<div><p>DependentCandidatePipelineConfig[ForYouQuery, _, _, _]</p>
+</div></blockquote>
+<p>] = Seq(</p>
+</div></blockquote>
+<ul>
+<li><p>forYouAdsCandidatePipelineConfig,</p>
+<p>forYouConversationServiceCandidatePipelineConfig,</p>
+<p>editedTweetsCandidatePipelineConfig,</p>
+<p>newTweetsPillCandidatePipelineConfig</p>
+<p>forYouTimelineScorerCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p>
+<p>forYouAdsCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p>
+<p>forYouWhoToFollowCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p>
+</li>
+<li><p>forYouWhoToSubscribeCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p></li>
+<li><p>forYouTweetPreviewsCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p>
+<p>flipPromptCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p>
+<p>editedTweetsCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p>
+<p>newTweetsPillCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p>
+<blockquote>
+<div><p>candidatePipeline = editedTweetsCandidatePipelineConfig.identifier,</p>
+<p>maxSelectionsParam = MaxNumberReplaceInstructionsParam</p>
+</div></blockquote>
+<p>),</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>DropModuleTooFewModuleItemResults(</p></li>
+</ul>
+<ul>
+<li><p>DropMaxModuleItemCandidates(</p>
+<blockquote>
+<div><p>candidatePipeline = forYouWhoToFollowCandidatePipelineConfig.identifier,</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>minModuleItemsParam = StaticParam(WhoToFollowCandidatePipelineConfig.MinCandidatesSize)</p></li>
+</ul>
+<ul class="simple">
+<li><p>maxModuleItemsParam = StaticParam(WhoToFollowArmCandidatePipelineConfig.MaxCandidatesSize)</p></li>
+<li><p>),</p></li>
+<li><p>DropModuleTooFewModuleItemResults(</p></li>
+<li><p>candidatePipeline = forYouWhoToSubscribeCandidatePipelineConfig.identifier,</p></li>
+<li><p>minModuleItemsParam = StaticParam(WhoToSubscribeCandidatePipelineConfig.MinCandidatesSize)</p></li>
+</ul>
+<blockquote>
+<div><p>),</p>
+<p>DropMaxModuleItemCandidates(</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>candidatePipeline = forYouWhoToFollowCandidatePipelineConfig.identifier,</p></li>
+<li><p>maxModuleItemsParam = StaticParam(WhoToFollowCandidatePipelineConfig.MaxCandidatesSize)</p></li>
+</ul>
+<ul class="simple">
+<li><p>candidatePipeline = forYouWhoToSubscribeCandidatePipelineConfig.identifier,</p></li>
+<li><p>maxModuleItemsParam = StaticParam(WhoToSubscribeCandidatePipelineConfig.MaxCandidatesSize)</p></li>
+</ul>
+<blockquote>
+<div><p>),</p>
+<p>// Add Conversation Service tweets to results only if the scored pipeline doesn’t return any</p>
+<p>SelectConditionally(</p>
+<blockquote>
+<div><p>forYouTimelineScorerCandidatePipelineConfig.identifier == candidate.source)</p>
+</div></blockquote>
+<p>),</p>
+<p>InsertAppendResults(candidatePipeline = forYouTimelineScorerCandidatePipelineConfig.identifier),</p>
+</div></blockquote>
+<ul>
+<li><p>InsertFixedPositionResults(</p></li>
+<li><p>candidatePipeline = forYouTweetPreviewsCandidatePipelineConfig.identifier,</p></li>
+<li><p>positionParam = TweetPreviewsPositionParam</p></li>
+<li><p>),</p>
+<p>InsertFixedPositionResults(</p>
+<blockquote>
+<div><p>candidatePipeline = forYouWhoToFollowCandidatePipelineConfig.identifier,</p>
+<p>positionParam = WhoToFollowPositionParam</p>
+</div></blockquote>
+<p>),</p>
+</li>
+<li><p>InsertFixedPositionResults(</p></li>
+<li><p>candidatePipeline = forYouWhoToSubscribeCandidatePipelineConfig.identifier,</p></li>
+<li><p>positionParam = WhoToSubscribePositionParam</p></li>
+<li><p>),</p>
+<p>InsertFixedPositionResults(</p>
+<blockquote>
+<div><p>candidatePipeline = flipPromptCandidatePipelineConfig.identifier,</p>
+<p>positionParam = FlipInlineInjectionModulePosition</p>
+</div></blockquote>
+<p>),</p>
+</li>
+<li><p>// Insert Push To Home Tweet at top of Timeline</p></li>
+<li><p>InsertFixedPositionResults(</p></li>
+<li><p>candidatePipeline = forYouPushToHomeTweetCandidatePipelineConfig.identifier,</p></li>
+<li><p>positionParam = StaticParam(PushToHomeTweetPosition)</p></li>
+<li><p>),</p>
+<p>InsertAdResults(</p>
+<blockquote>
+<div><p>surfaceAreaName = AdsInjectionSurfaceAreas.HomeTimeline,</p>
+<p>adsInjector = adsInjector.forSurfaceArea(AdsInjectionSurfaceAreas.HomeTimeline),</p>
+<p>adsCandidatePipeline = forYouAdsCandidatePipelineConfig.identifier</p>
+</div></blockquote>
+<p>),</p>
+<p>// This selector must come after the tweets are inserted into the results</p>
+</li>
+<li><p>DropModuleTooFewModuleItemResults(</p></li>
+<li><p>candidatePipeline = forYouWhoToFollowCandidatePipelineConfig.identifier,</p></li>
+<li><p>minModuleItemsParam = StaticParam(WhoToFollowArmCandidatePipelineConfig.MinCandidatesSize)</p></li>
+<li><p>),</p>
+<p>UpdateNewTweetsPillDecoration(</p>
+<blockquote>
+<div><p>pipelineScope = SpecificPipelines(</p>
+<blockquote>
+<div><p>forYouConversationServiceCandidatePipelineConfig.identifier,</p>
+</div></blockquote>
+<p>Set(forYouTimelineScorerCandidatePipelineConfig.identifier))</p>
+</div></blockquote>
+</li>
+</ul>
+<blockquote>
+<div><p>private val homeScribeClientEventSideEffect = HomeScribeClientEventSideEffect(</p>
+</div></blockquote>
+<ul>
+<li><p>enableScribeClientEvents = enableScribeClientEvents,</p>
+<p>logPipelinePublisher = clientEventsScribeEventPublisher,</p>
+<p>injectedTweetsCandidatePipelineIdentifiers = Seq(</p>
+<blockquote>
+<div><p>forYouTimelineScorerCandidatePipelineConfig.identifier,</p>
+<p>forYouConversationServiceCandidatePipelineConfig.identifier</p>
+</div></blockquote>
+<p>),</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>adsCandidatePipelineIdentifier = forYouAdsCandidatePipelineConfig.identifier,</p></li>
+</ul>
+<ul>
+<li><p>adsCandidatePipelineIdentifier = Some(forYouAdsCandidatePipelineConfig.identifier),</p>
+<p>whoToFollowCandidatePipelineIdentifier =</p>
+<blockquote>
+<div><p>Some(forYouWhoToFollowCandidatePipelineConfig.identifier),</p>
+</div></blockquote>
+</li>
+<li><p>whoToSubscribeCandidatePipelineIdentifier =</p></li>
+<li><p>Some(forYouWhoToSubscribeCandidatePipelineConfig.identifier)</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>override val resultSideEffects: Seq[PipelineResultSideEffect[ForYouQuery, Timeline]] = Seq(</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>servedCandidateKeysKafkaSideEffect,</p></li>
+<li><p>servedCandidateFeatureKeysKafkaSideEffect,</p></li>
+<li><p>updateLastNonPollingTimeSideEffect,</p></li>
+</ul>
+<ul>
+<li><p>homeScribeClientEventSideEffect,</p></li>
+<li><p>homeScribeServedCandidatesSideEffect,</p>
+<p>publishClientSentImpressionsEventBusSideEffect,</p>
+<p>publishClientSentImpressionsManhattanSideEffect,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>updateTimelinesPersistenceStoreSideEffect,</p></li>
+</ul>
+<ul>
+<li><p>publishImpressionBloomFilterSideEffect,</p></li>
+<li><p>servedCandidateKeysKafkaSideEffect,</p></li>
+<li><p>servedCandidateFeatureKeysKafkaSideEffect,</p></li>
+<li><p>servedStatsSideEffect,</p>
+<p>truncateTimelinesPersistenceStoreSideEffect,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>homeScribeClientEventSideEffect,</p></li>
+<li><p>homeScribeServedEntriesSideEffect,</p></li>
+<li><p>servedStatsSideEffect</p></li>
+</ul>
+<ul class="simple">
+<li><p>updateLastNonPollingTimeSideEffect,</p></li>
+<li><p>updateTimelinesPersistenceStoreSideEffect</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>override val domainMarshaller: DomainMarshaller[ForYouQuery, Timeline] = {</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ForYouTimelineScorerMixerPipelineConfig_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

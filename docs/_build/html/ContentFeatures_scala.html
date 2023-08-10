@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/ContentFeatures.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/ContentFeatures.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-model-contentfeatures-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-model-contentfeatures-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/ContentFeatures.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/ContentFeatures.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-model-contentfeatures-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-model-contentfeatures-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -48,6 +49,53</p>
+<p>Content:</p>
+<p>index 44e8cf25e..f141d67d1 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/ContentFeatures.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/ContentFeatures.scala</p>
+<blockquote>
+<div><p>package com.twitter.home_mixer.model</p>
+<p>import com.twitter.escherbird.{thriftscala =&gt; esb}</p>
+</div></blockquote>
+<p>+import com.twitter.search.common.features.{thriftscala =&gt; sc}</p>
+<blockquote>
+<div><p>import com.twitter.tweetypie.{thriftscala =&gt; tp}</p>
+<p>object ContentFeatures {</p>
+<blockquote>
+<div><blockquote>
+<div><p>None,</p>
+<p>None</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li></li>
+<li><p>def fromThrift(ebFeatures: sc.ThriftTweetFeatures): ContentFeatures =</p></li>
+<li><p>ContentFeatures(</p></li>
+<li><p>length = ebFeatures.tweetLength.getOrElse(0).toShort,</p></li>
+<li><p>hasQuestion = ebFeatures.hasQuestion.getOrElse(false),</p></li>
+<li><p>numCaps = ebFeatures.numCaps.getOrElse(0).toShort,</p></li>
+<li><p>numWhiteSpaces = ebFeatures.numWhitespaces.getOrElse(0).toShort,</p></li>
+<li><p>numNewlines = ebFeatures.numNewlines,</p></li>
+<li><p>videoDurationMs = ebFeatures.videoDurationMs,</p></li>
+<li><p>bitRate = ebFeatures.bitRate,</p></li>
+<li><p>aspectRatioNum = ebFeatures.aspectRatioNum,</p></li>
+<li><p>aspectRatioDen = ebFeatures.aspectRatioDen,</p></li>
+<li><p>widths = ebFeatures.widths.map(_.map(_.toShort)),</p></li>
+<li><p>heights = ebFeatures.heights.map(_.map(_.toShort)),</p></li>
+<li><p>resizeMethods = ebFeatures.resizeMethods.map(_.map(_.toShort)),</p></li>
+<li><p>numMediaTags = ebFeatures.numMediaTags.map(_.toShort),</p></li>
+<li><p>mediaTagScreenNames = ebFeatures.mediaTagScreenNames,</p></li>
+<li><p>emojiTokens = ebFeatures.emojiTokens.map(_.toSet),</p></li>
+<li><p>emoticonTokens = ebFeatures.emoticonTokens.map(_.toSet),</p></li>
+<li><p>faceAreas = ebFeatures.faceAreas,</p></li>
+<li><p>dominantColorRed = ebFeatures.dominantColorRed,</p></li>
+<li><p>dominantColorBlue = ebFeatures.dominantColorBlue,</p></li>
+<li><p>dominantColorGreen = ebFeatures.dominantColorGreen,</p></li>
+<li><p>numColors = ebFeatures.numColors.map(_.toShort),</p></li>
+<li><p>stickerIds = ebFeatures.stickerIds,</p></li>
+<li><p>mediaOriginProviders = ebFeatures.mediaOriginProviders,</p></li>
+<li><p>isManaged = ebFeatures.isManaged,</p></li>
+<li><p>is360 = ebFeatures.is360,</p></li>
+<li><p>viewCount = ebFeatures.viewCount,</p></li>
+<li><p>isMonetizable = ebFeatures.isMonetizable,</p></li>
+<li><p>isEmbeddable = ebFeatures.isEmbeddable,</p></li>
+<li><p>hasSelectedPreviewImage = ebFeatures.hasSelectedPreviewImage,</p></li>
+<li><p>hasTitle = ebFeatures.hasTitle,</p></li>
+<li><p>hasDescription = ebFeatures.hasDescription,</p></li>
+<li><p>hasVisitSiteCallToAction = ebFeatures.hasVisitSiteCallToAction,</p></li>
+<li><p>hasAppInstallCallToAction = ebFeatures.hasAppInstallCallToAction,</p></li>
+<li><p>hasWatchNowCallToAction = ebFeatures.hasWatchNowCallToAction,</p></li>
+<li><p>dominantColorPercentage = ebFeatures.dominantColorPercentage,</p></li>
+<li><p>posUnigrams = ebFeatures.posUnigrams.map(_.toSet),</p></li>
+<li><p>posBigrams = ebFeatures.posBigrams.map(_.toSet),</p></li>
+<li><p>semanticCoreAnnotations = ebFeatures.semanticCoreAnnotations,</p></li>
+<li><p>tokens = ebFeatures.textTokens.map(_.toSeq),</p></li>
+<li><p>conversationControl = ebFeatures.conversationControl,</p></li>
+<li><p>// media and selfThreadMetadata not carried by ThriftTweetFeatures</p></li>
+<li><p>media = None,</p></li>
+<li><p>selfThreadMetadata = None</p></li>
+<li><p>)</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>case class ContentFeatures(</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ContentFeatures_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

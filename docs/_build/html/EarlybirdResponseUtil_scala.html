@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdResponseUtil.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdResponseUtil.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-util-earlybird-earlybirdresponseutil-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-util-earlybird-earlybirdresponseutil-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdResponseUtil.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdResponseUtil.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-util-earlybird-earlybirdresponseutil-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-util-earlybird-earlybirdresponseutil-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -362,6 +397,13</p>
+<p>Content:</p>
+<p>index fb52e9689..06e0dd708 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdResponseUtil.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdResponseUtil.scala</p>
+<blockquote>
+<div><p>import com.twitter.search.common.schema.earlybird.EarlybirdFieldConstants.EarlybirdFieldConstant._</p>
+<p>import com.twitter.search.common.util.lang.ThriftLanguageUtil</p>
+<p>import com.twitter.search.earlybird.{thriftscala =&gt; eb}</p>
+</div></blockquote>
+<p>+import com.twitter.timelines.earlybird.common.utils.InNetworkEngagement</p>
+<blockquote>
+<div><p>object EarlybirdResponseUtil {</p>
+<blockquote>
+<div><blockquote>
+<div><p>facetLabels.filter(_.fieldName == facetName).map(_.label.filterNot(charsToRemove))</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>private def isUserMentioned(</p></li>
+<li><p>screenName: Option[String],</p></li>
+<li><p>mentions: Seq[String],</p></li>
+<li><p>mentionsInSourceTweet: Seq[String]</p></li>
+<li><p>): Boolean =</p></li>
+<li><p>isUserMentioned(screenName, mentions) || isUserMentioned(screenName, mentionsInSourceTweet)</p></li>
+<li><p>private def isUserMentioned(</p>
+<blockquote>
+<div><p>screenName: Option[String],</p>
+<p>mentions: Seq[String]</p>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</div></blockquote>
+<p>}</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>def getOONTweetThriftFeaturesByTweetId(</p></li>
+</ul>
+<ul>
+<li><p>def getTweetThriftFeaturesByTweetId(</p>
+<blockquote>
+<div><p>searcherUserId: Long,</p>
+<p>screenName: Option[String],</p>
+<p>userLanguages: Seq[scc.ThriftLanguage],</p>
+<p>uiLanguageCode: Option[String] = None,</p>
+</div></blockquote>
+</li>
+<li><p>followedUserIds: Set[Long],</p></li>
+<li><p>mutuallyFollowingUserIds: Set[Long],</p>
+<p>searchResults: Seq[eb.ThriftSearchResult],</p>
+</li>
+<li><p>sourceTweetSearchResults: Seq[eb.ThriftSearchResult],</p></li>
+</ul>
+<blockquote>
+<div><p>): Map[Long, sc.ThriftTweetFeatures] = {</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>val allSearchResults = searchResults ++ sourceTweetSearchResults</p></li>
+<li><p>val sourceTweetSearchResultById =</p></li>
+<li><p>sourceTweetSearchResults.map(result =&gt; (result.id -&gt; result)).toMap</p></li>
+<li><p>val inNetworkEngagement =</p></li>
+<li><p>InNetworkEngagement(followedUserIds.toSeq, mutuallyFollowingUserIds, allSearchResults)</p></li>
+</ul>
+<blockquote>
+<div><p>searchResults.map { searchResult =&gt;</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>val features = getOONThriftTweetFeaturesFromSearchResult(</p></li>
+</ul>
+<ul>
+<li><p>val features = getThriftTweetFeaturesFromSearchResult(</p>
+<blockquote>
+<div><p>searcherUserId,</p>
+<p>screenName,</p>
+<p>userLanguages,</p>
+<p>getLanguage(uiLanguageCode),</p>
+<p>getTweetCountByAuthorId(searchResults),</p>
+</div></blockquote>
+</li>
+<li><p>followedUserIds,</p></li>
+<li><p>mutuallyFollowingUserIds,</p></li>
+<li><p>sourceTweetSearchResultById,</p></li>
+<li><p>inNetworkEngagement,</p>
+<p>searchResult</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>)</p>
+<p>(searchResult.id -&gt; features)</p>
+</div></blockquote>
+<p>}.toMap</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>private[earlybird] def getOONThriftTweetFeaturesFromSearchResult(</p></li>
+</ul>
+<ul>
+<li><p>private[earlybird] def getThriftTweetFeaturesFromSearchResult(</p>
+<blockquote>
+<div><p>searcherUserId: Long,</p>
+<p>screenName: Option[String],</p>
+<p>userLanguages: Seq[scc.ThriftLanguage],</p>
+<p>uiLanguage: Option[scc.ThriftLanguage],</p>
+<p>tweetCountByAuthorId: Map[Long, Int],</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>searchResult: eb.ThriftSearchResult</p></li>
+</ul>
+<ul class="simple">
+<li><p>followedUserIds: Set[Long],</p></li>
+<li><p>mutuallyFollowingUserIds: Set[Long],</p></li>
+<li><p>sourceTweetSearchResultById: Map[Long, eb.ThriftSearchResult],</p></li>
+<li><p>inNetworkEngagement: InNetworkEngagement,</p></li>
+<li><p>searchResult: eb.ThriftSearchResult,</p></li>
+</ul>
+<blockquote>
+<div><p>): sc.ThriftTweetFeatures = {</p>
+<blockquote>
+<div><p>val applyFeatures = (applyUserIndependentFeatures(</p>
+<blockquote>
+<div><p>searchResult</p>
+</div></blockquote>
+<p>)(_)).andThen(</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>applyOONUserDependentFeatures(</p></li>
+</ul>
+<ul>
+<li><p>applyUserDependentFeatures(</p>
+<blockquote>
+<div><p>searcherUserId,</p>
+<p>screenName,</p>
+<p>userLanguages,</p>
+<p>uiLanguage,</p>
+<p>tweetCountByAuthorId,</p>
+</div></blockquote>
+</li>
+<li><p>followedUserIds,</p></li>
+<li><p>mutuallyFollowingUserIds,</p></li>
+<li><p>sourceTweetSearchResultById,</p></li>
+<li><p>inNetworkEngagement,</p>
+<p>searchResult</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)(_)</p>
+</div></blockquote>
+<p>)</p>
+<blockquote>
+<div><p>}</p>
+<p>.getOrElse(thriftTweetFeatures)</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>if (result.tweetSource.contains(eb.ThriftTweetSource.RealtimeProtectedCluster)) {</p></li>
+<li><p>features.copy(isProtected = true)</p></li>
+<li><p>} else {</p></li>
+<li><p>features</p></li>
+<li><p>}</p></li>
+</ul>
+<ul class="simple">
+<li><p>features</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>// Omitting inNetwork features e.g source tweet features and follow graph.</p></li>
+<li><p>// Can be expanded to include InNetwork in the future.</p></li>
+<li><p>def applyOONUserDependentFeatures(</p></li>
+</ul>
+<ul>
+<li><p>private def applyUserDependentFeatures(</p>
+<blockquote>
+<div><p>searcherUserId: Long,</p>
+<p>screenName: Option[String],</p>
+<p>userLanguages: Seq[scc.ThriftLanguage],</p>
+<p>uiLanguage: Option[scc.ThriftLanguage],</p>
+<p>tweetCountByAuthorId: Map[Long, Int],</p>
+</div></blockquote>
+</li>
+<li><p>followedUserIds: Set[Long],</p></li>
+<li><p>mutuallyFollowingUserIds: Set[Long],</p></li>
+<li><p>sourceTweetSearchResultById: Map[Long, eb.ThriftSearchResult],</p></li>
+<li><p>inNetworkEngagement: InNetworkEngagement,</p>
+<p>result: eb.ThriftSearchResult</p>
+</li>
+</ul>
+<blockquote>
+<div><p>)(</p>
+<blockquote>
+<div><p>thriftTweetFeatures: sc.ThriftTweetFeatures</p>
+<p>result.metadata</p>
+<blockquote>
+<div><p>.map { metadata =&gt;</p>
+<blockquote>
+<div><p>val isRetweet = metadata.isRetweet.getOrElse(false)</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>val sourceTweet =</p></li>
+<li><p>if (isRetweet) sourceTweetSearchResultById.get(metadata.sharedStatusId)</p></li>
+<li><p>else None</p></li>
+<li><p>val mentionsInSourceTweet = sourceTweet.map(getMentions).getOrElse(Seq.empty)</p></li>
+<li><p>val isReply = metadata.isReply.getOrElse(false)</p>
+<p>val replyToSearcher = isReply &amp;&amp; (metadata.referencedTweetAuthorId == searcherUserId)</p>
+<p>val replyOther = isReply &amp;&amp; !replyToSearcher</p>
+<p>val retweetOther = isRetweet &amp;&amp; (metadata.referencedTweetAuthorId != searcherUserId)</p>
+<p>val tweetLanguage = metadata.language.getOrElse(scc.ThriftLanguage.Unknown)</p>
+</li>
+<li><p>val referencedTweetAuthorId =</p></li>
+<li><p>if (metadata.referencedTweetAuthorId &gt; 0) Some(metadata.referencedTweetAuthorId) else None</p></li>
+<li><p>val inReplyToUserId = if (!isRetweet) referencedTweetAuthorId else None</p></li>
+<li><p>thriftTweetFeatures.copy(</p>
+<blockquote>
+<div><p>// Info about the Tweet.</p>
+<p>fromSearcher = metadata.fromUserId == searcherUserId,</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>probablyFromFollowedAuthor = false,</p></li>
+<li><p>fromMutualFollow = false,</p></li>
+</ul>
+<ul>
+<li><p>probablyFromFollowedAuthor = followedUserIds.contains(metadata.fromUserId),</p></li>
+<li><p>fromMutualFollow = mutuallyFollowingUserIds.contains(metadata.fromUserId),</p>
+<p>replySearcher = replyToSearcher,</p>
+<p>replyOther = replyOther,</p>
+<p>retweetOther = retweetOther,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>mentionSearcher = isUserMentioned(screenName, getMentions(result)),</p></li>
+</ul>
+<ul>
+<li><p>mentionSearcher = isUserMentioned(screenName, getMentions(result), mentionsInSourceTweet),</p>
+<p>// Info about Tweet content/media.</p>
+<p>matchesSearcherMainLang = isUsersMainLanguage(tweetLanguage, userLanguages),</p>
+<p>matchesSearcherLangs = isUsersLanguage(tweetLanguage, userLanguages),</p>
+<p>prevUserTweetEngagement =</p>
+<blockquote>
+<div><p>metadata.extraMetadata.flatMap(_.prevUserTweetEngagement).getOrElse(DefaultCount),</p>
+</div></blockquote>
+<p>tweetCountFromUserInSnapshot = tweetCountByAuthorId(metadata.fromUserId),</p>
+</li>
+<li><p>bidirectionalReplyCount = inNetworkEngagement.biDirectionalReplyCounts(result.id),</p></li>
+<li><p>unidirectionalReplyCount = inNetworkEngagement.uniDirectionalReplyCounts(result.id),</p></li>
+<li><p>bidirectionalRetweetCount = inNetworkEngagement.biDirectionalRetweetCounts(result.id),</p></li>
+<li><p>unidirectionalRetweetCount = inNetworkEngagement.uniDirectionalRetweetCounts(result.id),</p></li>
+<li><p>conversationCount = inNetworkEngagement.descendantReplyCounts(result.id),</p></li>
+<li><p>directedAtUserIdIsInFirstDegree =</p></li>
+<li><p>if (isReply) inReplyToUserId.map(followedUserIds.contains) else None,</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>}</p>
+<p>.getOrElse(thriftTweetFeatures)</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/EarlybirdResponseUtil_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

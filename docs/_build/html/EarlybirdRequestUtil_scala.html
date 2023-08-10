@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdRequestUtil.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdRequestUtil.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-util-earlybird-earlybirdrequestutil-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-util-earlybird-earlybirdrequestutil-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdRequestUtil.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdRequestUtil.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-util-earlybird-earlybirdrequestutil-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-util-earlybird-earlybirdrequestutil-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -46,7 +170,7</p>
+<p>Content:</p>
+<p>index 19df02a20..4c482b251 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdRequestUtil.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/util/earlybird/EarlybirdRequestUtil.scala</p>
+<blockquote>
+<div><p>import com.twitter.conversions.DurationOps._</p>
+<p>import com.twitter.search.common.query.thriftjava.{thriftscala =&gt; scq}</p>
+</div></blockquote>
+<p>+import com.twitter.search.common.ranking.{thriftscala =&gt; scr}</p>
+<blockquote>
+<div><p>import com.twitter.search.earlybird.{thriftscala =&gt; eb}</p>
+</div></blockquote>
+<p>+import com.twitter.timelines.clients.relevance_search.SearchClient.TweetFeatures</p>
+<p>+import com.twitter.timelines.clients.relevance_search.SearchClient.TweetTypes</p>
+<p>+import com.twitter.timelines.clients.relevance_search.SearchQueryBuilder</p>
+<p>+import com.twitter.timelines.clients.relevance_search.SearchQueryBuilder.QueryWithNamedDisjunctions</p>
+<p>+import com.twitter.timelines.earlybird.common.options.EarlybirdScoringModelConfig</p>
+<p>+import com.twitter.timelines.earlybird.common.utils.SearchOperator</p>
+<blockquote>
+<div><p>import com.twitter.util.Duration</p>
+<p>object EarlybirdRequestUtil {</p>
+</div></blockquote>
+<ul>
+<li><p>// If no EarlybirdOptions.maxNumHitsPerShard is set then default to this value.</p>
+<p>val DefaultMaxHitsToProcess = 1000</p>
+<p>val DefaultSearchProcessingTimeout: Duration = 200.milliseconds</p>
+</li>
+<li><p>val DefaultMaxNumResultsPerShard = 100</p></li>
+<li><p>val DeafultCollectorParams = scq.CollectorParams(</p></li>
+<li><p>// numResultsToReturn defines how many results each EB shard will return to search root</p></li>
+<li><p>numResultsToReturn = DefaultMaxNumResultsPerShard,</p></li>
+<li><p>// terminationParams.maxHitsToProcess is used for early terminating per shard results fetching.</p></li>
+<li><p>terminationParams = Some(</p></li>
+<li><p>scq.CollectorTerminationParams(</p></li>
+<li><p>maxHitsToProcess = Some(DefaultMaxHitsToProcess),</p></li>
+<li><p>timeoutMs = DefaultSearchProcessingTimeout.inMilliseconds.toInt</p></li>
+<li><p>))</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>def getTweetsEBFeaturesRequest(</p></li>
+</ul>
+<ul>
+<li><p>val DefaultHydrationMaxNumResultsPerShard = 1000</p></li>
+<li><p>val DefaultQueryMaxNumResultsPerShard = 300</p></li>
+<li><p>val DefaultHydrationCollectorParams = mkCollectorParams(DefaultHydrationMaxNumResultsPerShard)</p></li>
+<li></li>
+<li><p>private val queryBuilder = new SearchQueryBuilder</p></li>
+<li></li>
+<li><p>object EarlybirdScoringModels {</p></li>
+<li><p>val UnifiedEngagementProd: Seq[EarlybirdScoringModelConfig] = Seq(</p></li>
+<li><p>EarlybirdScoringModelConfig(“timelines_unified_engagement_prod.schema_based”, 1.0)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>val UnifiedEngagementRectweet: Seq[EarlybirdScoringModelConfig] = Seq(</p></li>
+<li><p>EarlybirdScoringModelConfig(“timelines_unified_engagement_rectweet.schema_based”, 1.0)</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private[earlybird] def mkCollectorParams(numResultsToReturn: Int): scq.CollectorParams = {</p></li>
+<li><p>scq.CollectorParams(</p></li>
+<li><p>// numResultsToReturn defines how many results each EB shard will return to search root</p></li>
+<li><p>numResultsToReturn = numResultsToReturn,</p></li>
+<li><p>// terminationParams.maxHitsToProcess is used for early terminating per shard results fetching.</p></li>
+<li><p>terminationParams = Some(</p></li>
+<li><p>scq.CollectorTerminationParams(</p></li>
+<li><p>maxHitsToProcess = Some(DefaultMaxHitsToProcess),</p></li>
+<li><p>timeoutMs = DefaultSearchProcessingTimeout.inMilliseconds.toInt</p></li>
+<li><p>))</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private def getRankingParams(</p></li>
+<li><p>authorScoreMap: Option[Map[Long, Double]],</p></li>
+<li><p>tensorflowModel: Option[String],</p></li>
+<li><p>ebModels: Seq[EarlybirdScoringModelConfig]</p></li>
+<li><p>): Option[scr.ThriftRankingParams] = {</p></li>
+<li><p>if (tensorflowModel.nonEmpty) {</p></li>
+<li><p>Some(</p></li>
+<li><p>scr.ThriftRankingParams(</p></li>
+<li><p><cite>type</cite> = Some(scr.ThriftScoringFunctionType.TensorflowBased),</p></li>
+<li><p>selectedTensorflowModel = tensorflowModel,</p></li>
+<li><p>minScore = -1.0e100,</p></li>
+<li><p>applyBoosts = false,</p></li>
+<li><p>authorSpecificScoreAdjustments = authorScoreMap</p></li>
+<li><p>)</p></li>
+<li><p>)</p></li>
+<li><p>} else if (ebModels.nonEmpty) {</p></li>
+<li><p>Some(</p></li>
+<li><p>scr.ThriftRankingParams(</p></li>
+<li><p><cite>type</cite> = Some(scr.ThriftScoringFunctionType.ModelBased),</p></li>
+<li><p>selectedModels = Some(ebModels.map(m =&gt; m.name -&gt; m.weight).toMap),</p></li>
+<li><p>applyBoosts = false,</p></li>
+<li><p>minScore = -1.0e100,</p></li>
+<li><p>authorSpecificScoreAdjustments = authorScoreMap</p></li>
+<li><p>)</p></li>
+<li><p>)</p></li>
+<li><p>} else None</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>def getTweetsRequest(</p></li>
+<li><p>userId: Option[Long],</p></li>
+<li><p>clientId: Option[String],</p></li>
+<li><p>skipVeryRecentTweets: Boolean,</p></li>
+<li><p>followedUserIds: Set[Long],</p></li>
+<li><p>retweetsMutedUserIds: Set[Long],</p></li>
+<li><p>beforeTweetIdExclusive: Option[Long],</p></li>
+<li><p>afterTweetIdExclusive: Option[Long],</p></li>
+<li><p>excludedTweetIds: Option[Set[Long]] = None,</p></li>
+<li><p>maxCount: Int,</p></li>
+<li><p>tweetTypes: TweetTypes.ValueSet,</p></li>
+<li><p>authorScoreMap: Option[Map[Long, Double]] = None,</p></li>
+<li><p>tensorflowModel: Option[String] = None,</p></li>
+<li><p>ebModels: Seq[EarlybirdScoringModelConfig] = Seq.empty,</p></li>
+<li><p>queryMaxNumResultsPerShard: Int = DefaultQueryMaxNumResultsPerShard</p></li>
+<li><p>): eb.EarlybirdRequest = {</p></li>
+<li></li>
+<li><p>val QueryWithNamedDisjunctions(query, namedDisjunctionMap) = queryBuilder.create(</p></li>
+<li><p>followedUserIds,</p></li>
+<li><p>retweetsMutedUserIds,</p></li>
+<li><p>beforeTweetIdExclusive,</p></li>
+<li><p>afterTweetIdExclusive,</p></li>
+<li><p>semanticCoreIds = None,</p></li>
+<li><p>languages = None,</p></li>
+<li><p>tweetTypes = tweetTypes,</p></li>
+<li><p>searchOperator = SearchOperator.Exclude,</p></li>
+<li><p>tweetFeatures = TweetFeatures.All,</p></li>
+<li><p>excludedTweetIds = excludedTweetIds.getOrElse(Set.empty),</p></li>
+<li><p>enableExcludeSourceTweetIdsQuery = false</p></li>
+<li><p>)</p></li>
+<li><p>val ebRankingParams = getRankingParams(authorScoreMap, tensorflowModel, ebModels)</p></li>
+<li><p>val relOptions = RelevanceSearchUtil.RelevanceOptions.copy(</p></li>
+<li><p>rankingParams = ebRankingParams</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>val followedUserIdsSeq = followedUserIds.toSeq</p></li>
+<li><p>val namedDisjunctionMapOpt =</p></li>
+<li><p>if (namedDisjunctionMap.isEmpty) None</p></li>
+<li><p>else Some(namedDisjunctionMap.mapValues(_.toSeq))</p></li>
+<li></li>
+<li><p>val thriftQuery = eb.ThriftSearchQuery(</p></li>
+<li><p>serializedQuery = Some(query.serialize),</p></li>
+<li><p>fromUserIDFilter64 = Some(followedUserIdsSeq),</p></li>
+<li><p>numResults = maxCount,</p></li>
+<li><p>collectConversationId = true,</p></li>
+<li><p>rankingMode = eb.ThriftSearchRankingMode.Relevance,</p></li>
+<li><p>relevanceOptions = Some(relOptions),</p></li>
+<li><p>collectorParams = Some(mkCollectorParams(queryMaxNumResultsPerShard)),</p></li>
+<li><p>facetFieldNames = Some(RelevanceSearchUtil.FacetsToFetch),</p></li>
+<li><p>resultMetadataOptions = Some(RelevanceSearchUtil.MetadataOptions),</p></li>
+<li><p>searcherId = userId,</p></li>
+<li><p>searchStatusIds = None,</p></li>
+<li><p>namedDisjunctionMap = namedDisjunctionMapOpt</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>eb.EarlybirdRequest(</p></li>
+<li><p>searchQuery = thriftQuery,</p></li>
+<li><p>clientId = clientId,</p></li>
+<li><p>getOlderResults = Some(false),</p></li>
+<li><p>followedUserIds = Some(followedUserIdsSeq),</p></li>
+<li><p>getProtectedTweetsOnly = Some(false),</p></li>
+<li><p>timeoutMs = DefaultSearchProcessingTimeout.inMilliseconds.toInt,</p></li>
+<li><p>skipVeryRecentTweets = skipVeryRecentTweets,</p></li>
+<li><p>numResultsToReturnAtRoot = Some(maxCount)</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>def getTweetsFeaturesRequest(</p>
+<blockquote>
+<div><p>userId: Option[Long],</p>
+<p>tweetIds: Option[Seq[Long]],</p>
+<p>clientId: Option[String],</p>
+</div></blockquote>
+</li>
+</ul>
+<ul>
+<li><p>getTweetsFromArchiveIndex: Boolean = false,</p>
+<p>getOnlyProtectedTweets: Boolean = false,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>authorScoreMap: Option[Map[Long, Double]] = None,</p></li>
+<li><p>tensorflowModel: Option[String] = None,</p></li>
+<li><p>ebModels: Seq[EarlybirdScoringModelConfig] = Seq.empty</p></li>
+</ul>
+<blockquote>
+<div><p>): eb.EarlybirdRequest = {</p>
+<blockquote>
+<div><p>val candidateSize = tweetIds.getOrElse(Seq.empty).size</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>val ebRankingParams = getRankingParams(authorScoreMap, tensorflowModel, ebModels)</p></li>
+<li><p>val relOptions = RelevanceSearchUtil.RelevanceOptions.copy(</p></li>
+<li><p>rankingParams = ebRankingParams</p></li>
+<li><p>)</p>
+<p>val thriftQuery = eb.ThriftSearchQuery(</p>
+<blockquote>
+<div><p>numResults = candidateSize,</p>
+<p>collectConversationId = true,</p>
+<p>rankingMode = eb.ThriftSearchRankingMode.Relevance,</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>relevanceOptions = Some(RelevanceSearchUtil.RelevanceOptions),</p></li>
+<li><p>collectorParams = Some(DeafultCollectorParams),</p></li>
+</ul>
+<ul>
+<li><p>relevanceOptions = Some(relOptions),</p></li>
+<li><p>collectorParams = Some(DefaultHydrationCollectorParams),</p>
+<p>facetFieldNames = Some(RelevanceSearchUtil.FacetsToFetch),</p>
+<p>resultMetadataOptions = Some(RelevanceSearchUtil.MetadataOptions),</p>
+<p>searcherId = userId,</p>
+</li>
+</ul>
+<blockquote>
+<div><p>eb.EarlybirdRequest(</p>
+<blockquote>
+<div><p>searchQuery = thriftQuery,</p>
+<p>clientId = clientId,</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>getOlderResults = Some(getTweetsFromArchiveIndex),</p></li>
+</ul>
+<ul>
+<li><p>getOlderResults = Some(false),</p>
+<p>getProtectedTweetsOnly = Some(getOnlyProtectedTweets),</p>
+<p>timeoutMs = DefaultSearchProcessingTimeout.inMilliseconds.toInt,</p>
+<p>skipVeryRecentTweets = true,</p>
+</li>
+</ul>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/EarlybirdRequestUtil_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TwhinUserFollowQueryFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/TwhinUserFollowQueryFeatureHydrator.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-twhinuserfollowqueryfeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-twhinuserfollowqueryfeaturehydrator-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TwhinUserFollowQueryFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/TwhinUserFollowQueryFeatureHydrator.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-twhinuserfollowqueryfeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-twhinuserfollowqueryfeaturehydrator-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -49,32 +47,24</p>
+<p>Content:</p>
+<p>similarity index 62%</p>
+<blockquote>
+<div><p>rename from home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TwhinUserFollowQueryFeatureHydrator.scala</p>
+<p>rename to home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/TwhinUserFollowQueryFeatureHydrator.scala</p>
+<p>index c0efba167..925043e1e 100644</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TwhinUserFollowQueryFeatureHydrator.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/TwhinUserFollowQueryFeatureHydrator.scala</p>
+<p>-package com.twitter.home_mixer.functional_component.feature_hydrator</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.feature_hydrator</p>
+<blockquote>
+<div><p>import com.twitter.finagle.stats.StatsReceiver</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.adapters.twhin_embeddings.TwhinUserFollowEmbeddingsAdapter</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.param.HomeMixerInjectionNames.TwhinUserFollowFeatureRepository</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.adapters.twhin_embeddings.TwhinUserFollowEmbeddingsAdapter</p>
+<blockquote>
+<div><p>import com.twitter.ml.api.DataRecord</p>
+</div></blockquote>
+<p>-import com.twitter.ml.api.RichDataRecord</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>-import com.twitter.ml.api.util.ScalaToJavaDataRecordConversions</p>
+<blockquote>
+<div><p>import com.twitter.ml.api.{thriftscala =&gt; ml}</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.feature.Feature</p>
+<p>+import com.twitter.product_mixer.core.feature.FeatureWithDefaultOnFailure</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.feature.datarecord.DataRecordInAFeature</p>
+<p>import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>import com.twitter.product_mixer.core.feature.featuremap.FeatureMapBuilder</p>
+</div></blockquote>
+<p>-import com.twitter.product_mixer.core.feature.Feature</p>
+<p>-import com.twitter.product_mixer.core.feature.FeatureWithDefaultOnFailure</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.functional_component.feature_hydrator.QueryFeatureHydrator</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.FeatureHydratorIdentifier</p>
+<p>import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+<p>import javax.inject.Inject</p>
+<p>import javax.inject.Named</p>
+<p>import javax.inject.Singleton</p>
+</div></blockquote>
+<p>+import scala.collection.JavaConverters._</p>
+<blockquote>
+<div><p>object TwhinUserFollowFeature</p>
+<blockquote>
+<div><blockquote>
+<div><p>extends DataRecordInAFeature[PipelineQuery]</p>
+</div></blockquote>
+<p>override def hydrate(query: PipelineQuery): Stitch[FeatureMap] = {</p>
+<blockquote>
+<div><p>val userId = query.getRequiredUserId</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>Stitch.callFuture(</p></li>
+<li><p>client(Seq(userId)).map { results =&gt;</p></li>
+<li><p>val embedding: Option[ml.FloatTensor] = results(userId) match {</p></li>
+<li><p>case Return(value) =&gt;</p></li>
+<li><p>if (value.exists(_.floats.nonEmpty)) keyFoundCounter.incr()</p></li>
+<li><p>else keyLossCounter.incr()</p></li>
+<li><p>value</p></li>
+<li><p>case Throw(_) =&gt;</p></li>
+<li><p>keyFailureCounter.incr()</p></li>
+<li><p>None</p></li>
+<li><p>case _ =&gt;</p></li>
+<li><p>None</p></li>
+<li><p>}</p></li>
+<li><p>val dataRecord =</p></li>
+<li><p>new RichDataRecord(new DataRecord, TwhinUserFollowEmbeddingsAdapter.getFeatureContext)</p></li>
+<li><p>embedding.foreach { floatTensor =&gt;</p></li>
+<li><p>dataRecord.setFeatureValue(</p></li>
+<li><p>TwhinUserFollowEmbeddingsAdapter.twhinEmbeddingsFeature,</p></li>
+<li><p>ScalaToJavaDataRecordConversions.scalaTensor2Java(</p></li>
+<li><p>ml.GeneralTensor</p></li>
+<li><p>.FloatTensor(floatTensor)))</p></li>
+<li><p>}</p></li>
+<li><p>FeatureMapBuilder()</p></li>
+<li><p>.add(TwhinUserFollowFeature, dataRecord.getRecord)</p></li>
+<li><p>.build()</p></li>
+</ul>
+<ul class="simple">
+<li><p>Stitch.callFuture(client(Seq(userId))).map { results =&gt;</p></li>
+<li><p>val embedding: Option[ml.FloatTensor] = results(userId) match {</p></li>
+<li><p>case Return(value) =&gt;</p></li>
+<li><p>if (value.exists(_.floats.nonEmpty)) keyFoundCounter.incr()</p></li>
+<li><p>else keyLossCounter.incr()</p></li>
+<li><p>value</p></li>
+<li><p>case Throw(_) =&gt;</p></li>
+<li><p>keyFailureCounter.incr()</p></li>
+<li><p>None</p></li>
+<li><p>case _ =&gt;</p></li>
+<li><p>None</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>)</p></li>
+</ul>
+<ul class="simple">
+<li></li>
+<li><p>val dataRecord = TwhinUserFollowEmbeddingsAdapter.adaptToDataRecords(embedding).asScala.head</p></li>
+<li></li>
+<li><p>FeatureMapBuilder()</p></li>
+<li><p>.add(TwhinUserFollowFeature, dataRecord)</p></li>
+<li><p>.build()</p></li>
+<li><p>}</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>}</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/TwhinUserFollowQueryFeatureHydrator_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

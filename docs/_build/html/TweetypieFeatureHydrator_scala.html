@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TweetypieFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TweetypieFeatureHydrator.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-tweetypiefeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-tweetypiefeaturehydrator-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TweetypieFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TweetypieFeatureHydrator.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-tweetypiefeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-tweetypiefeaturehydrator-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -137,20 +156,24</p>
+<p>Content:</p>
+<p>index 09fc62405..f2effa1b2 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TweetypieFeatureHydrator.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/TweetypieFeatureHydrator.scala</p>
+<blockquote>
+<div><p>package com.twitter.home_mixer.functional_component.feature_hydrator</p>
+</div></blockquote>
+<p>+import com.twitter.finagle.stats.StatsReceiver</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.AuthorIdFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.ExclusiveConversationAuthorIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InNetworkFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.InReplyToTweetIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.IsHydratedFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.IsNsfwFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.QuotedUserIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.SourceTweetIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.SourceUserIdFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.TweetLanguageFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.TweetTextFeature</p>
+<p>import com.twitter.home_mixer.model.request.FollowingProduct</p>
+<p>import com.twitter.home_mixer.model.request.ForYouProduct</p>
+<p>import com.twitter.home_mixer.model.request.ListTweetsProduct</p>
+<p>import com.twitter.home_mixer.model.request.ScoredTweetsProduct</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.request.SubscribedProduct</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.util.tweetypie.RequestFields</p>
+<p>import com.twitter.product_mixer.component_library.feature_hydrator.candidate.tweet_is_nsfw.IsNsfw</p>
+<p>import com.twitter.product_mixer.component_library.feature_hydrator.candidate.tweet_visibility_reason.VisibilityReason</p>
+<p>import com.twitter.stitch.Stitch</p>
+<p>import com.twitter.stitch.tweetypie.{TweetyPie =&gt; TweetypieStitchClient}</p>
+<p>import com.twitter.tweetypie.{thriftscala =&gt; tp}</p>
+</div></blockquote>
+<p>+import com.twitter.util.logging.Logging</p>
+<blockquote>
+<div><p>import javax.inject.Inject</p>
+<p>import javax.inject.Singleton</p>
+<p>&#64;Singleton</p>
+</div></blockquote>
+<p>-class TweetypieFeatureHydrator &#64;Inject() (tweetypieStitchClient: TweetypieStitchClient)</p>
+<ul class="simple">
+<li><p>extends CandidateFeatureHydrator[PipelineQuery, TweetCandidate] {</p></li>
+</ul>
+<p>+class TweetypieFeatureHydrator &#64;Inject() (</p>
+<ul class="simple">
+<li><p>tweetypieStitchClient: TweetypieStitchClient,</p></li>
+<li><p>statsReceiver: StatsReceiver)</p></li>
+<li><p>extends CandidateFeatureHydrator[PipelineQuery, TweetCandidate]</p></li>
+<li><p>with Logging {</p></li>
+</ul>
+<blockquote>
+<div><p>override val identifier: FeatureHydratorIdentifier = FeatureHydratorIdentifier(“Tweetypie”)</p>
+<p>override val features: Set[Feature[_, _]] = Set(</p>
+<blockquote>
+<div><p>AuthorIdFeature,</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>ExclusiveConversationAuthorIdFeature,</p>
+<p>InReplyToTweetIdFeature,</p>
+<p>IsHydratedFeature,</p>
+<p>IsNsfw,</p>
+<p>SourceTweetIdFeature,</p>
+<p>SourceUserIdFeature,</p>
+<p>TweetTextFeature,</p>
+</li>
+<li><p>TweetLanguageFeature,</p>
+<p>VisibilityReason</p>
+</li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>): Stitch[FeatureMap] = {</p>
+<blockquote>
+<div><p>val safetyLevel = query.product match {</p>
+<blockquote>
+<div><p>case FollowingProduct =&gt; rtf.SafetyLevel.TimelineHomeLatest</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>case ForYouProduct =&gt; rtf.SafetyLevel.TimelineHome</p></li>
+</ul>
+<ul class="simple">
+<li><p>case ForYouProduct =&gt;</p></li>
+<li><p>val inNetwork = existingFeatures.getOrElse(InNetworkFeature, true)</p></li>
+<li><p>if (inNetwork) rtf.SafetyLevel.TimelineHome else rtf.SafetyLevel.TimelineHomeRecommendations</p></li>
+</ul>
+<blockquote>
+<div><p>case ScoredTweetsProduct =&gt; rtf.SafetyLevel.TimelineHome</p>
+<p>case ListTweetsProduct =&gt; rtf.SafetyLevel.TimelineLists</p>
+</div></blockquote>
+<ul>
+<li><p>case SubscribedProduct =&gt; rtf.SafetyLevel.TimelineHomeSubscribed</p>
+<p>case unknown =&gt; throw new UnsupportedOperationException(s”Unknown product: $unknown”)</p>
+</li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<blockquote>
+<div><p>includeQuotedTweet = true,</p>
+<p>visibilityPolicy = tp.TweetVisibilityPolicy.UserVisible,</p>
+<p>safetyLevel = Some(safetyLevel),</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>forUserId = Some(query.getRequiredUserId)</p></li>
+</ul>
+<ul class="simple">
+<li><p>forUserId = query.getOptionalUserId</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+</div></blockquote>
+<ul>
+<li><p>val exclusiveAuthorIdOpt =</p></li>
+<li><p>existingFeatures.getOrElse(ExclusiveConversationAuthorIdFeature, None)</p></li>
+<li><p>tweetypieStitchClient.getTweetFields(tweetId = candidate.id, options = tweetFieldsOptions).map {</p>
+<blockquote>
+<div><p>case tp.GetTweetFieldsResult(_, tp.TweetFieldsResultState.Found(found), quoteOpt, _) =&gt;</p>
+<blockquote>
+<div><p>val coreData = found.tweet.coreData</p>
+<blockquote>
+<div><p>found.retweetedTweet.exists(_.coreData.exists(data =&gt; data.nsfwAdmin || data.nsfwUser))</p>
+</div></blockquote>
+<p>val tweetText = coreData.map(_.text)</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p>val tweetLanguage = found.tweet.language.map(_.language)</p>
+<p>val tweetAuthorId = coreData.map(_.userId)</p>
+<p>val inReplyToTweetId = coreData.flatMap(_.reply.flatMap(_.inReplyToStatusId))</p>
+<p>FeatureMapBuilder()</p>
+<blockquote>
+<div><p>.add(AuthorIdFeature, tweetAuthorId)</p>
+</div></blockquote>
+</li>
+<li><p>.add(ExclusiveConversationAuthorIdFeature, exclusiveAuthorIdOpt)</p>
+<p>.add(InReplyToTweetIdFeature, inReplyToTweetId)</p>
+<p>.add(IsHydratedFeature, true)</p>
+<p>.add(IsNsfw, Some(isNsfw))</p>
+<p>.add(QuotedUserIdFeature, quotedTweetUserId)</p>
+<p>.add(SourceTweetIdFeature, retweetedTweetId)</p>
+<p>.add(SourceUserIdFeature, retweetedTweetUserId)</p>
+</li>
+<li><p>.add(TweetLanguageFeature, tweetLanguage)</p>
+<p>.add(TweetTextFeature, tweetText)</p>
+<p>.add(VisibilityReason, found.suppressReason)</p>
+<p>.build()</p>
+</li>
+</ul>
+<blockquote>
+<div><p>// If no tweet result found, return default and pre-existing features</p>
+<p>case _ =&gt;</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>DefaultFeatureMap +</p></li>
+<li><p>(AuthorIdFeature, existingFeatures.getOrElse(AuthorIdFeature, None)) +</p></li>
+<li><p>(InReplyToTweetIdFeature, existingFeatures.getOrElse(InReplyToTweetIdFeature, None)) +</p></li>
+<li><p>(IsRetweetFeature, existingFeatures.getOrElse(IsRetweetFeature, false)) +</p></li>
+<li><p>(QuotedTweetIdFeature, existingFeatures.getOrElse(QuotedTweetIdFeature, None)) +</p></li>
+<li><p>(QuotedUserIdFeature, existingFeatures.getOrElse(QuotedUserIdFeature, None)) +</p></li>
+<li><p>(SourceTweetIdFeature, existingFeatures.getOrElse(SourceTweetIdFeature, None)) +</p></li>
+<li><p>(SourceUserIdFeature, existingFeatures.getOrElse(SourceUserIdFeature, None))</p></li>
+</ul>
+<ul class="simple">
+<li><p>DefaultFeatureMap ++ FeatureMapBuilder()</p></li>
+<li><p>.add(AuthorIdFeature, existingFeatures.getOrElse(AuthorIdFeature, None))</p></li>
+<li><p>.add(ExclusiveConversationAuthorIdFeature, exclusiveAuthorIdOpt)</p></li>
+<li><p>.add(InReplyToTweetIdFeature, existingFeatures.getOrElse(InReplyToTweetIdFeature, None))</p></li>
+<li><p>.add(IsRetweetFeature, existingFeatures.getOrElse(IsRetweetFeature, false))</p></li>
+<li><p>.add(QuotedTweetIdFeature, existingFeatures.getOrElse(QuotedTweetIdFeature, None))</p></li>
+<li><p>.add(QuotedUserIdFeature, existingFeatures.getOrElse(QuotedUserIdFeature, None))</p></li>
+<li><p>.add(SourceTweetIdFeature, existingFeatures.getOrElse(SourceTweetIdFeature, None))</p></li>
+<li><p>.add(SourceUserIdFeature, existingFeatures.getOrElse(SourceUserIdFeature, None))</p></li>
+<li><p>.add(TweetLanguageFeature, existingFeatures.getOrElse(TweetLanguageFeature, None))</p></li>
+<li><p>.build()</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>}</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/TweetypieFeatureHydrator_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

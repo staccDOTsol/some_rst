@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TweetyPieClientModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TweetyPieClientModule.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-tweetypieclientmodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-tweetypieclientmodule-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TweetyPieClientModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TweetyPieClientModule.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-tweetypieclientmodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-tweetypieclientmodule-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -42,10 +50,14</p>
+<p>Content:</p>
+<p>index 84b634cc3..1eb49206c 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TweetyPieClientModule.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TweetyPieClientModule.scala</p>
+<blockquote>
+<div><p>import com.twitter.finagle.thriftmux.MethodBuilder</p>
+<p>import com.twitter.finatra.mtls.thriftmux.modules.MtlsClient</p>
+<p>import com.twitter.inject.Injector</p>
+</div></blockquote>
+<p>+import com.twitter.inject.annotations.Flags</p>
+<blockquote>
+<div><p>import com.twitter.inject.thrift.modules.ThriftMethodBuilderClientModule</p>
+<p>import com.twitter.stitch.tweetypie.TweetyPie</p>
+<p>import com.twitter.tweetypie.thriftscala.TweetService</p>
+<p>import javax.inject.Singleton</p>
+<p>/**</p>
+</div></blockquote>
+<ul class="simple">
+<li><ul>
+<li><p>Idempotent TweetyPie Thrift and Stitch client.</p></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><ul class="simple">
+<li><p>Idempotent Tweetypie Thrift and Stitch client.</p></li>
+</ul>
+<p><a href="#id1"><span class="problematic" id="id2">*</span></a>/</p>
+</li>
+</ul>
+<p>-object TweetyPieClientModule</p>
+<p>+object TweetypieClientModule</p>
+<blockquote>
+<div><p>extends ThriftMethodBuilderClientModule[</p>
+<blockquote>
+<div><p>TweetService.ServicePerEndpoint,</p>
+<p>TweetService.MethodPerEndpoint</p>
+</div></blockquote>
+<p>]</p>
+<p>with MtlsClient {</p>
+</div></blockquote>
+<ul>
+<li></li>
+<li><p>private val TimeoutRequest = “tweetypie.timeout_request”</p></li>
+<li><p>private val TimeoutTotal = “tweetypie.timeout_total”</p></li>
+<li></li>
+<li><p>flag[Duration](TimeoutRequest, 1000.millis, “Timeout per request”)</p></li>
+<li><p>flag[Duration](TimeoutTotal, 1000.millis, “Total timeout”)</p></li>
+<li><p>override val label: String = “tweetypie”</p>
+<p>override val dest: String = “/s/tweetypie/tweetypie”</p>
+<p>override protected def configureMethodBuilder(</p>
+<blockquote>
+<div><p>injector: Injector,</p>
+<p>methodBuilder: MethodBuilder</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>): MethodBuilder =</p></li>
+</ul>
+<ul class="simple">
+<li><p>): MethodBuilder = {</p></li>
+<li><p>val timeoutRequest = injector.instance[Duration](Flags.named(TimeoutRequest))</p></li>
+<li><p>val timeoutTotal = injector.instance[Duration](Flags.named(TimeoutTotal))</p></li>
+<li><p>methodBuilder</p></li>
+</ul>
+<ul class="simple">
+<li><p>.withTimeoutPerRequest(500.milliseconds)</p></li>
+<li><p>.withTimeoutTotal(500.milliseconds)</p></li>
+</ul>
+<ul class="simple">
+<li><p>.withTimeoutPerRequest(timeoutRequest)</p></li>
+<li><p>.withTimeoutTotal(timeoutTotal)</p></li>
+<li><p>}</p></li>
+</ul>
+<ul class="simple">
+<li><p>override protected def sessionAcquisitionTimeout: Duration = 250.milliseconds</p></li>
+</ul>
+<ul class="simple">
+<li><p>override protected def sessionAcquisitionTimeout: Duration = 500.millis</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/TweetyPieClientModule_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

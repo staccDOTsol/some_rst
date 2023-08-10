@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TimelinesPersistenceStoreClientModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TimelinesPersistenceStoreClientModule.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-timelinespersistencestoreclientmodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-timelinespersistencestoreclientmodule-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TimelinesPersistenceStoreClientModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TimelinesPersistenceStoreClientModule.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-timelinespersistencestoreclientmodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-timelinespersistencestoreclientmodule-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -5,34 +5,40</p>
+<p>Content:</p>
+<p>index 4292b36be..4af39fd32 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TimelinesPersistenceStoreClientModule.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/TimelinesPersistenceStoreClientModule.scala</p>
+<blockquote>
+<div><p>import com.twitter.finagle.mtls.authentication.ServiceIdentifier</p>
+<p>import com.twitter.finagle.stats.StatsReceiver</p>
+<p>import com.twitter.inject.TwitterModule</p>
+</div></blockquote>
+<p>+import com.twitter.inject.annotations.Flag</p>
+<blockquote>
+<div><p>import com.twitter.timelinemixer.clients.persistence.TimelinePersistenceManhattanClientBuilder</p>
+<p>import com.twitter.timelinemixer.clients.persistence.TimelinePersistenceManhattanClientConfig</p>
+<p>import com.twitter.timelinemixer.clients.persistence.TimelineResponseBatchesClient</p>
+<p>import com.twitter.timelinemixer.clients.persistence.TimelineResponseV3</p>
+</div></blockquote>
+<p>+import com.twitter.util.Duration</p>
+<blockquote>
+<div><p>import javax.inject.Singleton</p>
+<p>object TimelinesPersistenceStoreClientModule extends TwitterModule {</p>
+<blockquote>
+<div><p>private val StagingDataset = “timeline_response_batches_v5_nonprod”</p>
+<p>private val ProdDataset = “timeline_response_batches_v5”</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>private final val Timeout = “mh_persistence_store.timeout”</p></li>
+<li></li>
+<li><p>flag[Duration](Timeout, 300.millis, “Timeout per request”)</p>
+<p>&#64;Provides</p>
+<p>&#64;Singleton</p>
+<p>def providesTimelinesPersistenceStoreClient(</p>
+</li>
+<li><p>&#64;Flag(Timeout) timeout: Duration,</p>
+<p>injectedServiceIdentifier: ServiceIdentifier,</p>
+<p>statsReceiver: StatsReceiver</p>
+</li>
+</ul>
+<blockquote>
+<div><p>): TimelineResponseBatchesClient[TimelineResponseV3] = {</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>val (timelineResponseBatchesDataset, manhattanReadOnly) =</p></li>
+</ul>
+<ul>
+<li><p>val timelineResponseBatchesDataset =</p>
+<blockquote>
+<div><p>injectedServiceIdentifier.environment.toLowerCase match {</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>case “prod” =&gt; (ProdDataset, false)</p></li>
+<li><p>case _ =&gt; (StagingDataset, true)</p></li>
+</ul>
+<ul class="simple">
+<li><p>case “prod” =&gt; ProdDataset</p></li>
+<li><p>case _ =&gt; StagingDataset</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>}</p>
+</div></blockquote>
+<p>val timelineResponseBatchesConfig = new TimelinePersistenceManhattanClientConfig {</p>
+<blockquote>
+<div><p>val dataset = timelineResponseBatchesDataset</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>val isReadOnly = manhattanReadOnly</p></li>
+</ul>
+<ul>
+<li><p>val isReadOnly = false</p>
+<p>val serviceIdentifier = injectedServiceIdentifier</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>override val defaultMaxTimeout = 300.milliseconds</p></li>
+<li><p>override val maxRetryCount = 1</p></li>
+</ul>
+<ul class="simple">
+<li><p>override val defaultMaxTimeout = timeout</p></li>
+<li><p>override val maxRetryCount = 2</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>TimelinePersistenceManhattanClientBuilder.buildTimelineResponseV3BatchesClient(</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/TimelinesPersistenceStoreClientModule_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

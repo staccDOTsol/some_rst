@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/AncestorFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/AncestorFeatureHydrator.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-ancestorfeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-ancestorfeaturehydrator-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/AncestorFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/AncestorFeatureHydrator.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-ancestorfeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-ancestorfeaturehydrator-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -40,7 +44,8</p>
+<p>Content:</p>
+<p>similarity index 75%</p>
+<blockquote>
+<div><p>rename from home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/AncestorFeatureHydrator.scala</p>
+<p>rename to home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/AncestorFeatureHydrator.scala</p>
+<p>index 8d1a0862d..9c5e8f3ab 100644</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/AncestorFeatureHydrator.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/AncestorFeatureHydrator.scala</p>
+<p>-package com.twitter.home_mixer.functional_component.feature_hydrator</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.feature_hydrator</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.AncestorsFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InReplyToTweetIdFeature</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>import com.twitter.product_mixer.core.feature.Feature</p>
+<p>import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>import com.twitter.product_mixer.core.functional_component.feature_hydrator.CandidateFeatureHydrator</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.FeatureHydratorIdentifier</p>
+<p>import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.util.OffloadFuturePools</p>
+<blockquote>
+<div><p>import com.twitter.stitch.Stitch</p>
+<p>import com.twitter.tweetconvosvc.tweet_ancestor.{thriftscala =&gt; ta}</p>
+<p>import com.twitter.tweetconvosvc.{thriftscala =&gt; tcs}</p>
+</div></blockquote>
+<p>+import com.twitter.util.Future</p>
+<blockquote>
+<div><p>import javax.inject.Inject</p>
+<p>import javax.inject.Singleton</p>
+<blockquote>
+<div><p>override val features: Set[Feature[_, _]] = Set(AncestorsFeature)</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>private val DefaultFeatureMap = FeatureMapBuilder().add(AncestorsFeature, Seq.empty).build()</p></li>
+<li><p>override def apply(</p>
+<blockquote>
+<div><p>query: PipelineQuery,</p>
+<p>candidate: TweetCandidate,</p>
+<p>existingFeatures: FeatureMap</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>): Stitch[FeatureMap] = {</p></li>
+<li><p>val ancestorsRequest = tcs.GetAncestorsRequest(Seq(candidate.id))</p></li>
+<li></li>
+<li><p>Stitch.callFuture(conversationServiceClient.getAncestors(ancestorsRequest)).map {</p></li>
+<li><p>getAncestorsResponse =&gt;</p></li>
+</ul>
+<ul>
+<li><p>): Stitch[FeatureMap] = OffloadFuturePools.offloadFuture {</p></li>
+<li><p>if (existingFeatures.getOrElse(InReplyToTweetIdFeature, None).isDefined) {</p></li>
+<li><p>val ancestorsRequest = tcs.GetAncestorsRequest(Seq(candidate.id))</p></li>
+<li><p>conversationServiceClient.getAncestors(ancestorsRequest).map { getAncestorsResponse =&gt;</p>
+<blockquote>
+<div><p>val ancestors = getAncestorsResponse.ancestors.headOption</p>
+<blockquote>
+<div><p>.collect {</p>
+<blockquote>
+<div><p>case tcs.TweetAncestorsResult.TweetAncestors(ancestorsResult)</p>
+</div></blockquote>
+<p>}.getOrElse(Seq.empty)</p>
+</div></blockquote>
+<p>FeatureMapBuilder().add(AncestorsFeature, ancestors).build()</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>}</p></li>
+</ul>
+<ul class="simple">
+<li><p>}</p></li>
+<li><p>} else Future.value(DefaultFeatureMap)</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>private def getTruncatedRootTweet(</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/AncestorFeatureHydrator_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

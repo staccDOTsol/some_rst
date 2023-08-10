@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/ScoredTweetsRecommendationPipelineConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/ScoredTweetsRecommendationPipelineConfig.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scoredtweetsrecommendationpipelineconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scoredtweetsrecommendationpipelineconfig-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/ScoredTweetsRecommendationPipelineConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/ScoredTweetsRecommendationPipelineConfig.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scoredtweetsrecommendationpipelineconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scoredtweetsrecommendationpipelineconfig-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -204,41 +258,73</p>
+<p>Content:</p>
+<p>index 8d64a2976..e3d50040b 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/ScoredTweetsRecommendationPipelineConfig.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/ScoredTweetsRecommendationPipelineConfig.scala</p>
+<blockquote>
+<div><p>package com.twitter.home_mixer.product.scored_tweets</p>
+<p>import com.twitter.conversions.DurationOps._</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.LastNonPollingTimeQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.functional_component.feature_hydrator.FeedbackHistoryQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.functional_component.feature_hydrator.ImpressionBloomFilterQueryFeatureHydrator</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.functional_component.feature_hydrator.RealGraphInNetworkScoresQueryFeatureHydrator</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.RealGraphQueryFeatureHydrator</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.RealTimeInteractionGraphUserVertexQueryFeatureHydrator</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.functional_component.feature_hydrator.RequestQueryFeatureHydrator</p>
+<p>import com.twitter.home_mixer.functional_component.feature_hydrator.TweetImpressionsQueryFeatureHydrator</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.TwhinUserEngagementQueryFeatureHydrator</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.TwhinUserFollowQueryFeatureHydrator</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.UserLanguagesFeatureHydrator</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.UserStateQueryFeatureHydrator</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.offline_aggregates.PartAAggregateQueryFeatureHydrator</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.offline_aggregates.PartBAggregateQueryFeatureHydrator</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.real_time_aggregates.UserEngagementRealTimeAggregatesFeatureHydrator</p>
+<p>-import com.twitter.home_mixer.functional_component.filter.KeepBestOutOfNetworkTweetPerAuthorFilter</p>
+<p>-import com.twitter.home_mixer.functional_component.filter.OutOfNetworkCompetitorFilter</p>
+<p>-import com.twitter.home_mixer.functional_component.filter.OutOfNetworkCompetitorURLFilter</p>
+<p>+import com.twitter.home_mixer.functional_component.filter.FeedbackFatigueFilter</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.functional_component.filter.PreviouslySeenTweetsFilter</p>
+<p>import com.twitter.home_mixer.functional_component.filter.PreviouslyServedTweetsFilter</p>
+<p>import com.twitter.home_mixer.functional_component.filter.RejectTweetFromViewerFilter</p>
+<p>import com.twitter.home_mixer.functional_component.filter.RetweetDeduplicationFilter</p>
+<p>import com.twitter.home_mixer.functional_component.side_effect.PublishClientSentImpressionsEventBusSideEffect</p>
+<p>import com.twitter.home_mixer.functional_component.side_effect.PublishClientSentImpressionsManhattanSideEffect</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.functional_component.side_effect.PublishImpressionBloomFilterSideEffect</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.functional_component.side_effect.UpdateLastNonPollingTimeSideEffect</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.ExclusiveConversationAuthorIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InNetworkFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InReplyToTweetIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.IsSupportAccountReplyFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.ScoreFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.param.HomeGlobalParams.EnableImpressionBloomFilter</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.param.HomeMixerFlagName.TargetFetchLatency</p>
+<p>import com.twitter.home_mixer.param.HomeMixerFlagName.TargetScoringLatency</p>
+<p>import com.twitter.home_mixer.product.scored_tweets.candidate_pipeline.CachedScoredTweetsCandidatePipelineConfig</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.product.scored_tweets.candidate_pipeline.ScoredTweetsCrMixerCandidatePipelineConfig</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.candidate_pipeline.ScoredTweetsBackfillCandidatePipelineConfig</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.scored_tweets.candidate_pipeline.ScoredTweetsFrsCandidatePipelineConfig</p>
+<p>import com.twitter.home_mixer.product.scored_tweets.candidate_pipeline.ScoredTweetsInNetworkCandidatePipelineConfig</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.product.scored_tweets.candidate_pipeline.ScoredTweetsListsCandidatePipelineConfig</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.candidate_pipeline.ScoredTweetsPopularVideosCandidatePipelineConfig</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.candidate_pipeline.ScoredTweetsTweetMixerCandidatePipelineConfig</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.scored_tweets.candidate_pipeline.ScoredTweetsUtegCandidatePipelineConfig</p>
+<p>import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.CachedScoredTweetsQueryFeatureHydrator</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.ListIdsQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.RealGraphQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.RealTimeInteractionGraphUserVertexQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.RequestTimeQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.TwhinUserEngagementQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.TwhinUserFollowQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.UserLanguagesFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.UserStateQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.offline_aggregates.PartAAggregateQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.offline_aggregates.PartBAggregateQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.real_time_aggregates.UserEngagementRealTimeAggregatesFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.filter.DuplicateConversationTweetsFilter</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.filter.OutOfNetworkCompetitorFilter</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.filter.OutOfNetworkCompetitorURLFilter</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.filter.ScoredTweetsSocialContextFilter</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.scored_tweets.marshaller.ScoredTweetsResponseDomainMarshaller</p>
+<p>import com.twitter.home_mixer.product.scored_tweets.marshaller.ScoredTweetsResponseTransportMarshaller</p>
+<p>import com.twitter.home_mixer.product.scored_tweets.model.ScoredTweetsQuery</p>
+<p>import com.twitter.home_mixer.product.scored_tweets.model.ScoredTweetsResponse</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.ServerMaxResultsParam</p>
+<p>-import com.twitter.home_mixer.product.scored_tweets.scoring_pipeline.ScoredTweetsDiversityScoringPipelineConfig</p>
+<p>-import com.twitter.home_mixer.product.scored_tweets.scoring_pipeline.ScoredTweetsRescoreOONScoringPipelineConfig</p>
+<p>-import com.twitter.home_mixer.product.scored_tweets.scoring_pipeline.ScoredTweetsRescoreVerifiedAuthorScoringPipelineConfig</p>
+<p>-import com.twitter.home_mixer.product.scored_tweets.scoring_pipeline.ScoredTweetsScoringPipelineConfig</p>
+<p>-import com.twitter.home_mixer.product.scored_tweets.scoring_pipeline.ScoredTweetsWeightedScoresSumScoringPipelineConfig</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.MaxInNetworkResultsParam</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.MaxOutOfNetworkResultsParam</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.scoring_pipeline.ScoredTweetsHeuristicScoringPipelineConfig</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.scoring_pipeline.ScoredTweetsModelScoringPipelineConfig</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.selector.KeepBestOutOfNetworkCandidatePerAuthorPerSuggestType</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.scored_tweets.side_effect.CachedScoredTweetsSideEffect</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.product.scored_tweets.side_effect.ScribeScoredCandidatesSideEffect</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.scored_tweets.side_effect.ScribeServedCommonFeaturesAndCandidateFeaturesSideEffect</p>
+<p>import com.twitter.home_mixer.{thriftscala =&gt; t}</p>
+<p>import com.twitter.inject.annotations.Flag</p>
+<p>import com.twitter.product_mixer.component_library.feature_hydrator.query.async.AsyncQueryFeatureHydrator</p>
+<p>import com.twitter.product_mixer.component_library.feature_hydrator.query.impressed_tweets.ImpressedTweetsQueryFeatureHydrator</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.component_library.feature_hydrator.query.param_gated.ParamGatedQueryFeatureHydrator</p>
+<p>+import com.twitter.product_mixer.component_library.feature_hydrator.query.social_graph.SGSFollowedUsersQueryFeatureHydrator</p>
+<p>+import com.twitter.product_mixer.component_library.filter.PredicateFeatureFilter</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>import com.twitter.product_mixer.component_library.selector.DropDuplicateCandidates</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.component_library.selector.DropFilteredMaxCandidates</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.component_library.selector.DropMaxCandidates</p>
+<p>import com.twitter.product_mixer.component_library.selector.IdAndClassDuplicationKey</p>
+<p>import com.twitter.product_mixer.component_library.selector.InsertAppendResults</p>
+<p>import com.twitter.product_mixer.component_library.selector.PickFirstCandidateMerger</p>
+<p>import com.twitter.product_mixer.component_library.selector.UpdateSortCandidates</p>
+<p>import com.twitter.product_mixer.component_library.selector.sorter.FeatureValueSorter</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.functional_component.common.AllExceptPipelines</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.functional_component.common.AllPipelines</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.functional_component.configapi.StaticParam</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.functional_component.feature_hydrator.QueryFeatureHydrator</p>
+<p>import com.twitter.product_mixer.core.functional_component.filter.Filter</p>
+<p>import com.twitter.product_mixer.core.functional_component.marshaller.TransportMarshaller</p>
+<p>import com.twitter.product_mixer.core.functional_component.side_effect.PipelineResultSideEffect</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.CandidatePipelineIdentifier</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.ComponentIdentifier</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.model.common.identifier.FilterIdentifier</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.model.common.identifier.RecommendationPipelineIdentifier</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.ScoringPipelineIdentifier</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.model.common.presentation.ItemCandidateWithDetails</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.pipeline.FailOpenPolicy</p>
+<p>import com.twitter.product_mixer.core.pipeline.candidate.CandidatePipelineConfig</p>
+<p>import com.twitter.product_mixer.core.pipeline.recommendation.RecommendationPipelineConfig</p>
+<p>import com.twitter.product_mixer.core.quality_factor.LinearLatencyQualityFactorConfig</p>
+<p>import com.twitter.product_mixer.core.quality_factor.QualityFactorConfig</p>
+<p>import com.twitter.util.Duration</p>
+</div></blockquote>
+<ul>
+<li><p>import javax.inject.Inject</p>
+<p>import javax.inject.Singleton</p>
+<p>class ScoredTweetsRecommendationPipelineConfig &#64;Inject() (</p>
+<blockquote>
+<div><p>scoredTweetsInNetworkCandidatePipelineConfig: ScoredTweetsInNetworkCandidatePipelineConfig,</p>
+<p>scoredTweetsUtegCandidatePipelineConfig: ScoredTweetsUtegCandidatePipelineConfig,</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>scoredTweetsCrMixerCandidatePipelineConfig: ScoredTweetsCrMixerCandidatePipelineConfig,</p></li>
+</ul>
+<ul>
+<li><p>scoredTweetsTweetMixerCandidatePipelineConfig: ScoredTweetsTweetMixerCandidatePipelineConfig,</p>
+<p>scoredTweetsFrsCandidatePipelineConfig: ScoredTweetsFrsCandidatePipelineConfig,</p>
+</li>
+<li><p>scoredTweetsListsCandidatePipelineConfig: ScoredTweetsListsCandidatePipelineConfig,</p></li>
+<li><p>scoredTweetsPopularVideosCandidatePipelineConfig: ScoredTweetsPopularVideosCandidatePipelineConfig,</p></li>
+<li><p>scoredTweetsBackfillCandidatePipelineConfig: ScoredTweetsBackfillCandidatePipelineConfig,</p>
+<p>cachedScoredTweetsCandidatePipelineConfig: CachedScoredTweetsCandidatePipelineConfig,</p>
+<p>requestQueryFeatureHydrator: RequestQueryFeatureHydrator[ScoredTweetsQuery],</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>lastNonPollingTimeQueryFeatureHydrator: LastNonPollingTimeQueryFeatureHydrator,</p></li>
+</ul>
+<ul>
+<li><p>requestTimeQueryFeatureHydrator: RequestTimeQueryFeatureHydrator,</p>
+<p>realTimeInteractionGraphUserVertexQueryFeatureHydrator: RealTimeInteractionGraphUserVertexQueryFeatureHydrator,</p>
+<p>userStateQueryFeatureHydrator: UserStateQueryFeatureHydrator,</p>
+<p>userEngagementRealTimeAggregatesFeatureHydrator: UserEngagementRealTimeAggregatesFeatureHydrator,</p>
+<p>twhinUserEngagementQueryFeatureHydrator: TwhinUserEngagementQueryFeatureHydrator,</p>
+<p>twhinUserFollowQueryFeatureHydrator: TwhinUserFollowQueryFeatureHydrator,</p>
+<p>cachedScoredTweetsQueryFeatureHydrator: CachedScoredTweetsQueryFeatureHydrator,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>scoredTweetsScoringPipelineConfig: ScoredTweetsScoringPipelineConfig,</p></li>
+<li><p>scoredTweetsWeightedScoresSumScoringPipelineConfig: ScoredTweetsWeightedScoresSumScoringPipelineConfig,</p></li>
+</ul>
+<ul>
+<li><p>sgsFollowedUsersQueryFeatureHydrator: SGSFollowedUsersQueryFeatureHydrator,</p></li>
+<li><p>scoredTweetsModelScoringPipelineConfig: ScoredTweetsModelScoringPipelineConfig,</p></li>
+<li><p>impressionBloomFilterQueryFeatureHydrator: ImpressionBloomFilterQueryFeatureHydrator[</p></li>
+<li><p>ScoredTweetsQuery</p></li>
+<li><p>],</p>
+<p>manhattanTweetImpressionsQueryFeatureHydrator: TweetImpressionsQueryFeatureHydrator[</p>
+<blockquote>
+<div><p>ScoredTweetsQuery</p>
+</div></blockquote>
+<p>],</p>
+<p>memcacheTweetImpressionsQueryFeatureHydrator: ImpressedTweetsQueryFeatureHydrator,</p>
+</li>
+<li><p>listIdsQueryFeatureHydrator: ListIdsQueryFeatureHydrator,</p></li>
+<li><p>feedbackHistoryQueryFeatureHydrator: FeedbackHistoryQueryFeatureHydrator,</p>
+<p>publishClientSentImpressionsEventBusSideEffect: PublishClientSentImpressionsEventBusSideEffect,</p>
+<p>publishClientSentImpressionsManhattanSideEffect: PublishClientSentImpressionsManhattanSideEffect,</p>
+</li>
+<li><p>publishImpressionBloomFilterSideEffect: PublishImpressionBloomFilterSideEffect,</p>
+<p>realGraphInNetworkScoresQueryFeatureHydrator: RealGraphInNetworkScoresQueryFeatureHydrator,</p>
+<p>realGraphQueryFeatureHydrator: RealGraphQueryFeatureHydrator,</p>
+<p>userLanguagesFeatureHydrator: UserLanguagesFeatureHydrator,</p>
+<p>partAAggregateQueryFeatureHydrator: PartAAggregateQueryFeatureHydrator,</p>
+<p>partBAggregateQueryFeatureHydrator: PartBAggregateQueryFeatureHydrator,</p>
+<p>cachedScoredTweetsSideEffect: CachedScoredTweetsSideEffect,</p>
+</li>
+<li><p>scribeScoredCandidatesSideEffect: ScribeScoredCandidatesSideEffect,</p>
+<p>scribeServedCommonFeaturesAndCandidateFeaturesSideEffect: ScribeServedCommonFeaturesAndCandidateFeaturesSideEffect,</p>
+<p>updateLastNonPollingTimeSideEffect: UpdateLastNonPollingTimeSideEffect[</p>
+<blockquote>
+<div><p>ScoredTweetsQuery,</p>
+</div></blockquote>
+<p>override val identifier: RecommendationPipelineIdentifier =</p>
+<blockquote>
+<div><p>RecommendationPipelineIdentifier(“ScoredTweets”)</p>
+</div></blockquote>
+</li>
+<li><p>private val SubscriptionReplyFilterId = “SubscriptionReply”</p></li>
+<li><p>private val MaxBackfillTweets = 50</p></li>
+<li><p>private val scoringStep = RecommendationPipelineConfig.scoringPipelinesStep</p>
+<p>override val fetchQueryFeatures: Seq[QueryFeatureHydrator[ScoredTweetsQuery]] = Seq(</p>
+<blockquote>
+<div><p>requestQueryFeatureHydrator,</p>
+<p>realGraphInNetworkScoresQueryFeatureHydrator,</p>
+<p>cachedScoredTweetsQueryFeatureHydrator,</p>
+</div></blockquote>
+</li>
+<li><p>sgsFollowedUsersQueryFeatureHydrator,</p></li>
+<li><p>ParamGatedQueryFeatureHydrator(</p></li>
+<li><p>EnableImpressionBloomFilter,</p></li>
+<li><p>impressionBloomFilterQueryFeatureHydrator</p></li>
+<li><p>),</p>
+<p>manhattanTweetImpressionsQueryFeatureHydrator,</p>
+<p>memcacheTweetImpressionsQueryFeatureHydrator,</p>
+</li>
+<li><p>listIdsQueryFeatureHydrator,</p></li>
+<li><p>userStateQueryFeatureHydrator,</p></li>
+<li><p>AsyncQueryFeatureHydrator(scoringStep, feedbackHistoryQueryFeatureHydrator),</p>
+<p>AsyncQueryFeatureHydrator(scoringStep, realGraphQueryFeatureHydrator),</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>AsyncQueryFeatureHydrator(scoringStep, lastNonPollingTimeQueryFeatureHydrator),</p></li>
+<li><p>AsyncQueryFeatureHydrator(scoringStep, userStateQueryFeatureHydrator),</p></li>
+</ul>
+<ul>
+<li><p>AsyncQueryFeatureHydrator(scoringStep, requestTimeQueryFeatureHydrator),</p>
+<p>AsyncQueryFeatureHydrator(scoringStep, userLanguagesFeatureHydrator),</p>
+<p>AsyncQueryFeatureHydrator(scoringStep, userEngagementRealTimeAggregatesFeatureHydrator),</p>
+<p>AsyncQueryFeatureHydrator(scoringStep, realTimeInteractionGraphUserVertexQueryFeatureHydrator),</p>
+<p>cachedScoredTweetsCandidatePipelineConfig,</p>
+<p>scoredTweetsInNetworkCandidatePipelineConfig,</p>
+<p>scoredTweetsUtegCandidatePipelineConfig,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>scoredTweetsCrMixerCandidatePipelineConfig,</p></li>
+<li><p>scoredTweetsFrsCandidatePipelineConfig</p></li>
+</ul>
+<ul class="simple">
+<li><p>scoredTweetsTweetMixerCandidatePipelineConfig,</p></li>
+<li><p>scoredTweetsFrsCandidatePipelineConfig,</p></li>
+<li><p>scoredTweetsListsCandidatePipelineConfig,</p></li>
+<li><p>scoredTweetsPopularVideosCandidatePipelineConfig,</p></li>
+<li><p>scoredTweetsBackfillCandidatePipelineConfig</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>override val postCandidatePipelinesSelectors: Seq[Selector[ScoredTweetsQuery]] = Seq(</p>
+<blockquote>
+<div><p>// sort these to have the “cheaper” filters run first</p>
+<p>RejectTweetFromViewerFilter,</p>
+<p>RetweetDeduplicationFilter,</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>PreviouslyServedTweetsFilter,</p>
+<p>PreviouslySeenTweetsFilter,</p>
+</li>
+<li><p>OutOfNetworkCompetitorFilter</p></li>
+</ul>
+<ul class="simple">
+<li><p>PreviouslyServedTweetsFilter,</p></li>
+<li><p>PredicateFeatureFilter.fromPredicate(</p></li>
+<li><p>FilterIdentifier(SubscriptionReplyFilterId),</p></li>
+<li><p>shouldKeepCandidate = { features =&gt;</p></li>
+<li><p>features.getOrElse(InReplyToTweetIdFeature, None).isEmpty ||</p></li>
+<li><p>features.getOrElse(ExclusiveConversationAuthorIdFeature, None).isEmpty</p></li>
+<li><p>}</p></li>
+<li><p>),</p></li>
+<li><p>FeedbackFatigueFilter</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>override val candidatePipelineFailOpenPolicies: Map[CandidatePipelineIdentifier, FailOpenPolicy] =</p>
+<blockquote>
+<div><p>cachedScoredTweetsCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p>
+<p>scoredTweetsInNetworkCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p>
+<p>scoredTweetsUtegCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>scoredTweetsCrMixerCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p></li>
+<li><p>scoredTweetsFrsCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always</p></li>
+</ul>
+<ul class="simple">
+<li><p>scoredTweetsTweetMixerCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p></li>
+<li><p>scoredTweetsFrsCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p></li>
+<li><p>scoredTweetsListsCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p></li>
+<li><p>scoredTweetsPopularVideosCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p></li>
+<li><p>scoredTweetsBackfillCandidatePipelineConfig.identifier -&gt; FailOpenPolicy.Always</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>override val scoringPipelineFailOpenPolicies: Map[ScoringPipelineIdentifier, FailOpenPolicy] =</p>
+<blockquote>
+<div><p>Map(</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>ScoredTweetsRescoreOONScoringPipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p></li>
+<li><p>ScoredTweetsRescoreVerifiedAuthorScoringPipelineConfig.identifier -&gt; FailOpenPolicy.Always,</p></li>
+<li><p>ScoredTweetsDiversityScoringPipelineConfig.identifier -&gt; FailOpenPolicy.Always</p></li>
+</ul>
+<ul class="simple">
+<li><p>ScoredTweetsHeuristicScoringPipelineConfig.identifier -&gt; FailOpenPolicy.Always</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>private val candidatePipelineQualityFactorConfig = LinearLatencyQualityFactorConfig(</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>qualityFactorBounds = BoundsWithDefault(minInclusive = 0.1, maxInclusive = 1.0, default = 0.4),</p></li>
+</ul>
+<ul>
+<li><p>qualityFactorBounds = BoundsWithDefault(minInclusive = 0.1, maxInclusive = 1.0, default = 0.95),</p>
+<p>initialDelay = 60.seconds,</p>
+<p>targetLatency = targetFetchLatency,</p>
+<p>targetLatencyPercentile = 95.0,</p>
+<p>// candidate pipelines</p>
+<p>scoredTweetsInNetworkCandidatePipelineConfig.identifier -&gt; candidatePipelineQualityFactorConfig,</p>
+<p>scoredTweetsUtegCandidatePipelineConfig.identifier -&gt; candidatePipelineQualityFactorConfig,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>scoredTweetsCrMixerCandidatePipelineConfig.identifier -&gt; candidatePipelineQualityFactorConfig,</p></li>
+</ul>
+<ul>
+<li><p>scoredTweetsTweetMixerCandidatePipelineConfig.identifier -&gt; candidatePipelineQualityFactorConfig,</p>
+<p>scoredTweetsFrsCandidatePipelineConfig.identifier -&gt; candidatePipelineQualityFactorConfig,</p>
+</li>
+<li><p>scoredTweetsListsCandidatePipelineConfig.identifier -&gt; candidatePipelineQualityFactorConfig,</p></li>
+<li><p>scoredTweetsPopularVideosCandidatePipelineConfig.identifier -&gt; candidatePipelineQualityFactorConfig,</p></li>
+<li><p>scoredTweetsBackfillCandidatePipelineConfig.identifier -&gt; candidatePipelineQualityFactorConfig,</p>
+<p>// scoring pipelines</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>scoredTweetsScoringPipelineConfig.identifier -&gt; scoringPipelineQualityFactorConfig,</p></li>
+</ul>
+<ul class="simple">
+<li><p>scoredTweetsModelScoringPipelineConfig.identifier -&gt; scoringPipelineQualityFactorConfig,</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>override val scoringPipelines: Seq[ScoringPipelineConfig[ScoredTweetsQuery, TweetCandidate]] =</p>
+<blockquote>
+<div><p>Seq(</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>// scoring pipielines - run on non-cached candidates only since cached ones are already scored</p></li>
+<li><p>scoredTweetsScoringPipelineConfig,</p></li>
+<li><p>scoredTweetsWeightedScoresSumScoringPipelineConfig,</p></li>
+<li><p>// re-scoring pipielines - run on all candidates since these are request specific</p></li>
+<li><p>ScoredTweetsRescoreOONScoringPipelineConfig,</p></li>
+<li><p>ScoredTweetsRescoreVerifiedAuthorScoringPipelineConfig,</p></li>
+<li><p>ScoredTweetsDiversityScoringPipelineConfig</p></li>
+</ul>
+<ul class="simple">
+<li><p>// scoring pipeline - run on non-cached candidates only since cached ones are already scored</p></li>
+<li><p>scoredTweetsModelScoringPipelineConfig,</p></li>
+<li><p>// re-scoring pipeline - run on all candidates since these are request specific</p></li>
+<li><p>ScoredTweetsHeuristicScoringPipelineConfig</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+</div></blockquote>
+<ul>
+<li><p>override val postScoringFilters = Seq(</p></li>
+<li><p>ScoredTweetsSocialContextFilter,</p></li>
+<li><p>OutOfNetworkCompetitorFilter,</p></li>
+<li><p>OutOfNetworkCompetitorURLFilter,</p></li>
+<li><p>DuplicateConversationTweetsFilter,</p></li>
+<li><p>PredicateFeatureFilter.fromPredicate(</p></li>
+<li><p>FilterIdentifier(“IsSupportAccountReply”),</p></li>
+<li><p>shouldKeepCandidate = { features =&gt;</p></li>
+<li><p>!features.getOrElse(IsSupportAccountReplyFeature, false)</p></li>
+<li><p>})</p></li>
+<li><p>)</p></li>
+<li><p>override val resultSelectors: Seq[Selector[ScoredTweetsQuery]] = Seq(</p></li>
+<li><p>KeepBestOutOfNetworkCandidatePerAuthorPerSuggestType(AllPipelines),</p>
+<p>UpdateSortCandidates(AllPipelines, FeatureValueSorter.descending(ScoreFeature)),</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>DropMaxCandidates(AllPipelines, ServerMaxResultsParam),</p></li>
+</ul>
+<ul>
+<li><p>DropFilteredMaxCandidates(</p></li>
+<li><p>pipelineScope =</p></li>
+<li><p>AllExceptPipelines(Set(scoredTweetsBackfillCandidatePipelineConfig.identifier)),</p></li>
+<li><p>filter = {</p></li>
+<li><p>case ItemCandidateWithDetails(_, _, features) =&gt;</p></li>
+<li><p>features.getOrElse(InNetworkFeature, false)</p></li>
+<li><p>case _ =&gt; false</p></li>
+<li><p>},</p></li>
+<li><p>maxSelectionsParam = MaxInNetworkResultsParam</p></li>
+<li><p>),</p></li>
+<li><p>DropFilteredMaxCandidates(</p></li>
+<li><p>pipelineScope = AllPipelines,</p></li>
+<li><p>filter = {</p></li>
+<li><p>case ItemCandidateWithDetails(_, _, features) =&gt;</p></li>
+<li><p>!features.getOrElse(InNetworkFeature, false)</p></li>
+<li><p>case _ =&gt; false</p></li>
+<li><p>},</p></li>
+<li><p>maxSelectionsParam = MaxOutOfNetworkResultsParam</p></li>
+<li><p>),</p></li>
+<li><p>DropMaxCandidates(</p></li>
+<li><p>candidatePipeline = scoredTweetsBackfillCandidatePipelineConfig.identifier,</p></li>
+<li><p>maxSelectionsParam = StaticParam(MaxBackfillTweets)</p></li>
+<li><p>),</p>
+<p>InsertAppendResults(AllPipelines)</p>
+</li>
+</ul>
+<blockquote>
+<div><p>)</p>
+</div></blockquote>
+<ul>
+<li><p>override val postSelectionFilters = Seq(</p></li>
+<li><p>OutOfNetworkCompetitorURLFilter,</p></li>
+<li><p>KeepBestOutOfNetworkTweetPerAuthorFilter,</p></li>
+<li><p>)</p></li>
+<li><p>override val resultSideEffects: Seq[</p>
+<blockquote>
+<div><p>PipelineResultSideEffect[ScoredTweetsQuery, ScoredTweetsResponse]</p>
+</div></blockquote>
+<p>] = Seq(</p>
+<blockquote>
+<div><p>cachedScoredTweetsSideEffect,</p>
+</div></blockquote>
+</li>
+<li><p>scribeServedCommonFeaturesAndCandidateFeaturesSideEffect,</p>
+<p>publishClientSentImpressionsEventBusSideEffect,</p>
+<p>publishClientSentImpressionsManhattanSideEffect,</p>
+</li>
+</ul>
+<ul>
+<li><p>publishImpressionBloomFilterSideEffect,</p></li>
+<li><p>scribeScoredCandidatesSideEffect,</p></li>
+<li><p>scribeServedCommonFeaturesAndCandidateFeaturesSideEffect,</p>
+<p>updateLastNonPollingTimeSideEffect</p>
+</li>
+</ul>
+<blockquote>
+<div><p>)</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ScoredTweetsRecommendationPipelineConfig_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

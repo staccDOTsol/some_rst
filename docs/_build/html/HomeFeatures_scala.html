@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/HomeFeatures.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/HomeFeatures.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-model-homefeatures-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-model-homefeatures-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/HomeFeatures.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/HomeFeatures.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-model-homefeatures-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-model-homefeatures-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -223,6 +266,26</p>
+<p>Content:</p>
+<p>index 032623cd4..fe085b1f9 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/HomeFeatures.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/model/HomeFeatures.scala</p>
+<blockquote>
+<div><p>import com.twitter.core_workflows.user_model.{thriftscala =&gt; um}</p>
+<p>import com.twitter.dal.personal_data.{thriftjava =&gt; pd}</p>
+</div></blockquote>
+<p>-import com.twitter.escherbird.{thriftscala =&gt; esb}</p>
+<blockquote>
+<div><p>import com.twitter.gizmoduck.{thriftscala =&gt; gt}</p>
+<p>import com.twitter.home_mixer.{thriftscala =&gt; hmt}</p>
+<p>import com.twitter.ml.api.constant.SharedFeatures</p>
+<p>import com.twitter.product_mixer.core.feature.FeatureWithDefaultOnFailure</p>
+<p>import com.twitter.product_mixer.core.feature.datarecord.BoolDataRecordCompatible</p>
+<p>import com.twitter.product_mixer.core.feature.datarecord.DataRecordFeature</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.feature.datarecord.DataRecordOptionalFeature</p>
+<p>+import com.twitter.product_mixer.core.feature.datarecord.DoubleDataRecordCompatible</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.feature.datarecord.LongDiscreteDataRecordCompatible</p>
+<p>import com.twitter.product_mixer.core.model.marshalling.response.urt.metadata.TopicContextFunctionalityType</p>
+<p>import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+<p>import com.twitter.search.common.features.{thriftscala =&gt; sc}</p>
+</div></blockquote>
+<p>+import com.twitter.search.earlybird.{thriftscala =&gt; eb}</p>
+<blockquote>
+<div><p>import com.twitter.timelinemixer.clients.manhattan.DismissInfo</p>
+<p>import com.twitter.timelinemixer.clients.persistence.TimelineResponseV3</p>
+<p>import com.twitter.timelinemixer.injection.model.candidate.AudioSpaceMetaData</p>
+<p>import com.twitter.timelines.impressionbloomfilter.{thriftscala =&gt; blm}</p>
+<p>import com.twitter.timelines.model.UserId</p>
+<p>import com.twitter.timelines.prediction.features.common.TimelinesSharedFeatures</p>
+</div></blockquote>
+<p>+import com.twitter.timelines.prediction.features.engagement_features.EngagementDataRecordFeatures</p>
+<blockquote>
+<div><p>import com.twitter.timelines.prediction.features.recap.RecapFeatures</p>
+<p>import com.twitter.timelines.prediction.features.request_context.RequestContextFeatures</p>
+<p>import com.twitter.timelines.service.{thriftscala =&gt; tst}</p>
+<blockquote>
+<div><blockquote>
+<div><ul class="simple">
+<li><p>who created the Tweet that was retweeted.</p></li>
+</ul>
+<p><a href="#id1"><span class="problematic" id="id2">*</span></a>/</p>
+</div></blockquote>
+<p>object AuthorIdFeature</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>extends Feature[TweetCandidate, Option[Long]]</p></li>
+</ul>
+<ul>
+<li><p>extends DataRecordOptionalFeature[TweetCandidate, Long]</p>
+<p>with LongDiscreteDataRecordCompatible {</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>override val featureName: String = SharedFeatures.AUTHOR_ID.getFeatureName</p>
+<p>override val personalDataTypes: Set[pd.PersonalDataType] = Set(pd.PersonalDataType.UserId)</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>object AuthorIsEligibleForConnectBoostFeature extends Feature[TweetCandidate, Boolean]</p></li>
+</ul>
+<ul>
+<li><p>object AuthorIsBlueVerifiedFeature extends Feature[TweetCandidate, Boolean]</p></li>
+<li><p>object AuthorIsGoldVerifiedFeature extends Feature[TweetCandidate, Boolean]</p></li>
+<li><p>object AuthorIsGrayVerifiedFeature extends Feature[TweetCandidate, Boolean]</p></li>
+<li><p>object AuthorIsLegacyVerifiedFeature extends Feature[TweetCandidate, Boolean]</p></li>
+<li><p>object AuthorIsCreatorFeature extends Feature[TweetCandidate, Boolean]</p></li>
+<li><p>object AuthorIsProtectedFeature extends Feature[TweetCandidate, Boolean]</p></li>
+<li><p>object AuthoredByContextualUserFeature extends Feature[TweetCandidate, Boolean]</p>
+<p>object CachedCandidatePipelineIdentifierFeature extends Feature[TweetCandidate, Option[String]]</p>
+<p>object CandidateSourceIdFeature</p>
+<p>object DirectedAtUserIdFeature extends Feature[TweetCandidate, Option[Long]]</p>
+<p>object EarlybirdFeature extends Feature[TweetCandidate, Option[sc.ThriftTweetFeatures]]</p>
+<p>object EarlybirdScoreFeature extends Feature[TweetCandidate, Option[Double]]</p>
+</li>
+<li><p>object EarlybirdSearchResultFeature extends Feature[TweetCandidate, Option[eb.ThriftSearchResult]]</p>
+<p>object EntityTokenFeature extends Feature[TweetCandidate, Option[String]]</p>
+<p>object ExclusiveConversationAuthorIdFeature extends Feature[TweetCandidate, Option[Long]]</p>
+</li>
+<li><p>object FavoritedByCountFeature</p></li>
+<li><p>extends DataRecordFeature[TweetCandidate, Double]</p></li>
+<li><p>with DoubleDataRecordCompatible {</p></li>
+<li><p>override val featureName: String =</p></li>
+<li><p>EngagementDataRecordFeatures.InNetworkFavoritesCount.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] =</p></li>
+<li><p>Set(pd.PersonalDataType.CountOfPrivateLikes, pd.PersonalDataType.CountOfPublicLikes)</p></li>
+<li><p>}</p>
+<p>object FavoritedByUserIdsFeature extends Feature[TweetCandidate, Seq[Long]]</p>
+<p>object FeedbackHistoryFeature extends Feature[TweetCandidate, Seq[FeedbackEntry]]</p>
+</li>
+<li><p>object RetweetedByCountFeature</p></li>
+<li><p>extends DataRecordFeature[TweetCandidate, Double]</p></li>
+<li><p>with DoubleDataRecordCompatible {</p></li>
+<li><p>override val featureName: String =</p></li>
+<li><p>EngagementDataRecordFeatures.InNetworkRetweetsCount.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] =</p></li>
+<li><p>Set(pd.PersonalDataType.CountOfPrivateRetweets, pd.PersonalDataType.CountOfPublicRetweets)</p></li>
+<li><p>}</p>
+<p>object RetweetedByEngagerIdsFeature extends Feature[TweetCandidate, Seq[Long]]</p>
+</li>
+<li><p>object RepliedByCountFeature</p></li>
+<li><p>extends DataRecordFeature[TweetCandidate, Double]</p></li>
+<li><p>with DoubleDataRecordCompatible {</p></li>
+<li><p>override val featureName: String =</p></li>
+<li><p>EngagementDataRecordFeatures.InNetworkRepliesCount.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] =</p></li>
+<li><p>Set(pd.PersonalDataType.CountOfPrivateReplies, pd.PersonalDataType.CountOfPublicReplies)</p></li>
+<li><p>}</p>
+<p>object RepliedByEngagerIdsFeature extends Feature[TweetCandidate, Seq[Long]]</p>
+<p>object FollowedByUserIdsFeature extends Feature[TweetCandidate, Seq[Long]]</p>
+<blockquote>
+<div><p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p>
+</div></blockquote>
+<p>}</p>
+<p>object IsRandomTweetFeature</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>extends Feature[TweetCandidate, Boolean]</p></li>
+</ul>
+<ul>
+<li><p>extends DataRecordFeature[TweetCandidate, Boolean]</p>
+<p>with BoolDataRecordCompatible {</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>override val featureName: String = TimelinesSharedFeatures.IS_RANDOM_TWEET.getFeatureName</p>
+<p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p>
+</div></blockquote>
+<p>object IsReadFromCacheFeature extends Feature[TweetCandidate, Boolean]</p>
+<p>object IsRetweetFeature extends Feature[TweetCandidate, Boolean]</p>
+<p>object IsRetweetedReplyFeature extends Feature[TweetCandidate, Boolean]</p>
+</div></blockquote>
+<ul>
+<li><p>object IsSupportAccountReplyFeature extends Feature[TweetCandidate, Boolean]</p>
+<p>object LastScoredTimestampMsFeature extends Feature[TweetCandidate, Option[Long]]</p>
+<p>object NonSelfFavoritedByUserIdsFeature extends Feature[TweetCandidate, Seq[Long]]</p>
+<p>object NumImagesFeature extends Feature[TweetCandidate, Option[Int]]</p>
+<blockquote>
+<div><p>extends Feature[TweetCandidate, Map[String, Double]]</p>
+</div></blockquote>
+<p>object SocialContextFeature extends Feature[TweetCandidate, Option[tst.SocialContext]]</p>
+<p>object SourceTweetIdFeature</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>extends Feature[TweetCandidate, Option[Long]]</p></li>
+</ul>
+<ul>
+<li><p>extends DataRecordOptionalFeature[TweetCandidate, Long]</p>
+<p>with LongDiscreteDataRecordCompatible {</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>override val featureName: String = TimelinesSharedFeatures.SOURCE_TWEET_ID.getFeatureName</p>
+<p>override val personalDataTypes: Set[pd.PersonalDataType] = Set(pd.PersonalDataType.TweetId)</p>
+</div></blockquote>
+<p>object TweetUrlsFeature extends Feature[TweetCandidate, Seq[String]]</p>
+<p>object VideoDurationMsFeature extends Feature[TweetCandidate, Option[Int]]</p>
+<p>object ViewerIdFeature</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>extends Feature[TweetCandidate, Long]</p></li>
+</ul>
+<ul>
+<li><p>extends DataRecordFeature[TweetCandidate, Long]</p>
+<p>with LongDiscreteDataRecordCompatible {</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>override def featureName: String = SharedFeatures.USER_ID.getFeatureName</p>
+<p>override def personalDataTypes: Set[pd.PersonalDataType] = Set(pd.PersonalDataType.UserId)</p>
+</div></blockquote>
+<p>object WeightedModelScoreFeature extends Feature[TweetCandidate, Option[Double]]</p>
+<p>object MentionUserIdFeature extends Feature[TweetCandidate, Seq[Long]]</p>
+<p>object MentionScreenNameFeature extends Feature[TweetCandidate, Seq[String]]</p>
+</div></blockquote>
+<ul>
+<li><p>object SemanticAnnotationFeature extends Feature[TweetCandidate, Seq[esb.TweetEntityAnnotation]]</p>
+<p>object HasImageFeature extends Feature[TweetCandidate, Boolean]</p>
+<p>object HasVideoFeature extends Feature[TweetCandidate, Boolean]</p>
+<p>// Tweetypie VF Features</p>
+</li>
+<li><p>object IsHydratedFeature extends FeatureWithDefaultOnFailure[TweetCandidate, Boolean] {</p></li>
+<li><p>override val defaultValue: Boolean = true</p></li>
+<li><p>}</p></li>
+</ul>
+<ul>
+<li><p>object IsHydratedFeature extends Feature[TweetCandidate, Boolean]</p>
+<p>object IsNsfwFeature extends Feature[TweetCandidate, Boolean]</p>
+<p>object QuotedTweetDroppedFeature extends Feature[TweetCandidate, Boolean]</p>
+<p>// Raw Tweet Text from Tweetypie</p>
+<p>object TweetTextFeature extends Feature[TweetCandidate, Option[String]]</p>
+</li>
+<li><p>object AuthorEnabledPreviewsFeature extends Feature[TweetCandidate, Boolean]</p></li>
+<li><p>object IsTweetPreviewFeature extends Feature[TweetCandidate, Boolean]</p></li>
+<li><p>// SGS Features</p>
+<p>/**</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>By convention, this is set to true for retweets of non-followed authors</p></li>
+</ul>
+</div></blockquote>
+<p>// Query Features</p>
+<p>object AccountAgeFeature extends Feature[PipelineQuery, Option[Time]]</p>
+<p>object ClientIdFeature</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>extends Feature[PipelineQuery, Option[Long]]</p></li>
+</ul>
+<ul>
+<li><p>extends DataRecordOptionalFeature[PipelineQuery, Long]</p>
+<p>with LongDiscreteDataRecordCompatible {</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>override def featureName: String = SharedFeatures.CLIENT_ID.getFeatureName</p>
+<p>override def personalDataTypes: Set[pd.PersonalDataType] = Set(pd.PersonalDataType.ClientType)</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>object CachedScoredTweetsFeature extends Feature[PipelineQuery, Seq[hmt.CachedScoredTweet]]</p></li>
+</ul>
+<ul>
+<li><p>object CachedScoredTweetsFeature extends Feature[PipelineQuery, Seq[hmt.ScoredTweet]]</p>
+<p>object DeviceLanguageFeature extends Feature[PipelineQuery, Option[String]]</p>
+<p>object DismissInfoFeature</p>
+<blockquote>
+<div><blockquote>
+<div><p>extends FeatureWithDefaultOnFailure[PipelineQuery, Map[st.SuggestType, Option[DismissInfo]]] {</p>
+</div></blockquote>
+<p>override def defaultValue: Map[st.SuggestType, Option[DismissInfo]] = Map.empty</p>
+</div></blockquote>
+<p>}</p>
+<p>object FollowingLastNonPollingTimeFeature extends Feature[PipelineQuery, Option[Time]]</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>object GetInitialFeature extends Feature[PipelineQuery, Boolean] with BoolDataRecordCompatible {</p></li>
+</ul>
+<ul class="simple">
+<li><p>object GetInitialFeature</p></li>
+<li><p>extends DataRecordFeature[PipelineQuery, Boolean]</p></li>
+<li><p>with BoolDataRecordCompatible {</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>override def featureName: String = RequestContextFeatures.IS_GET_INITIAL.getFeatureName</p>
+<p>override def personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>object GetMiddleFeature extends Feature[PipelineQuery, Boolean] with BoolDataRecordCompatible {</p></li>
+</ul>
+<ul class="simple">
+<li><p>object GetMiddleFeature</p></li>
+<li><p>extends DataRecordFeature[PipelineQuery, Boolean]</p></li>
+<li><p>with BoolDataRecordCompatible {</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>override def featureName: String = RequestContextFeatures.IS_GET_MIDDLE.getFeatureName</p>
+<p>override def personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>object GetNewerFeature extends Feature[PipelineQuery, Boolean] with BoolDataRecordCompatible {</p></li>
+</ul>
+<ul class="simple">
+<li><p>object GetNewerFeature</p></li>
+<li><p>extends DataRecordFeature[PipelineQuery, Boolean]</p></li>
+<li><p>with BoolDataRecordCompatible {</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>override def featureName: String = RequestContextFeatures.IS_GET_NEWER.getFeatureName</p>
+<p>override def personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>object GetOlderFeature extends Feature[PipelineQuery, Boolean] with BoolDataRecordCompatible {</p></li>
+</ul>
+<ul class="simple">
+<li><p>object GetOlderFeature</p></li>
+<li><p>extends DataRecordFeature[PipelineQuery, Boolean]</p></li>
+<li><p>with BoolDataRecordCompatible {</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>override def featureName: String = RequestContextFeatures.IS_GET_OLDER.getFeatureName</p>
+<p>override def personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p>
+</div></blockquote>
+<p>}</p>
+<p>object GuestIdFeature</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>extends Feature[PipelineQuery, Option[Long]]</p></li>
+</ul>
+<ul>
+<li><p>extends DataRecordOptionalFeature[PipelineQuery, Long]</p>
+<p>with LongDiscreteDataRecordCompatible {</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>override def featureName: String = SharedFeatures.GUEST_ID.getFeatureName</p>
+<p>override def personalDataTypes: Set[pd.PersonalDataType] = Set(pd.PersonalDataType.GuestId)</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>object HasDarkRequestFeature extends Feature[TweetCandidate, Option[Boolean]]</p></li>
+</ul>
+<ul>
+<li><p>object HasDarkRequestFeature extends Feature[PipelineQuery, Option[Boolean]]</p>
+<p>object ImpressionBloomFilterFeature</p>
+<blockquote>
+<div><blockquote>
+<div><p>extends FeatureWithDefaultOnFailure[PipelineQuery, blm.ImpressionBloomFilterSeq] {</p>
+</div></blockquote>
+<p>override def defaultValue: blm.ImpressionBloomFilterSeq =</p>
+</div></blockquote>
+<p>// Internal id generated per request, mainly to deduplicate re-served cached tweets in logging</p>
+<p>object ServedRequestIdFeature extends Feature[PipelineQuery, Option[Long]]</p>
+<p>object ServedTweetIdsFeature extends Feature[PipelineQuery, Seq[Long]]</p>
+</li>
+<li><p>object ServedTweetPreviewIdsFeature extends Feature[PipelineQuery, Seq[Long]]</p></li>
+<li><p>object TimelineServiceTweetsFeature extends Feature[PipelineQuery, Seq[Long]]</p></li>
+<li><p>object TimestampFeature</p></li>
+<li><p>extends DataRecordFeature[PipelineQuery, Long]</p></li>
+<li><p>with LongDiscreteDataRecordCompatible {</p></li>
+<li><p>override def featureName: String = SharedFeatures.TIMESTAMP.getFeatureName</p></li>
+<li><p>override def personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>}</p></li>
+<li><p>object TimestampGMTDowFeature</p></li>
+<li><p>extends DataRecordFeature[PipelineQuery, Long]</p></li>
+<li><p>with LongDiscreteDataRecordCompatible {</p></li>
+<li><p>override def featureName: String = RequestContextFeatures.TIMESTAMP_GMT_DOW.getFeatureName</p></li>
+<li><p>override def personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>}</p></li>
+<li><p>object TimestampGMTHourFeature</p></li>
+<li><p>extends DataRecordFeature[PipelineQuery, Long]</p></li>
+<li><p>with LongDiscreteDataRecordCompatible {</p></li>
+<li><p>override def featureName: String = RequestContextFeatures.TIMESTAMP_GMT_HOUR.getFeatureName</p></li>
+<li><p>override def personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>}</p>
+<p>object TweetImpressionsFeature extends Feature[PipelineQuery, Seq[imp.TweetImpressionsEntry]]</p>
+<p>object UserFollowedTopicsCountFeature extends Feature[PipelineQuery, Option[Int]]</p>
+<p>object UserFollowingCountFeature extends Feature[PipelineQuery, Option[Int]]</p>
+</li>
+</ul>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/HomeFeatures_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

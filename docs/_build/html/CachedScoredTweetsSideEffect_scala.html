@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/CachedScoredTweetsSideEffect.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/CachedScoredTweetsSideEffect.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-cachedscoredtweetssideeffect-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-cachedscoredtweetssideeffect-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/CachedScoredTweetsSideEffect.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/CachedScoredTweetsSideEffect.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-cachedscoredtweetssideeffect-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-cachedscoredtweetssideeffect-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -48,71 +51,79</p>
+<p>Content:</p>
+<p>index abe076c54..3d66ff54a 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/CachedScoredTweetsSideEffect.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/CachedScoredTweetsSideEffect.scala</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.AncestorsFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.AuthorIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.AuthorIsBlueVerifiedFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIsCreatorFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIsGoldVerifiedFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIsGrayVerifiedFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIsLegacyVerifiedFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.CachedCandidatePipelineIdentifierFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.DirectedAtUserIdFeature</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.FavoritedByUserIdsFeature</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.FollowedByUserIdsFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.ExclusiveConversationAuthorIdFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.InNetworkFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.InReplyToTweetIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.InReplyToUserIdFeature</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.IsRetweetFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.LastScoredTimestampMsFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.PerspectiveFilteredLikedByUserIdsFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.QuotedTweetIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.QuotedUserIdFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.SGSValidFollowedByUserIdsFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.SGSValidLikedByUserIdsFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.ScoreFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.SourceTweetIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.SourceUserIdFeature</p>
+<p>import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+<p>import com.twitter.servo.cache.TtlCache</p>
+<p>import com.twitter.stitch.Stitch</p>
+</div></blockquote>
+<p>-import com.twitter.util.Time</p>
+<ul>
+<li><p>import javax.inject.Inject</p>
+<p>import javax.inject.Singleton</p>
+<p>&#64;Singleton</p>
+<p>class CachedScoredTweetsSideEffect &#64;Inject() (</p>
+</li>
+<li><p>scoredTweetsCache: TtlCache[Long, hmt.CachedScoredTweets])</p></li>
+</ul>
+<ul>
+<li><p>scoredTweetsCache: TtlCache[Long, hmt.ScoredTweetsResponse])</p>
+<blockquote>
+<div><p>extends PipelineResultSideEffect[PipelineQuery, ScoredTweetsResponse] {</p>
+</div></blockquote>
+<p>override val identifier: SideEffectIdentifier = SideEffectIdentifier(“CachedScoredTweets”)</p>
+<p>private val MaxTweetsToCache = 1000</p>
+<p>def buildCachedScoredTweets(</p>
+</li>
+<li><p>query: PipelineQuery,</p>
+<p>candidates: Seq[CandidateWithDetails]</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>): hmt.CachedScoredTweets = {</p></li>
+</ul>
+<ul>
+<li><p>): hmt.ScoredTweetsResponse = {</p>
+<blockquote>
+<div><p>val tweets = candidates.map { candidate =&gt;</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>val favoritedByUserIds = candidate.features.getOrElse(FavoritedByUserIdsFeature, Seq.empty)</p></li>
+<li><p>val followedByUserIds = candidate.features.getOrElse(FollowedByUserIdsFeature, Seq.empty)</p></li>
+</ul>
+<ul class="simple">
+<li><p>val sgsValidLikedByUserIds =</p></li>
+<li><p>candidate.features.getOrElse(SGSValidLikedByUserIdsFeature, Seq.empty)</p></li>
+<li><p>val sgsValidFollowedByUserIds =</p></li>
+<li><p>candidate.features.getOrElse(SGSValidFollowedByUserIdsFeature, Seq.empty)</p></li>
+<li><p>val perspectiveFilteredLikedByUserIds =</p></li>
+<li><p>candidate.features.getOrElse(PerspectiveFilteredLikedByUserIdsFeature, Seq.empty)</p></li>
+</ul>
+<blockquote>
+<div><p>val ancestors = candidate.features.getOrElse(AncestorsFeature, Seq.empty)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>val urlsList = candidate.features.getOrElse(TweetUrlsFeature, Seq.empty)</p></li>
+<li><p>hmt.CachedScoredTweet(</p></li>
+</ul>
+<ul>
+<li><p>hmt.ScoredTweet(</p>
+<blockquote>
+<div><p>tweetId = candidate.candidateIdLong,</p>
+</div></blockquote>
+</li>
+<li><p>authorId = candidate.features.get(AuthorIdFeature).get,</p>
+<p>// Cache the model score instead of the final score because rescoring is per-request</p>
+<p>score = candidate.features.getOrElse(WeightedModelScoreFeature, None),</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>lastScoredTimestampMs = Some(</p></li>
+<li><p>candidate.features</p></li>
+<li><p>.getOrElse(LastScoredTimestampMsFeature, None)</p></li>
+<li><p>.getOrElse(Time.now.inMilliseconds)),</p></li>
+<li><p>candidatePipelineIdentifier = Some(</p></li>
+<li><p>candidate.features</p></li>
+<li><p>.getOrElse(CachedCandidatePipelineIdentifierFeature, None)</p></li>
+<li><p>.getOrElse(candidate.source.name)),</p></li>
+<li><p>userId = candidate.features.getOrElse(AuthorIdFeature, None),</p></li>
+</ul>
+<ul>
+<li><p>suggestType = candidate.features.getOrElse(SuggestTypeFeature, None),</p>
+<p>sourceTweetId = candidate.features.getOrElse(SourceTweetIdFeature, None),</p>
+<p>sourceUserId = candidate.features.getOrElse(SourceUserIdFeature, None),</p>
+</li>
+</ul>
+<ul>
+<li><p>isRetweet = Some(candidate.features.getOrElse(IsRetweetFeature, false)),</p></li>
+<li><p>isInNetwork = Some(candidate.features.getOrElse(InNetworkFeature, false)),</p></li>
+<li><p>suggestType = candidate.features.getOrElse(SuggestTypeFeature, None),</p>
+<p>quotedTweetId = candidate.features.getOrElse(QuotedTweetIdFeature, None),</p>
+<p>quotedUserId = candidate.features.getOrElse(QuotedUserIdFeature, None),</p>
+<p>inReplyToTweetId = candidate.features.getOrElse(InReplyToTweetIdFeature, None),</p>
+<p>inReplyToUserId = candidate.features.getOrElse(InReplyToUserIdFeature, None),</p>
+<p>directedAtUserId = candidate.features.getOrElse(DirectedAtUserIdFeature, None),</p>
+</li>
+<li><p>favoritedByUserIds = if (favoritedByUserIds.nonEmpty) Some(favoritedByUserIds) else None,</p></li>
+<li><p>followedByUserIds = if (followedByUserIds.nonEmpty) Some(followedByUserIds) else None,</p></li>
+</ul>
+<ul>
+<li><p>inNetwork = Some(candidate.features.getOrElse(InNetworkFeature, true)),</p></li>
+<li><p>sgsValidLikedByUserIds = Some(sgsValidLikedByUserIds),</p></li>
+<li><p>sgsValidFollowedByUserIds = Some(sgsValidFollowedByUserIds),</p>
+<p>topicId = candidate.features.getOrElse(TopicIdSocialContextFeature, None),</p>
+<p>topicFunctionalityType = candidate.features</p>
+<blockquote>
+<div><p>.getOrElse(TopicContextFunctionalityTypeFeature, None).map(</p>
+<blockquote>
+<div><p>TopicContextFunctionalityTypeMarshaller(_)),</p>
+</div></blockquote>
+</div></blockquote>
+<p>ancestors = if (ancestors.nonEmpty) Some(ancestors) else None,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>urlsList = if (urlsList.nonEmpty) Some(urlsList) else None,</p></li>
+<li><p>authorIsBlueVerified =</p></li>
+<li><p>Some(candidate.features.getOrElse(AuthorIsBlueVerifiedFeature, false))</p></li>
+</ul>
+<ul class="simple">
+<li><p>isReadFromCache = Some(true),</p></li>
+<li><p>streamToKafka = Some(false),</p></li>
+<li><p>exclusiveConversationAuthorId = candidate.features</p></li>
+<li><p>.getOrElse(ExclusiveConversationAuthorIdFeature, None),</p></li>
+<li><p>authorMetadata = Some(</p></li>
+<li><p>hmt.AuthorMetadata(</p></li>
+<li><p>blueVerified = candidate.features.getOrElse(AuthorIsBlueVerifiedFeature, false),</p></li>
+<li><p>goldVerified = candidate.features.getOrElse(AuthorIsGoldVerifiedFeature, false),</p></li>
+<li><p>grayVerified = candidate.features.getOrElse(AuthorIsGrayVerifiedFeature, false),</p></li>
+<li><p>legacyVerified = candidate.features.getOrElse(AuthorIsLegacyVerifiedFeature, false),</p></li>
+<li><p>creator = candidate.features.getOrElse(AuthorIsCreatorFeature, false)</p></li>
+<li><p>)),</p></li>
+<li><p>lastScoredTimestampMs = candidate.features</p></li>
+<li><p>.getOrElse(LastScoredTimestampMsFeature, Some(query.queryTime.inMilliseconds)),</p></li>
+<li><p>candidatePipelineIdentifier = candidate.features</p></li>
+<li><p>.getOrElse(CachedCandidatePipelineIdentifierFeature, Some(candidate.source.name)),</p></li>
+<li><p>tweetUrls = Some(candidate.features.getOrElse(TweetUrlsFeature, Seq.empty)),</p></li>
+<li><p>perspectiveFilteredLikedByUserIds = Some(perspectiveFilteredLikedByUserIds)</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>hmt.CachedScoredTweets(tweets = tweets)</p></li>
+</ul>
+<ul class="simple">
+<li><p>hmt.ScoredTweetsResponse(tweets)</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>final override def apply(</p>
+<blockquote>
+<div><p>inputs: PipelineResultSideEffect.Inputs[PipelineQuery, ScoredTweetsResponse]</p>
+</div></blockquote>
+<p>): Stitch[Unit] = {</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>val candidates = (inputs.selectedCandidates ++ inputs.remainingCandidates).filter { candidate =&gt;</p></li>
+<li><p>val score = candidate.features.getOrElse(ScoreFeature, None)</p></li>
+<li><p>score.exists(_ &gt; 0.0)</p></li>
+<li><p>}</p></li>
+</ul>
+<ul class="simple">
+<li><p>val candidates =</p></li>
+<li><p>(inputs.selectedCandidates ++ inputs.remainingCandidates ++ inputs.droppedCandidates)</p></li>
+<li><p>.filter(_.features.getOrElse(ScoreFeature, None).exists(_ &gt; 0.0))</p></li>
+</ul>
+<blockquote>
+<div><p>val truncatedCandidates =</p>
+<blockquote>
+<div><p>if (candidates.size &gt; MaxTweetsToCache)</p>
+<blockquote>
+<div><p>candidates</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>.sortBy(-_.features.getOrElse(ScoreFeature, None).getOrElse(0.0))</p></li>
+<li><p>.take(MaxTweetsToCache)</p></li>
+</ul>
+<ul class="simple">
+<li><p>.sortBy(-_.features.getOrElse(ScoreFeature, None).getOrElse(0.0)).take(MaxTweetsToCache)</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>else candidates</p>
+</div></blockquote>
+<p>if (truncatedCandidates.nonEmpty) {</p>
+<blockquote>
+<div><p>val ttl = inputs.query.params(CachedScoredTweets.TTLParam)</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>val scoredTweets = buildCachedScoredTweets(truncatedCandidates)</p></li>
+</ul>
+<ul>
+<li><p>val scoredTweets = buildCachedScoredTweets(inputs.query, truncatedCandidates)</p>
+<p>Stitch.callFuture(scoredTweetsCache.set(inputs.query.getRequiredUserId, scoredTweets, ttl))</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>} else Stitch.Unit</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/CachedScoredTweetsSideEffect_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

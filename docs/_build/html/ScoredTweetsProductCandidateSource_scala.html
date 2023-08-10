@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/candidate_source/ScoredTweetsProductCandidateSource.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/candidate_source/ScoredTweetsProductCandidateSource.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-candidate-source-scoredtweetsproductcandidatesource-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-candidate-source-scoredtweetsproductcandidatesource-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/candidate_source/ScoredTweetsProductCandidateSource.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/candidate_source/ScoredTweetsProductCandidateSource.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-candidate-source-scoredtweetsproductcandidatesource-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-candidate-source-scoredtweetsproductcandidatesource-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -128,15 +141,22</p>
+<p>Content:</p>
+<p>index db15a2cac..d1daeb93e 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/candidate_source/ScoredTweetsProductCandidateSource.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/candidate_source/ScoredTweetsProductCandidateSource.scala</p>
+<blockquote>
+<div><p>import com.google.inject.Provider</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.ServedTweetIdsFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.TimelineServiceTweetsFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.request.HomeMixerRequest</p>
+<p>import com.twitter.home_mixer.model.request.ScoredTweetsProduct</p>
+<p>import com.twitter.home_mixer.model.request.ScoredTweetsProductContext</p>
+<p>import com.twitter.home_mixer.product.for_you.model.ForYouQuery</p>
+<p>import com.twitter.home_mixer.{thriftscala =&gt; t}</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.component_library.premarshaller.cursor.UrtCursorSerializer</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.functional_component.candidate_source.product_pipeline.ProductPipelineCandidateSource</p>
+<p>import com.twitter.product_mixer.core.functional_component.configapi.ParamsBuilder</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.CandidateSourceIdentifier</p>
+<blockquote>
+<div><p>inReplyToUserId: Option[Long] = None,</p>
+<p>directedAtUserId: Option[Long] = None,</p>
+<p>inNetwork: Option[Boolean] = None,</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>favoritedByUserIds: Option[Seq[Long]] = None,</p></li>
+<li><p>followedByUserIds: Option[Seq[Long]] = None,</p></li>
+</ul>
+<ul>
+<li><p>sgsValidLikedByUserIds: Option[Seq[Long]] = None,</p></li>
+<li><p>sgsValidFollowedByUserIds: Option[Seq[Long]] = None,</p>
+<p>ancestors: Option[Seq[ta.TweetAncestor]] = None,</p>
+<p>topicId: Option[Long] = None,</p>
+<p>topicFunctionalityType: Option[tl.TopicContextFunctionalityType] = None,</p>
+<p>conversationId: Option[Long] = None,</p>
+<p>conversationFocalTweetId: Option[Long] = None,</p>
+<p>isReadFromCache: Option[Boolean] = None,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>streamToKafka: Option[Boolean] = None)</p></li>
+</ul>
+<ul class="simple">
+<li><p>streamToKafka: Option[Boolean] = None,</p></li>
+<li><p>exclusiveConversationAuthorId: Option[Long] = None,</p></li>
+<li><p>authorIsBlueVerified: Option[Boolean] = None,</p></li>
+<li><p>authorIsGoldVerified: Option[Boolean] = None,</p></li>
+<li><p>authorIsGrayVerified: Option[Boolean] = None,</p></li>
+<li><p>authorIsLegacyVerified: Option[Boolean] = None,</p></li>
+<li><p>authorIsCreator: Option[Boolean] = None,</p></li>
+<li><p>perspectiveFilteredLikedByUserIds: Option[Seq[Long]] = None)</p></li>
+</ul>
+<blockquote>
+<div><p>&#64;Singleton</p>
+<p>class ScoredTweetsProductCandidateSource &#64;Inject() (</p>
+<blockquote>
+<div><p>ScoredTweetsProductContext(</p>
+<blockquote>
+<div><p>productPipelineQuery.deviceContext,</p>
+<p>productPipelineQuery.seenTweetIds,</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>productPipelineQuery.features.map(_.getOrElse(ServedTweetIdsFeature, Seq.empty))</p></li>
+</ul>
+<ul class="simple">
+<li><p>productPipelineQuery.features.map(_.getOrElse(ServedTweetIdsFeature, Seq.empty)),</p></li>
+<li><p>productPipelineQuery.features.map(_.getOrElse(TimelineServiceTweetsFeature, Seq.empty))</p></li>
+</ul>
+<blockquote>
+<div><p>)),</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>serializedRequestCursor = None,</p></li>
+</ul>
+<ul class="simple">
+<li><p>serializedRequestCursor =</p></li>
+<li><p>productPipelineQuery.pipelineCursor.map(UrtCursorSerializer.serializeCursor),</p></li>
+</ul>
+<blockquote>
+<div><p>maxResults = productPipelineQuery.requestedMaxResults,</p>
+<p>debugParams = None,</p>
+<p>homeRequestParam = false</p>
+<blockquote>
+<div><p>authorId = ancestor.userId,</p>
+<p>suggestType = focalTweet.suggestType,</p>
+<p>conversationId = Some(ancestor.tweetId),</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>conversationFocalTweetId = Some(focalTweet.tweetId)</p></li>
+</ul>
+<ul class="simple">
+<li><p>conversationFocalTweetId = Some(focalTweet.tweetId),</p></li>
+<li><p>exclusiveConversationAuthorId = focalTweet.exclusiveConversationAuthorId</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>}</p>
+<p>val conversationId = rootScoredTweet.headOption.map(_.tweetId)</p>
+<blockquote>
+<div><p>suggestType = focalTweet.suggestType,</p>
+<p>inReplyToTweetId = tweetsToParents.get(ancestor).map(_.tweetId),</p>
+<p>conversationId = conversationId,</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>conversationFocalTweetId = Some(focalTweet.tweetId)</p></li>
+</ul>
+<ul class="simple">
+<li><p>conversationFocalTweetId = Some(focalTweet.tweetId),</p></li>
+<li><p>exclusiveConversationAuthorId = focalTweet.exclusiveConversationAuthorId</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>}</p>
+<p>val parentScoredTweets = rootScoredTweet ++ intermediateScoredTweets</p>
+<blockquote>
+<div><p>inReplyToUserId = focalTweet.inReplyToUserId,</p>
+<p>directedAtUserId = focalTweet.directedAtUserId,</p>
+<p>inNetwork = focalTweet.inNetwork,</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>favoritedByUserIds = focalTweet.favoritedByUserIds,</p></li>
+<li><p>followedByUserIds = focalTweet.followedByUserIds,</p></li>
+</ul>
+<ul>
+<li><p>sgsValidLikedByUserIds = focalTweet.sgsValidLikedByUserIds,</p></li>
+<li><p>sgsValidFollowedByUserIds = focalTweet.sgsValidFollowedByUserIds,</p>
+<p>topicId = focalTweet.topicId,</p>
+<p>topicFunctionalityType = focalTweet.topicFunctionalityType,</p>
+<p>ancestors = focalTweet.ancestors,</p>
+<p>conversationId = conversationId,</p>
+<p>conversationFocalTweetId = conversationFocalTweetId,</p>
+<p>isReadFromCache = focalTweet.isReadFromCache,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>streamToKafka = focalTweet.streamToKafka</p></li>
+</ul>
+<ul class="simple">
+<li><p>streamToKafka = focalTweet.streamToKafka,</p></li>
+<li><p>exclusiveConversationAuthorId = focalTweet.exclusiveConversationAuthorId,</p></li>
+<li><p>authorIsBlueVerified = focalTweet.authorMetadata.map(_.blueVerified),</p></li>
+<li><p>authorIsGoldVerified = focalTweet.authorMetadata.map(_.goldVerified),</p></li>
+<li><p>authorIsGrayVerified = focalTweet.authorMetadata.map(_.grayVerified),</p></li>
+<li><p>authorIsLegacyVerified = focalTweet.authorMetadata.map(_.legacyVerified),</p></li>
+<li><p>authorIsCreator = focalTweet.authorMetadata.map(_.creator),</p></li>
+<li><p>perspectiveFilteredLikedByUserIds = focalTweet.perspectiveFilteredLikedByUserIds</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>parentScoredTweets :+ focalScoredTweet</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ScoredTweetsProductCandidateSource_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

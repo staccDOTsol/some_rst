@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/ClientEventsBuilder.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/ClientEventsBuilder.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-side-effect-clienteventsbuilder-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-side-effect-clienteventsbuilder-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/ClientEventsBuilder.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/ClientEventsBuilder.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-side-effect-clienteventsbuilder-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-side-effect-clienteventsbuilder-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -77,6 +82,9</p>
+<p>Content:</p>
+<p>index a0233e64e..a5cf739d3 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/ClientEventsBuilder.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/ClientEventsBuilder.scala</p>
+<blockquote>
+<div><p>import com.twitter.conversions.DurationOps._</p>
+<p>import com.twitter.home_mixer.functional_component.decorator.HomeQueryTypePredicates</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.functional_component.decorator.HomeTweetTypePredicates</p>
+<p>+import com.twitter.home_mixer.functional_component.decorator.builder.HomeTweetTypePredicates</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.AccountAgeFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.SuggestTypeFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.VideoDurationMsFeature</p>
+<p>import com.twitter.home_mixer.model.request.FollowingProduct</p>
+<p>import com.twitter.home_mixer.model.request.ForYouProduct</p>
+<p>import com.twitter.home_mixer.model.request.ListTweetsProduct</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.request.SubscribedProduct</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.component_library.side_effect.ScribeClientEventSideEffect.ClientEvent</p>
+<p>import com.twitter.product_mixer.component_library.side_effect.ScribeClientEventSideEffect.EventNamespace</p>
+<p>import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>import com.twitter.timelines.injection.scribe.InjectionScribeUtil</p>
+<p>private[side_effect] sealed trait ClientEventsBuilder {</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>private val FollowingSection = Some(“home_latest”)</p></li>
+</ul>
+<ul>
+<li><p>private val FollowingSection = Some(“latest”)</p>
+<p>private val ForYouSection = Some(“home”)</p>
+<p>private val ListTweetsSection = Some(“list”)</p>
+</li>
+<li><p>private val SubscribedSection = Some(“subscribed”)</p>
+<p>protected def section(query: PipelineQuery): Option[String] = {</p>
+<blockquote>
+<div><p>query.product match {</p>
+<blockquote>
+<div><p>case FollowingProduct =&gt; FollowingSection</p>
+<p>case ForYouProduct =&gt; ForYouSection</p>
+<p>case ListTweetsProduct =&gt; ListTweetsSection</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p>case SubscribedProduct =&gt; SubscribedSection</p>
+<p>case other =&gt; throw new UnsupportedOperationException(s”Unknown product: $other”)</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>}</p>
+</div></blockquote>
+<p>}</p>
+<p>private val InjectedComponent = Some(“injected”)</p>
+<p>private val PromotedComponent = Some(“promoted”)</p>
+<p>private val WhoToFollowComponent = Some(“who_to_follow”)</p>
+</div></blockquote>
+<ul>
+<li><p>private val WhoToSubscribeComponent = Some(“who_to_subscribe”)</p>
+<p>private val WithVideoDurationComponent = Some(“with_video_duration”)</p>
+<p>private val VideoDurationSumElement = Some(“video_duration_sum”)</p>
+<p>private val NumVideosElement = Some(“num_videos”)</p>
+<blockquote>
+<div><p>query: PipelineQuery,</p>
+<p>injectedTweets: Seq[ItemCandidateWithDetails],</p>
+<p>promotedTweets: Seq[ItemCandidateWithDetails],</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>whoToFollowUsers: Seq[ItemCandidateWithDetails]</p></li>
+</ul>
+<ul class="simple">
+<li><p>whoToFollowUsers: Seq[ItemCandidateWithDetails],</p></li>
+<li><p>whoToSubscribeUsers: Seq[ItemCandidateWithDetails]</p></li>
+</ul>
+<blockquote>
+<div><p>): Seq[ClientEvent] = {</p>
+<blockquote>
+<div><p>val baseEventNamespace = EventNamespace(</p>
+<blockquote>
+<div><p>section = section(query),</p>
+<p>ClientEvent(</p>
+<blockquote>
+<div><p>baseEventNamespace.copy(component = WhoToFollowComponent, action = ServedUsersAction),</p>
+<p>eventValue = count(whoToFollowUsers)),</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>ClientEvent(</p></li>
+<li><p>baseEventNamespace.copy(component = WhoToSubscribeComponent, action = ServedUsersAction),</p></li>
+<li><p>eventValue = count(whoToSubscribeUsers)),</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>val tweetTypeServedEvents = HomeTweetTypePredicates.PredicateMap.map {</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ClientEventsBuilder_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

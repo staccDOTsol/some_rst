@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseTransportMarshaller.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseTransportMarshaller.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-marshaller-scoredtweetsresponsetransportmarshaller-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-marshaller-scoredtweetsresponsetransportmarshaller-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseTransportMarshaller.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseTransportMarshaller.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-marshaller-scoredtweetsresponsetransportmarshaller-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-marshaller-scoredtweetsresponsetransportmarshaller-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -16,28 +19,52</p>
+<p>Content:</p>
+<p>index 355f076fe..27486768b 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseTransportMarshaller.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseTransportMarshaller.scala</p>
+<blockquote>
+<div><p>package com.twitter.home_mixer.product.scored_tweets.marshaller</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures._</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.scored_tweets.model.ScoredTweetsResponse</p>
+<p>import com.twitter.home_mixer.{thriftscala =&gt; t}</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.functional_component.marshaller.TransportMarshaller</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.functional_component.marshaller.response.urt.metadata.TopicContextFunctionalityTypeMarshaller</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.model.common.identifier.TransportMarshallerIdentifier</p>
+<p>/**</p>
+<blockquote>
+<div><p>override def apply(input: ScoredTweetsResponse): t.ScoredTweetsResponse = {</p>
+<blockquote>
+<div><p>val scoredTweets = input.scoredTweets.map { tweet =&gt;</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>t.ScoredTweet(</p></li>
+<li><p>tweetId = tweet.tweetId,</p></li>
+<li><p>authorId = tweet.authorId,</p></li>
+<li><p>score = tweet.score,</p></li>
+<li><p>suggestType = Some(tweet.suggestType),</p></li>
+<li><p>sourceTweetId = tweet.sourceTweetId,</p></li>
+<li><p>sourceUserId = tweet.sourceUserId,</p></li>
+<li><p>quotedTweetId = tweet.quotedTweetId,</p></li>
+<li><p>quotedUserId = tweet.quotedUserId,</p></li>
+<li><p>inReplyToTweetId = tweet.inReplyToTweetId,</p></li>
+<li><p>inReplyToUserId = tweet.inReplyToUserId,</p></li>
+<li><p>directedAtUserId = tweet.directedAtUserId,</p></li>
+<li><p>inNetwork = tweet.inNetwork,</p></li>
+<li><p>favoritedByUserIds = tweet.favoritedByUserIds,</p></li>
+<li><p>followedByUserIds = tweet.followedByUserIds,</p></li>
+<li><p>topicId = tweet.topicId,</p></li>
+<li><p>topicFunctionalityType = tweet.topicFunctionalityType,</p></li>
+<li><p>ancestors = tweet.ancestors,</p></li>
+<li><p>isReadFromCache = tweet.isReadFromCache,</p></li>
+<li><p>streamToKafka = tweet.streamToKafka</p></li>
+<li><p>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>mkScoredTweet(tweet.candidateIdLong, tweet.features)</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>}</p>
+<p>t.ScoredTweetsResponse(scoredTweets)</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li></li>
+<li><p>private def mkScoredTweet(tweetId: Long, features: FeatureMap): t.ScoredTweet = {</p></li>
+<li><p>val topicFunctionalityType = features</p></li>
+<li><p>.getOrElse(TopicContextFunctionalityTypeFeature, None)</p></li>
+<li><p>.map(TopicContextFunctionalityTypeMarshaller(_))</p></li>
+<li></li>
+<li><p>t.ScoredTweet(</p></li>
+<li><p>tweetId = tweetId,</p></li>
+<li><p>authorId = features.get(AuthorIdFeature).get,</p></li>
+<li><p>score = features.get(ScoreFeature),</p></li>
+<li><p>suggestType = features.get(SuggestTypeFeature),</p></li>
+<li><p>sourceTweetId = features.getOrElse(SourceTweetIdFeature, None),</p></li>
+<li><p>sourceUserId = features.getOrElse(SourceUserIdFeature, None),</p></li>
+<li><p>quotedTweetId = features.getOrElse(QuotedTweetIdFeature, None),</p></li>
+<li><p>quotedUserId = features.getOrElse(QuotedUserIdFeature, None),</p></li>
+<li><p>inReplyToTweetId = features.getOrElse(InReplyToTweetIdFeature, None),</p></li>
+<li><p>inReplyToUserId = features.getOrElse(InReplyToUserIdFeature, None),</p></li>
+<li><p>directedAtUserId = features.getOrElse(DirectedAtUserIdFeature, None),</p></li>
+<li><p>inNetwork = Some(features.getOrElse(InNetworkFeature, true)),</p></li>
+<li><p>sgsValidLikedByUserIds = Some(features.getOrElse(SGSValidLikedByUserIdsFeature, Seq.empty)),</p></li>
+<li><p>sgsValidFollowedByUserIds =</p></li>
+<li><p>Some(features.getOrElse(SGSValidFollowedByUserIdsFeature, Seq.empty)),</p></li>
+<li><p>topicId = features.getOrElse(TopicIdSocialContextFeature, None),</p></li>
+<li><p>topicFunctionalityType = topicFunctionalityType,</p></li>
+<li><p>ancestors = Some(features.getOrElse(AncestorsFeature, Seq.empty)),</p></li>
+<li><p>isReadFromCache = Some(features.getOrElse(IsReadFromCacheFeature, false)),</p></li>
+<li><p>streamToKafka = Some(features.getOrElse(StreamToKafkaFeature, false)),</p></li>
+<li><p>exclusiveConversationAuthorId =</p></li>
+<li><p>features.getOrElse(ExclusiveConversationAuthorIdFeature, None),</p></li>
+<li><p>authorMetadata = Some(</p></li>
+<li><p>t.AuthorMetadata(</p></li>
+<li><p>blueVerified = features.getOrElse(AuthorIsBlueVerifiedFeature, false),</p></li>
+<li><p>goldVerified = features.getOrElse(AuthorIsGoldVerifiedFeature, false),</p></li>
+<li><p>grayVerified = features.getOrElse(AuthorIsGrayVerifiedFeature, false),</p></li>
+<li><p>legacyVerified = features.getOrElse(AuthorIsLegacyVerifiedFeature, false),</p></li>
+<li><p>creator = features.getOrElse(AuthorIsCreatorFeature, false)</p></li>
+<li><p>)),</p></li>
+<li><p>lastScoredTimestampMs = None,</p></li>
+<li><p>candidatePipelineIdentifier = None,</p></li>
+<li><p>tweetUrls = None,</p></li>
+<li><p>perspectiveFilteredLikedByUserIds =</p></li>
+<li><p>Some(features.getOrElse(PerspectiveFilteredLikedByUserIdsFeature, Seq.empty)),</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ScoredTweetsResponseTransportMarshaller_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

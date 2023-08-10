@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/offline_aggregates/EdgeAggregateFeatures.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/offline_aggregates/EdgeAggregateFeatures.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-offline-aggregates-edgeaggregatefeatures-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-offline-aggregates-edgeaggregatefeatures-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/offline_aggregates/EdgeAggregateFeatures.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/offline_aggregates/EdgeAggregateFeatures.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-offline-aggregates-edgeaggregatefeatures-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-offline-aggregates-edgeaggregatefeatures-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -57,13 +56,25</p>
+<p>Content:</p>
+<p>similarity index 79%</p>
+<blockquote>
+<div><p>rename from home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/offline_aggregates/EdgeAggregateFeatures.scala</p>
+<p>rename to home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/offline_aggregates/EdgeAggregateFeatures.scala</p>
+<p>index d637b3b3d..f769bb980 100644</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/offline_aggregates/EdgeAggregateFeatures.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/offline_aggregates/EdgeAggregateFeatures.scala</p>
+<p>-package com.twitter.home_mixer.functional_component.feature_hydrator.offline_aggregates</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.feature_hydrator.offline_aggregates</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.TSPInferredTopicFeature</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.adapters.offline_aggregates.PassThroughAdapter</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.adapters.offline_aggregates.SparseAggregatesToDenseAdapter</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.adapters.offline_aggregates.PassThroughAdapter</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.adapters.offline_aggregates.SparseAggregatesToDenseAdapter</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.AuthorIdFeature</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.MentionUserIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.MentionScreenNameFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.TopicIdSocialContextFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.TSPInferredTopicFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.util.CandidatesUtil</p>
+<p>import com.twitter.timelines.data_processing.ml_util.aggregation_framework.AggregateType</p>
+<p>import com.twitter.timelines.prediction.common.aggregates.TimelinesAggregationConfig</p>
+<blockquote>
+<div><p>object UserOriginalAuthorAggregateFeature</p>
+<blockquote>
+<div><p>extends BaseEdgeAggregateFeature(</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>aggregateGroups = Set(</p></li>
+<li><p>TimelinesAggregationConfig.userOriginalAuthorReciprocalEngagementAggregates),</p></li>
+</ul>
+<ul>
+<li><p>aggregateGroups = Set(TimelinesAggregationConfig.userOriginalAuthorAggregatesV1),</p>
+<p>aggregateType = AggregateType.UserOriginalAuthor,</p>
+<p>extractMapFn = _.userOriginalAuthorAggregates,</p>
+<p>adapter = PassThroughAdapter,</p>
+<p>extractMapFn = _.userMentionAggregates,</p>
+<p>adapter = new SparseAggregatesToDenseAdapter(CombineCountPolicies.MentionCountsPolicy),</p>
+<p>getSecondaryKeysFn = candidate =&gt;</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>candidate.features.getOrElse(MentionUserIdFeature, Seq.empty)</p></li>
+</ul>
+<ul class="simple">
+<li><p>candidate.features.getOrElse(MentionScreenNameFeature, Seq.empty).map(_.hashCode.toLong)</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>object UserInferredTopicAggregateFeature</p>
+<blockquote>
+<div><p>extends BaseEdgeAggregateFeature(</p>
+<blockquote>
+<div><p>aggregateGroups = Set(</p>
+<blockquote>
+<div><p>TimelinesAggregationConfig.userInferredTopicAggregates,</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>),</p></li>
+<li><p>aggregateType = AggregateType.UserInferredTopic,</p></li>
+<li><p>extractMapFn = _.userInferredTopicAggregates,</p></li>
+<li><p>adapter = new SparseAggregatesToDenseAdapter(</p></li>
+<li><p>CombineCountPolicies.UserInferredTopicCountsPolicy),</p></li>
+<li><p>getSecondaryKeysFn = candidate =&gt;</p></li>
+<li><p>candidate.features.getOrElse(TSPInferredTopicFeature, Map.empty[Long, Double]).keys.toSeq</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>object UserInferredTopicAggregateV2Feature</p></li>
+<li><p>extends BaseEdgeAggregateFeature(</p></li>
+<li><p>aggregateGroups = Set(</p>
+<blockquote>
+<div><p>TimelinesAggregationConfig.userInferredTopicAggregatesV2</p>
+</div></blockquote>
+<p>),</p>
+<p>aggregateType = AggregateType.UserInferredTopic,</p>
+</li>
+</ul>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/EdgeAggregateFeatures_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

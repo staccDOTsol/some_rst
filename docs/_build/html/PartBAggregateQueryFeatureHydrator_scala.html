@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/offline_aggregates/PartBAggregateQueryFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/offline_aggregates/PartBAggregateQueryFeatureHydrator.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-offline-aggregates-partbaggregatequeryfeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-offline-aggregates-partbaggregatequeryfeaturehydrator-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/offline_aggregates/PartBAggregateQueryFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/offline_aggregates/PartBAggregateQueryFeatureHydrator.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-offline-aggregates-partbaggregatequeryfeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-offline-aggregates-partbaggregatequeryfeaturehydrator-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -104,7 +104,7</p>
+<p>Content:</p>
+<p>similarity index 96%</p>
+<blockquote>
+<div><p>rename from home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/offline_aggregates/PartBAggregateQueryFeatureHydrator.scala</p>
+<p>rename to home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/offline_aggregates/PartBAggregateQueryFeatureHydrator.scala</p>
+<p>index 4a00c7ca4..fa0336165 100644</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/offline_aggregates/PartBAggregateQueryFeatureHydrator.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/offline_aggregates/PartBAggregateQueryFeatureHydrator.scala</p>
+<p>-package com.twitter.home_mixer.functional_component.feature_hydrator.offline_aggregates</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.feature_hydrator.offline_aggregates</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.param.HomeMixerInjectionNames.TimelineAggregateMetadataRepository</p>
+<p>import com.twitter.home_mixer.param.HomeMixerInjectionNames.TimelineAggregatePartBRepository</p>
+<blockquote>
+<div><p>aggregateGroups = Set(</p>
+<blockquote>
+<div><p>TimelinesAggregationConfig.userAggregatesV2,</p>
+<p>TimelinesAggregationConfig.userAggregatesV5Continuous,</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>TimelinesAggregationConfig.userReciprocalEngagementAggregates,</p></li>
+</ul>
+<ul>
+<li><p>TimelinesAggregationConfig.userAggregatesV6,</p>
+<p>TimelinesAggregationConfig.twitterWideUserAggregates,</p>
+</li>
+</ul>
+<blockquote>
+<div><p>),</p>
+<p>aggregateType = AggregateType.User</p>
+<blockquote>
+<div><blockquote>
+<div><p>Option(featuresWithMetadata.userRequestHourAggregates.get(hourOfDay))</p>
+<blockquote>
+<div><p>.map(featuresWithMetadata.toDataRecord)</p>
+</div></blockquote>
+</div></blockquote>
+<p>val userRequestDowAggregatesDr =</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>Option(featuresWithMetadata.userRequestHourAggregates.get(dayOfWeek))</p></li>
+</ul>
+<ul>
+<li><p>Option(featuresWithMetadata.userRequestDowAggregates.get(dayOfWeek))</p>
+<blockquote>
+<div><p>.map(featuresWithMetadata.toDataRecord)</p>
+</div></blockquote>
+</li>
+</ul>
+<blockquote>
+<div><p>dropUnknownFeatures(userAggregatesDr, userAggregateFeatureInfo.featureContext)</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/PartBAggregateQueryFeatureHydrator_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

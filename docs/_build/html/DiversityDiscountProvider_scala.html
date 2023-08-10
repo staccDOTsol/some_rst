@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/DiversityDiscountProvider.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/DiversityDiscountProvider.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-diversitydiscountprovider-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-diversitydiscountprovider-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/DiversityDiscountProvider.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/DiversityDiscountProvider.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-diversitydiscountprovider-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-diversitydiscountprovider-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -25,6 +58,6</p>
+<p>Content:</p>
+<p>index aa292e89a..62dea8748 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/DiversityDiscountProvider.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/DiversityDiscountProvider.scala</p>
+<blockquote>
+<div><p>package com.twitter.home_mixer.product.scored_tweets.scorer</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.AuthorIdFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.ScoreFeature</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>import com.twitter.product_mixer.core.model.common.CandidateWithFeatures</p>
+<p>trait DiversityDiscountProvider {</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>/**</p></li>
+<li><ul>
+<li><p>Fetch the ID of the entity to diversify</p></li>
+</ul>
+</li>
+<li><p><a href="#id1"><span class="problematic" id="id2">*</span></a>/</p></li>
+</ul>
+<blockquote>
+<div><p>def entityId(candidate: CandidateWithFeatures[TweetCandidate]): Option[Long]</p>
+<p>/**</p>
+</div></blockquote>
+<ul class="simple">
+<li><ul>
+<li><p>Compute the discounted score for the position</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>&#64;param score the previous score for the candidate</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>&#64;param position zero-based position for the candidate for the given entity</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>&#64;return the discounted score for the candidate</p></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><ul class="simple">
+<li><p>Compute discount factor for each candidate based on position (zero-based)</p></li>
+</ul>
+</li>
+<li><ul class="simple">
+<li><p>relative to other candidates associated with the same entity</p></li>
+</ul>
+</li>
+<li><p><a href="#id3"><span class="problematic" id="id4">*</span></a>/</p></li>
+<li><p>def discount(position: Int): Double</p></li>
+<li></li>
+<li><p>/**</p></li>
+<li><ul class="simple">
+<li><p>Return candidate IDs sorted by score in descending order</p></li>
+</ul>
+<p><a href="#id5"><span class="problematic" id="id6">*</span></a>/</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>def discount(score: Double, position: Int): Double</p></li>
+</ul>
+<ul class="simple">
+<li><p>def sort(candidates: Seq[CandidateWithFeatures[TweetCandidate]]): Seq[Long] = candidates</p></li>
+<li><p>.map { candidate =&gt;</p></li>
+<li><p>(candidate.candidate.id, candidate.features.getOrElse(ScoreFeature, None).getOrElse(0.0))</p></li>
+<li><p>}</p></li>
+<li><p>.sortBy(_._2)(Ordering.Double.reverse)</p></li>
+<li><p>.map(_._1)</p></li>
+<li></li>
+<li><p>/**</p></li>
+<li><ul>
+<li><p>Group by the specified entity ID (e.g. authors, likers, followers)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Sort each group by score in descending order</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Determine the discount factor based on the position of each candidate</p></li>
+</ul>
+</li>
+<li><p><a href="#id7"><span class="problematic" id="id8">*</span></a>/</p></li>
+<li><p>def apply(</p></li>
+<li><p>candidates: Seq[CandidateWithFeatures[TweetCandidate]]</p></li>
+<li><p>): Map[Long, Double] = candidates</p></li>
+<li><p>.groupBy(entityId)</p></li>
+<li><p>.flatMap {</p></li>
+<li><p>case (entityIdOpt, entityCandidates) =&gt;</p></li>
+<li><p>val sortedCandidateIds = sort(entityCandidates)</p></li>
+<li></li>
+<li><p>if (entityIdOpt.isDefined) {</p></li>
+<li><p>sortedCandidateIds.zipWithIndex.map {</p></li>
+<li><p>case (candidateId, index) =&gt;</p></li>
+<li><p>candidateId -&gt; discount(index)</p></li>
+<li><p>}</p></li>
+<li><p>} else sortedCandidateIds.map(_ -&gt; 1.0)</p></li>
+<li><p>}</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>object AuthorDiversityDiscountProvider extends DiversityDiscountProvider {</p>
+<blockquote>
+<div><blockquote>
+<div><p>candidate.features.getOrElse(AuthorIdFeature, None)</p>
+</div></blockquote>
+<p>// Provides an exponential decay based discount by position (with a floor)</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>override def discount(score: Double, position: Int): Double =</p></li>
+<li><p>score * ((1 - Floor) * Math.pow(Decay, position) + Floor)</p></li>
+</ul>
+<ul class="simple">
+<li><p>override def discount(position: Int): Double =</p></li>
+<li><p>(1 - Floor) * Math.pow(Decay, position) + Floor</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/DiversityDiscountProvider_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

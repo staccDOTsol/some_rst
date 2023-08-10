@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/earlybird/EarlybirdResponseTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/earlybird/EarlybirdResponseTransformer.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-earlybird-earlybirdresponsetransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-earlybird-earlybirdresponsetransformer-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/earlybird/EarlybirdResponseTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/earlybird/EarlybirdResponseTransformer.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-earlybird-earlybirdresponsetransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-earlybird-earlybirdresponsetransformer-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -0,0 +1,92</p>
+<p>Content:</p>
+<p>new file mode 100644</p>
+<blockquote>
+<div><p>index 000000000..f0b1b59b1</p>
+<p class="attribution">—/dev/null</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/earlybird/EarlybirdResponseTransformer.scala</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.response_transformer.earlybird</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.CandidateSourceIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.DirectedAtUserIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.EarlybirdScoreFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.EarlybirdSearchResultFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.ExclusiveConversationAuthorIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.FromInNetworkSourceFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.HasImageFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.HasVideoFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InReplyToTweetIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InReplyToUserIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.IsRandomTweetFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.IsRetweetFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.MentionScreenNameFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.MentionUserIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.QuotedTweetIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.QuotedUserIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.SourceTweetIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.SourceUserIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.StreamToKafkaFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.SuggestTypeFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.TweetUrlsFeature</p>
+<p>+import com.twitter.home_mixer.util.tweetypie.content.TweetMediaFeaturesExtractor</p>
+<p>+import com.twitter.product_mixer.core.feature.Feature</p>
+<p>+import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>+import com.twitter.product_mixer.core.feature.featuremap.FeatureMapBuilder</p>
+<p>+import com.twitter.search.earlybird.{thriftscala =&gt; eb}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+object EarlybirdResponseTransformer {</p>
+<ul class="simple">
+<li></li>
+<li><p>val features: Set[Feature[_, _]] = Set(</p></li>
+<li><p>AuthorIdFeature,</p></li>
+<li><p>CandidateSourceIdFeature,</p></li>
+<li><p>DirectedAtUserIdFeature,</p></li>
+<li><p>EarlybirdScoreFeature,</p></li>
+<li><p>EarlybirdSearchResultFeature,</p></li>
+<li><p>ExclusiveConversationAuthorIdFeature,</p></li>
+<li><p>FromInNetworkSourceFeature,</p></li>
+<li><p>HasImageFeature,</p></li>
+<li><p>HasVideoFeature,</p></li>
+<li><p>InReplyToTweetIdFeature,</p></li>
+<li><p>InReplyToUserIdFeature,</p></li>
+<li><p>IsRandomTweetFeature,</p></li>
+<li><p>IsRetweetFeature,</p></li>
+<li><p>MentionScreenNameFeature,</p></li>
+<li><p>MentionUserIdFeature,</p></li>
+<li><p>StreamToKafkaFeature,</p></li>
+<li><p>QuotedTweetIdFeature,</p></li>
+<li><p>QuotedUserIdFeature,</p></li>
+<li><p>SourceTweetIdFeature,</p></li>
+<li><p>SourceUserIdFeature,</p></li>
+<li><p>SuggestTypeFeature,</p></li>
+<li><p>TweetUrlsFeature</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>def transform(candidate: eb.ThriftSearchResult): FeatureMap = {</p></li>
+<li><p>val tweet = candidate.tweetypieTweet</p></li>
+<li><p>val quotedTweet = tweet.flatMap(_.quotedTweet)</p></li>
+<li><p>val mentions = tweet.flatMap(_.mentions).getOrElse(Seq.empty)</p></li>
+<li><p>val coreData = tweet.flatMap(_.coreData)</p></li>
+<li><p>val share = coreData.flatMap(_.share)</p></li>
+<li><p>val reply = coreData.flatMap(_.reply)</p></li>
+<li><p>FeatureMapBuilder()</p></li>
+<li><p>.add(AuthorIdFeature, coreData.map(_.userId))</p></li>
+<li><p>.add(DirectedAtUserIdFeature, coreData.flatMap(_.directedAtUser.map(_.userId)))</p></li>
+<li><p>.add(EarlybirdSearchResultFeature, Some(candidate))</p></li>
+<li><p>.add(EarlybirdScoreFeature, candidate.metadata.flatMap(_.score))</p></li>
+<li><p>.add(</p></li>
+<li><p>ExclusiveConversationAuthorIdFeature,</p></li>
+<li><p>tweet.flatMap(_.exclusiveTweetControl.map(_.conversationAuthorId)))</p></li>
+<li><p>.add(FromInNetworkSourceFeature, false)</p></li>
+<li><p>.add(HasImageFeature, tweet.exists(TweetMediaFeaturesExtractor.hasImage))</p></li>
+<li><p>.add(HasVideoFeature, tweet.exists(TweetMediaFeaturesExtractor.hasVideo))</p></li>
+<li><p>.add(InReplyToTweetIdFeature, reply.flatMap(_.inReplyToStatusId))</p></li>
+<li><p>.add(InReplyToUserIdFeature, reply.map(_.inReplyToUserId))</p></li>
+<li><p>.add(IsRandomTweetFeature, candidate.tweetFeatures.exists(_.isRandomTweet.getOrElse(false)))</p></li>
+<li><p>.add(IsRetweetFeature, share.isDefined)</p></li>
+<li><p>.add(MentionScreenNameFeature, mentions.map(_.screenName))</p></li>
+<li><p>.add(MentionUserIdFeature, mentions.flatMap(_.userId))</p></li>
+<li><p>.add(StreamToKafkaFeature, true)</p></li>
+<li><p>.add(QuotedTweetIdFeature, quotedTweet.map(_.tweetId))</p></li>
+<li><p>.add(QuotedUserIdFeature, quotedTweet.map(_.userId))</p></li>
+<li><p>.add(SourceTweetIdFeature, share.map(_.sourceStatusId))</p></li>
+<li><p>.add(SourceUserIdFeature, share.map(_.sourceUserId))</p></li>
+<li><p>.add(</p></li>
+<li><p>TweetUrlsFeature,</p></li>
+<li><p>candidate.metadata.flatMap(_.tweetUrls.map(_.map(_.originalUrl))).getOrElse(Seq.empty))</p></li>
+<li><p>.build()</p></li>
+<li><p>}</p></li>
+</ul>
+<p>+}</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/EarlybirdResponseTransformer_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

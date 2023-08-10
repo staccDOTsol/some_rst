@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/subscribed/SubscribedEarlybirdQueryTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/subscribed/SubscribedEarlybirdQueryTransformer.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-subscribed-subscribedearlybirdquerytransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-subscribed-subscribedearlybirdquerytransformer-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/subscribed/SubscribedEarlybirdQueryTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/subscribed/SubscribedEarlybirdQueryTransformer.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-subscribed-subscribedearlybirdquerytransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-subscribed-subscribedearlybirdquerytransformer-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -0,0 +1,67</p>
+<p>Content:</p>
+<p>new file mode 100644</p>
+<blockquote>
+<div><p>index 000000000..6e0d57c13</p>
+<p class="attribution">—/dev/null</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/subscribed/SubscribedEarlybirdQueryTransformer.scala</p>
+<p>+package com.twitter.home_mixer.product.subscribed</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+import com.twitter.finagle.thrift.ClientId</p>
+<p>+import com.twitter.finagle.tracing.Trace</p>
+<p>+import com.twitter.home_mixer.product.subscribed.model.SubscribedQuery</p>
+<p>+import com.twitter.home_mixer.product.subscribed.param.SubscribedParam.ServerMaxResultsParam</p>
+<p>+import com.twitter.product_mixer.component_library.feature_hydrator.query.social_graph.SGSSubscribedUsersFeature</p>
+<p>+import com.twitter.product_mixer.core.functional_component.transformer.CandidatePipelineQueryTransformer</p>
+<p>+import com.twitter.product_mixer.core.model.marshalling.response.urt.operation.BottomCursor</p>
+<p>+import com.twitter.product_mixer.core.model.marshalling.response.urt.operation.GapCursor</p>
+<p>+import com.twitter.product_mixer.core.model.marshalling.response.urt.operation.TopCursor</p>
+<p>+import com.twitter.product_mixer.core.pipeline.pipeline_failure.MalformedCursor</p>
+<p>+import com.twitter.product_mixer.core.pipeline.pipeline_failure.PipelineFailure</p>
+<p>+import com.twitter.search.common.schema.earlybird.EarlybirdFieldConstants.EarlybirdFieldConstant</p>
+<p>+import com.twitter.search.earlybird.{thriftscala =&gt; t}</p>
+<p>+import com.twitter.search.queryparser.query.Conjunction</p>
+<p>+import com.twitter.search.queryparser.query.search.SearchOperator</p>
+<p>+import javax.inject.Inject</p>
+<p>+import javax.inject.Singleton</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p><a class="reference external" href="mailto:+&#37;&#52;&#48;Singleton">+<span>&#64;</span>Singleton</a></p>
+<p>+case class SubscribedEarlybirdQueryTransformer &#64;Inject() (clientId: ClientId)</p>
+<ul class="simple">
+<li><p>extends CandidatePipelineQueryTransformer[SubscribedQuery, t.EarlybirdRequest] {</p></li>
+<li></li>
+<li><p>override def transform(query: SubscribedQuery): t.EarlybirdRequest = {</p></li>
+<li><p>val subscribedUserIds =</p></li>
+<li><p>query.features.map(_.get(SGSSubscribedUsersFeature)).getOrElse(Seq.empty)</p></li>
+<li></li>
+<li><p>val subscribedUsersQuery = new SearchOperator.Builder()</p></li>
+<li><p>.setType(SearchOperator.Type.FILTER)</p></li>
+<li><p>.addOperand(EarlybirdFieldConstant.EXCLUSIVE_FILTER_TERM)</p></li>
+<li><p>.build()</p></li>
+<li></li>
+<li><p>val searchQuery = query.pipelineCursor</p></li>
+<li><p>.map { cursor =&gt;</p></li>
+<li><p>val sinceIdQuery =</p></li>
+<li><p>(id: Long) =&gt; new SearchOperator(SearchOperator.Type.SINCE_ID, id.toString)</p></li>
+<li><p>val maxIdQuery = // max ID is inclusive, so subtract 1</p></li>
+<li><p>(id: Long) =&gt; new SearchOperator(SearchOperator.Type.MAX_ID, (id - 1).toString)</p></li>
+<li></li>
+<li><p>(cursor.cursorType, cursor.id, cursor.gapBoundaryId) match {</p></li>
+<li><p>case (Some(TopCursor), Some(sinceId), _) =&gt;</p></li>
+<li><p>new Conjunction(sinceIdQuery(sinceId), subscribedUsersQuery)</p></li>
+<li><p>case (Some(BottomCursor), Some(maxId), _) =&gt;</p></li>
+<li><p>new Conjunction(maxIdQuery(maxId), subscribedUsersQuery)</p></li>
+<li><p>case (Some(GapCursor), Some(maxId), Some(sinceId)) =&gt;</p></li>
+<li><p>new Conjunction(sinceIdQuery(sinceId), maxIdQuery(maxId), subscribedUsersQuery)</p></li>
+<li><p>case (Some(GapCursor), _, _) =&gt;</p></li>
+<li><p>throw PipelineFailure(MalformedCursor, “Invalid cursor “ + cursor.toString)</p></li>
+<li><p>case _ =&gt; subscribedUsersQuery</p></li>
+<li><p>}</p></li>
+<li><p>}.getOrElse(subscribedUsersQuery)</p></li>
+<li></li>
+<li><p>t.EarlybirdRequest(</p></li>
+<li><p>searchQuery = t.ThriftSearchQuery(</p></li>
+<li><p>serializedQuery = Some(searchQuery.serialize),</p></li>
+<li><p>fromUserIDFilter64 = Some(subscribedUserIds),</p></li>
+<li><p>numResults = query.requestedMaxResults.getOrElse(query.params(ServerMaxResultsParam)),</p></li>
+<li><p>rankingMode = t.ThriftSearchRankingMode.Recency,</p></li>
+<li><p>),</p></li>
+<li><p>getOlderResults = Some(true), // needed for archive access to older tweets</p></li>
+<li><p>clientRequestID = Some(s”${Trace.id.traceId}”),</p></li>
+<li><p>numResultsToReturnAtRoot = Some(query.params(ServerMaxResultsParam)),</p></li>
+<li><p>clientId = Some(clientId.name),</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+</ul>
+<p>+}</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/SubscribedEarlybirdQueryTransformer_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

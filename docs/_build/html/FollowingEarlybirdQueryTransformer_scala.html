@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/following/FollowingEarlybirdQueryTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/following/FollowingEarlybirdQueryTransformer.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-following-followingearlybirdquerytransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-following-followingearlybirdquerytransformer-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/following/FollowingEarlybirdQueryTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/following/FollowingEarlybirdQueryTransformer.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-following-followingearlybirdquerytransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-following-followingearlybirdquerytransformer-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -30,7 +30,7</p>
+<p>Content:</p>
+<p>index 9f7dd306e..c388cfa92 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/following/FollowingEarlybirdQueryTransformer.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/following/FollowingEarlybirdQueryTransformer.scala</p>
+<blockquote>
+<div><p>import com.twitter.finagle.thrift.ClientId</p>
+<p>import com.twitter.finagle.tracing.Trace</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.SGSFollowedUsersFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.RealGraphInNetworkScoresFeature</p>
+<p>import com.twitter.home_mixer.product.following.model.FollowingQuery</p>
+<p>import com.twitter.home_mixer.product.following.param.FollowingParam.ServerMaxResultsParam</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.component_library.feature_hydrator.query.social_graph.SGSFollowedUsersFeature</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.functional_component.transformer.CandidatePipelineQueryTransformer</p>
+<p>import com.twitter.product_mixer.core.model.marshalling.response.urt.operation.BottomCursor</p>
+<p>import com.twitter.product_mixer.core.model.marshalling.response.urt.operation.GapCursor</p>
+<blockquote>
+<div><p>val realGraphInNetworkFollowedUserIds =</p>
+<blockquote>
+<div><p>query.features.map(_.get(RealGraphInNetworkScoresFeature)).getOrElse(Map.empty).keySet</p>
+</div></blockquote>
+<p>val userId = query.getRequiredUserId</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>val combinedUserIds = userId +: (followedUserIds ++ realGraphInNetworkFollowedUserIds).toSeq</p></li>
+</ul>
+<ul>
+<li><p>val combinedUserIds = userId +: followedUserIds.toSeq</p>
+<p>val baseFollowedUsersSearchOperator = new SearchOperator.Builder()</p>
+<blockquote>
+<div><p>.setType(SearchOperator.Type.FEATURE_VALUE_IN_ACCEPT_LIST_OR_UNSET)</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/FollowingEarlybirdQueryTransformer_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

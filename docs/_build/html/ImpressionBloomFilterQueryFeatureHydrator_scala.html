@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/ImpressionBloomFilterQueryFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/ImpressionBloomFilterQueryFeatureHydrator.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-impressionbloomfilterqueryfeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-impressionbloomfilterqueryfeaturehydrator-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/ImpressionBloomFilterQueryFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/ImpressionBloomFilterQueryFeatureHydrator.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-impressionbloomfilterqueryfeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-impressionbloomfilterqueryfeaturehydrator-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -19,36 +21,39</p>
+<p>Content:</p>
+<p>index 19b1ab557..6ece16ce0 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/ImpressionBloomFilterQueryFeatureHydrator.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/ImpressionBloomFilterQueryFeatureHydrator.scala</p>
+<blockquote>
+<div><p>import com.twitter.conversions.DurationOps._</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.ImpressionBloomFilterFeature</p>
+<p>import com.twitter.home_mixer.model.request.HasSeenTweetIds</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.param.HomeGlobalParams.ImpressionBloomFilterFalsePositiveRateParam</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.service.HomeMixerAlertConfig</p>
+<p>import com.twitter.product_mixer.core.feature.Feature</p>
+<p>import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.FeatureHydratorIdentifier</p>
+<p>import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+<p>import com.twitter.stitch.Stitch</p>
+</div></blockquote>
+<p>-import com.twitter.timelines.impressionbloomfilter.{thriftscala =&gt; t}</p>
+<p>+import com.twitter.timelines.clients.manhattan.store.ManhattanStoreClient</p>
+<p>+import com.twitter.timelines.impressionbloomfilter.{thriftscala =&gt; blm}</p>
+<blockquote>
+<div><p>import com.twitter.timelines.impressionstore.impressionbloomfilter.ImpressionBloomFilter</p>
+<p>import javax.inject.Inject</p>
+<p>import javax.inject.Singleton</p>
+<p>&#64;Singleton</p>
+<p>case class ImpressionBloomFilterQueryFeatureHydrator[</p>
+<blockquote>
+<div><p>Query &lt;: PipelineQuery with HasSeenTweetIds] &#64;Inject() (</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>bloomFilter: ImpressionBloomFilter)</p></li>
+<li><p>extends QueryFeatureHydrator[Query] {</p></li>
+</ul>
+<ul>
+<li><p>bloomFilterClient: ManhattanStoreClient[</p></li>
+<li><p>blm.ImpressionBloomFilterKey,</p></li>
+<li><p>blm.ImpressionBloomFilterSeq</p></li>
+<li><p>]) extends QueryFeatureHydrator[Query] {</p>
+<p>override val identifier: FeatureHydratorIdentifier = FeatureHydratorIdentifier(</p>
+<blockquote>
+<div><p>“ImpressionBloomFilter”)</p>
+</div></blockquote>
+<p>private val ImpressionBloomFilterTTL = 7.day</p>
+</li>
+</ul>
+<ul>
+<li><p>private val ImpressionBloomFilterFalsePositiveRate = 0.002</p>
+<p>override val features: Set[Feature[_, _]] = Set(ImpressionBloomFilterFeature)</p>
+</li>
+<li><p>private val SurfaceArea = t.SurfaceArea.HomeTimeline</p></li>
+</ul>
+<ul>
+<li><p>private val SurfaceArea = blm.SurfaceArea.HomeTimeline</p>
+<p>override def hydrate(query: Query): Stitch[FeatureMap] = {</p>
+<blockquote>
+<div><p>val userId = query.getRequiredUserId</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>bloomFilter.getBloomFilterSeq(userId, SurfaceArea).map { bloomFilterSeq =&gt;</p></li>
+<li><p>val updatedBloomFilterSeq =</p></li>
+<li><p>if (query.seenTweetIds.forall(_.isEmpty)) bloomFilterSeq</p></li>
+<li><p>else {</p></li>
+<li><p>bloomFilter.addElements(</p></li>
+<li><p>userId = userId,</p></li>
+<li><p>surfaceArea = SurfaceArea,</p></li>
+<li><p>tweetIds = query.seenTweetIds.get,</p></li>
+<li><p>bloomFilterEntrySeq = bloomFilterSeq,</p></li>
+<li><p>timeToLive = ImpressionBloomFilterTTL,</p></li>
+<li><p>falsePositiveRate = ImpressionBloomFilterFalsePositiveRate</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li><p>FeatureMapBuilder().add(ImpressionBloomFilterFeature, updatedBloomFilterSeq).build()</p></li>
+<li><p>}</p></li>
+</ul>
+<ul class="simple">
+<li><p>bloomFilterClient</p></li>
+<li><p>.get(blm.ImpressionBloomFilterKey(userId, SurfaceArea))</p></li>
+<li><p>.map(_.getOrElse(blm.ImpressionBloomFilterSeq(Seq.empty)))</p></li>
+<li><p>.map { bloomFilterSeq =&gt;</p></li>
+<li><p>val updatedBloomFilterSeq =</p></li>
+<li><p>if (query.seenTweetIds.forall(_.isEmpty)) bloomFilterSeq</p></li>
+<li><p>else {</p></li>
+<li><p>ImpressionBloomFilter.addSeenTweetIds(</p></li>
+<li><p>surfaceArea = SurfaceArea,</p></li>
+<li><p>tweetIds = query.seenTweetIds.get,</p></li>
+<li><p>bloomFilterSeq = bloomFilterSeq,</p></li>
+<li><p>timeToLive = ImpressionBloomFilterTTL,</p></li>
+<li><p>falsePositiveRate = query.params(ImpressionBloomFilterFalsePositiveRateParam)</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li><p>FeatureMapBuilder().add(ImpressionBloomFilterFeature, updatedBloomFilterSeq).build()</p></li>
+<li><p>}</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>override val alerts = Seq(</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ImpressionBloomFilterQueryFeatureHydrator_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

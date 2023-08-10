@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/EarlybirdFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/EarlybirdFeatureHydrator.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-earlybirdfeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-earlybirdfeaturehydrator-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/EarlybirdFeatureHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/EarlybirdFeatureHydrator.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-earlybirdfeaturehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-earlybirdfeaturehydrator-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -122,6 +143,7</p>
+<p>Content:</p>
+<p>similarity index 68%</p>
+<blockquote>
+<div><p>rename from home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/EarlybirdFeatureHydrator.scala</p>
+<p>rename to home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/EarlybirdFeatureHydrator.scala</p>
+<p>index 639c3ac37..cc3c2aeeb 100644</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/EarlybirdFeatureHydrator.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/EarlybirdFeatureHydrator.scala</p>
+<p>-package com.twitter.home_mixer.functional_component.feature_hydrator</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.feature_hydrator</p>
+<blockquote>
+<div><p>import com.twitter.finagle.stats.StatsReceiver</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.adapters.earlybird.EarlybirdAdapter</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.adapters.earlybird.EarlybirdAdapter</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.DeviceLanguageFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.EarlybirdFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.EarlybirdSearchResultFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.IsRetweetFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.TweetUrlsFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.UserScreenNameFeature</p>
+<p>import com.twitter.home_mixer.util.ObservedKeyValueResultHandler</p>
+<p>import com.twitter.home_mixer.util.earlybird.EarlybirdResponseUtil</p>
+<p>import com.twitter.ml.api.DataRecord</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.component_library.feature_hydrator.query.social_graph.SGSFollowedUsersFeature</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>import com.twitter.product_mixer.core.feature.Feature</p>
+<p>import com.twitter.product_mixer.core.feature.FeatureWithDefaultOnFailure</p>
+<p>import com.twitter.product_mixer.core.model.common.CandidateWithFeatures</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.FeatureHydratorIdentifier</p>
+<p>import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.util.OffloadFuturePools</p>
+<blockquote>
+<div><p>import com.twitter.search.earlybird.{thriftscala =&gt; eb}</p>
+<p>import com.twitter.servo.keyvalue.KeyValueResult</p>
+<p>import com.twitter.servo.repository.KeyValueRepository</p>
+<blockquote>
+<div><p>override val identifier: FeatureHydratorIdentifier = FeatureHydratorIdentifier(“Earlybird”)</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>override val features: Set[Feature[_, _]] =</p></li>
+<li><p>Set(EarlybirdDataRecordFeature, EarlybirdFeature, TweetUrlsFeature)</p></li>
+</ul>
+<ul>
+<li><p>override val features: Set[Feature[_, _]] = Set(</p></li>
+<li><p>EarlybirdDataRecordFeature,</p></li>
+<li><p>EarlybirdFeature,</p></li>
+<li><p>EarlybirdSearchResultFeature,</p></li>
+<li><p>TweetUrlsFeature</p></li>
+<li><p>)</p>
+<p>override val statScope: String = identifier.toString</p>
+<p>private val originalKeyFoundCounter = scopedStatsReceiver.counter(“originalKey/found”)</p>
+<p>private val originalKeyLossCounter = scopedStatsReceiver.counter(“originalKey/loss”)</p>
+</li>
+<li><p>private val ebSearchResultNotExistPredicate: CandidateWithFeatures[TweetCandidate] =&gt; Boolean =</p></li>
+<li><p>candidate =&gt; candidate.features.getOrElse(EarlybirdSearchResultFeature, None).isEmpty</p></li>
+</ul>
+<blockquote>
+<div><p>private val ebFeaturesNotExistPredicate: CandidateWithFeatures[TweetCandidate] =&gt; Boolean =</p>
+<blockquote>
+<div><p>candidate =&gt; candidate.features.getOrElse(EarlybirdFeature, None).isEmpty</p>
+</div></blockquote>
+<p>override def apply(</p>
+<blockquote>
+<div><p>query: PipelineQuery,</p>
+<p>candidates: Seq[CandidateWithFeatures[TweetCandidate]]</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>): Stitch[Seq[FeatureMap]] = {</p></li>
+</ul>
+<ul>
+<li><p>): Stitch[Seq[FeatureMap]] = OffloadFuturePools.offloadFuture {</p>
+<blockquote>
+<div><p>val candidatesToHydrate = candidates.filter { candidate =&gt;</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>val isEmpty = ebFeaturesNotExistPredicate(candidate)</p></li>
+</ul>
+<ul class="simple">
+<li><p>val isEmpty =</p></li>
+<li><p>ebFeaturesNotExistPredicate(candidate) &amp;&amp; ebSearchResultNotExistPredicate(candidate)</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>if (isEmpty) originalKeyLossCounter.incr() else originalKeyFoundCounter.incr()</p>
+<p>isEmpty</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Stitch</p></li>
+<li><p>.callFuture(client((candidatesToHydrate.map(_.candidate.id), query.getRequiredUserId)))</p></li>
+<li><p>.map(handleResponse(query, candidates, _))</p></li>
+</ul>
+<ul class="simple">
+<li></li>
+<li><p>client((candidatesToHydrate.map(_.candidate.id), query.getRequiredUserId))</p></li>
+<li><p>.map(handleResponse(query, candidates, _, candidatesToHydrate))</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>private def handleResponse(</p>
+<blockquote>
+<div><p>query: PipelineQuery,</p>
+<p>candidates: Seq[CandidateWithFeatures[TweetCandidate]],</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>results: KeyValueResult[Long, eb.ThriftSearchResult]</p></li>
+</ul>
+<ul class="simple">
+<li><p>results: KeyValueResult[Long, eb.ThriftSearchResult],</p></li>
+<li><p>candidatesToHydrate: Seq[CandidateWithFeatures[TweetCandidate]]</p></li>
+</ul>
+<blockquote>
+<div><p>): Seq[FeatureMap] = {</p>
+<blockquote>
+<div><p>val queryFeatureMap = query.features.getOrElse(FeatureMap.empty)</p>
+<p>val userLanguages = queryFeatureMap.getOrElse(UserLanguagesFeature, Seq.empty)</p>
+<p>val uiLanguageCode = queryFeatureMap.getOrElse(DeviceLanguageFeature, None)</p>
+<p>val screenName = queryFeatureMap.getOrElse(UserScreenNameFeature, None)</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>val followedUserIds = queryFeatureMap.getOrElse(SGSFollowedUsersFeature, Seq.empty).toSet</p></li>
+</ul>
+<ul class="simple">
+<li><p>val searchResults = candidates</p></li>
+<li><p>.filter(ebFeaturesNotExistPredicate).map { candidate =&gt;</p></li>
+</ul>
+<ul>
+<li><p>val searchResults = candidatesToHydrate</p></li>
+<li><p>.map { candidate =&gt;</p>
+<blockquote>
+<div><p>observedGet(Some(candidate.candidate.id), results)</p>
+</div></blockquote>
+<p>}.collect {</p>
+<blockquote>
+<div><p>case Return(Some(value)) =&gt; value</p>
+</div></blockquote>
+<p>}</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>val tweetIdToEbFeatures = EarlybirdResponseUtil.getOONTweetThriftFeaturesByTweetId(</p></li>
+</ul>
+<ul>
+<li><p>val allSearchResults = searchResults ++</p></li>
+<li><p>candidates.filter(!ebSearchResultNotExistPredicate(_)).flatMap { candidate =&gt;</p></li>
+<li><p>candidate.features</p></li>
+<li><p>.getOrElse(EarlybirdSearchResultFeature, None)</p></li>
+<li><p>}</p></li>
+<li><p>val idToSearchResults = allSearchResults.map(sr =&gt; sr.id -&gt; sr).toMap</p></li>
+<li><p>val tweetIdToEbFeatures = EarlybirdResponseUtil.getTweetThriftFeaturesByTweetId(</p>
+<blockquote>
+<div><p>searcherUserId = query.getRequiredUserId,</p>
+<p>screenName = screenName,</p>
+<p>userLanguages = userLanguages,</p>
+<p>uiLanguageCode = uiLanguageCode,</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>searchResults = searchResults</p></li>
+</ul>
+<ul class="simple">
+<li><p>followedUserIds = followedUserIds,</p></li>
+<li><p>mutuallyFollowingUserIds = Set.empty,</p></li>
+<li><p>searchResults = allSearchResults,</p></li>
+<li><p>sourceTweetSearchResults = Seq.empty,</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>candidates.map { candidate =&gt;</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>val hydratedEbFeatures = tweetIdToEbFeatures.get(candidate.candidate.id)</p></li>
+</ul>
+<ul>
+<li><p>val transformedEbFeatures = tweetIdToEbFeatures.get(candidate.candidate.id)</p>
+<p>val earlybirdFeatures =</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>if (hydratedEbFeatures.nonEmpty) hydratedEbFeatures</p></li>
+</ul>
+<ul>
+<li><p>if (transformedEbFeatures.nonEmpty) transformedEbFeatures</p>
+<p>else candidate.features.getOrElse(EarlybirdFeature, None)</p>
+</li>
+</ul>
+<blockquote>
+<div><p>val candidateIsRetweet = candidate.features.getOrElse(IsRetweetFeature, false)</p>
+<p>FeatureMapBuilder()</p>
+<blockquote>
+<div><p>.add(EarlybirdFeature, earlybirdFeatures)</p>
+<p>.add(EarlybirdDataRecordFeature, earlybirdDataRecord)</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>.add(EarlybirdSearchResultFeature, idToSearchResults.get(candidate.candidate.id))</p>
+<p>.add(TweetUrlsFeature, earlybirdFeatures.flatMap(_.urlsList).getOrElse(Seq.empty))</p>
+<p>.build()</p>
+</li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/EarlybirdFeatureHydrator_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

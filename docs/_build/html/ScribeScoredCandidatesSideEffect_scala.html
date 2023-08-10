@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/ScribeScoredCandidatesSideEffect.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/ScribeScoredCandidatesSideEffect.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-scribescoredcandidatessideeffect-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-scribescoredcandidatessideeffect-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/ScribeScoredCandidatesSideEffect.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/ScribeScoredCandidatesSideEffect.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-scribescoredcandidatessideeffect-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-scribescoredcandidatessideeffect-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -0,0 +1,126</p>
+<p>Content:</p>
+<p>new file mode 100644</p>
+<blockquote>
+<div><p>index 000000000..ef7e3b41a</p>
+<p class="attribution">—/dev/null</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/ScribeScoredCandidatesSideEffect.scala</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.side_effect</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+import com.twitter.finagle.tracing.Trace</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AncestorsFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.DirectedAtUserIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.EarlybirdScoreFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.FavoritedByUserIdsFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.FollowedByUserIdsFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.FromInNetworkSourceFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InReplyToTweetIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InReplyToUserIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.QuotedTweetIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.QuotedUserIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.RequestJoinIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.ScoreFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.SuggestTypeFeature</p>
+<p>+import com.twitter.home_mixer.param.HomeMixerFlagName.ScribeScoredCandidatesFlag</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.model.ScoredTweetsQuery</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.model.ScoredTweetsResponse</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.EnableScribeScoredCandidatesParam</p>
+<p>+import com.twitter.inject.annotations.Flag</p>
+<p>+import com.twitter.logpipeline.client.common.EventPublisher</p>
+<p>+import com.twitter.product_mixer.component_library.side_effect.ScribeLogEventSideEffect</p>
+<p>+import com.twitter.product_mixer.core.feature.Feature</p>
+<p>+import com.twitter.product_mixer.core.functional_component.side_effect.PipelineResultSideEffect</p>
+<p>+import com.twitter.product_mixer.core.model.common.identifier.SideEffectIdentifier</p>
+<p>+import com.twitter.product_mixer.core.model.common.presentation.CandidatePipelines</p>
+<p>+import com.twitter.product_mixer.core.model.common.presentation.CandidateWithDetails</p>
+<p>+import com.twitter.timelines.timeline_logging.{thriftscala =&gt; t}</p>
+<p>+import javax.inject.Inject</p>
+<p>+import javax.inject.Singleton</p>
+<p>+import com.twitter.util.logging.Logging</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+/**</p>
+<ul class="simple">
+<li><ul>
+<li><p>Side effect that logs scored candidates from scoring pipelines</p></li>
+</ul>
+</li>
+<li><p><a href="#id1"><span class="problematic" id="id2">*</span></a>/</p></li>
+</ul>
+<p><a class="reference external" href="mailto:+&#37;&#52;&#48;Singleton">+<span>&#64;</span>Singleton</a></p>
+<p>+class ScribeScoredCandidatesSideEffect &#64;Inject() (</p>
+<ul class="simple">
+<li><p>&#64;Flag(ScribeScoredCandidatesFlag) enableScribeScoredCandidates: Boolean,</p></li>
+<li><p>eventBusPublisher: EventPublisher[t.ScoredCandidate])</p></li>
+<li><p>extends ScribeLogEventSideEffect[</p></li>
+<li><p>t.ScoredCandidate,</p></li>
+<li><p>ScoredTweetsQuery,</p></li>
+<li><p>ScoredTweetsResponse</p></li>
+<li><p>]</p></li>
+<li><p>with PipelineResultSideEffect.Conditionally[</p></li>
+<li><p>ScoredTweetsQuery,</p></li>
+<li><p>ScoredTweetsResponse</p></li>
+<li><p>]</p></li>
+<li><p>with Logging {</p></li>
+<li></li>
+<li><p>override val identifier: SideEffectIdentifier =</p></li>
+<li><p>SideEffectIdentifier(“ScribeScoredCandidates”)</p></li>
+<li></li>
+<li><p>override def onlyIf(</p></li>
+<li><p>query: ScoredTweetsQuery,</p></li>
+<li><p>selectedCandidates: Seq[CandidateWithDetails],</p></li>
+<li><p>remainingCandidates: Seq[CandidateWithDetails],</p></li>
+<li><p>droppedCandidates: Seq[CandidateWithDetails],</p></li>
+<li><p>response: ScoredTweetsResponse</p></li>
+<li><p>): Boolean = enableScribeScoredCandidates &amp;&amp; query.params(EnableScribeScoredCandidatesParam)</p></li>
+<li></li>
+<li><p>/**</p></li>
+<li><ul>
+<li><p>Build the log events from query, selections and response</p></li>
+</ul>
+</li>
+<li><ul>
+<li></li>
+</ul>
+</li>
+<li><ul>
+<li><p>&#64;param query               PipelineQuery</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>&#64;param selectedCandidates  Result after Selectors are executed</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>&#64;param remainingCandidates Candidates which were not selected</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>&#64;param droppedCandidates   Candidates dropped during selection</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>&#64;param response            Result after Unmarshalling</p></li>
+</ul>
+</li>
+<li><ul>
+<li></li>
+</ul>
+</li>
+<li><ul>
+<li><p>&#64;return LogEvent in thrift</p></li>
+</ul>
+</li>
+<li><p><a href="#id3"><span class="problematic" id="id4">*</span></a>/</p></li>
+<li><p>override def buildLogEvents(</p></li>
+<li><p>query: ScoredTweetsQuery,</p></li>
+<li><p>selectedCandidates: Seq[CandidateWithDetails],</p></li>
+<li><p>remainingCandidates: Seq[CandidateWithDetails],</p></li>
+<li><p>droppedCandidates: Seq[CandidateWithDetails],</p></li>
+<li><p>response: ScoredTweetsResponse</p></li>
+<li><p>): Seq[t.ScoredCandidate] = {</p></li>
+<li><p>val returned = (selectedCandidates ++ remainingCandidates).map(toThrift(_, query, false))</p></li>
+<li><p>val dropped = droppedCandidates.map(toThrift(_, query, true))</p></li>
+<li><p>returned ++ dropped</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private def toThrift(</p></li>
+<li><p>candidate: CandidateWithDetails,</p></li>
+<li><p>query: ScoredTweetsQuery,</p></li>
+<li><p>isDropped: Boolean</p></li>
+<li><p>): t.ScoredCandidate = {</p></li>
+<li><p>t.ScoredCandidate(</p></li>
+<li><p>tweetId = candidate.candidateIdLong,</p></li>
+<li><p>viewerId = query.getOptionalUserId,</p></li>
+<li><p>authorId = candidate.features.getOrElse(AuthorIdFeature, None),</p></li>
+<li><p>traceId = Some(Trace.id.traceId.toLong),</p></li>
+<li><p>requestJoinId = query.features.flatMap(_.getOrElse(RequestJoinIdFeature, None)),</p></li>
+<li><p>score = candidate.features.getOrElse(ScoreFeature, None),</p></li>
+<li><p>suggestType = candidate.features.getOrElse(SuggestTypeFeature, None).map(_.name),</p></li>
+<li><p>isInNetwork = candidate.features.getTry(FromInNetworkSourceFeature).toOption,</p></li>
+<li><p>inReplyToTweetId = candidate.features.getOrElse(InReplyToTweetIdFeature, None),</p></li>
+<li><p>inReplyToUserId = candidate.features.getOrElse(InReplyToUserIdFeature, None),</p></li>
+<li><p>quotedTweetId = candidate.features.getOrElse(QuotedTweetIdFeature, None),</p></li>
+<li><p>quotedUserId = candidate.features.getOrElse(QuotedUserIdFeature, None),</p></li>
+<li><p>directedAtUserId = candidate.features.getOrElse(DirectedAtUserIdFeature, None),</p></li>
+<li><p>favoritedByUserIds = convertSeqFeature(candidate, FavoritedByUserIdsFeature),</p></li>
+<li><p>followedByUserIds = convertSeqFeature(candidate, FollowedByUserIdsFeature),</p></li>
+<li><p>ancestors = convertSeqFeature(candidate, AncestorsFeature),</p></li>
+<li><p>requestTimeMs = Some(query.queryTime.inMilliseconds),</p></li>
+<li><p>candidatePipelineIdentifier =</p></li>
+<li><p>candidate.features.getTry(CandidatePipelines).toOption.map(_.head.name),</p></li>
+<li><p>earlybirdScore = candidate.features.getOrElse(EarlybirdScoreFeature, None),</p></li>
+<li><p>isDropped = Some(isDropped)</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private def convertSeqFeature[T](</p></li>
+<li><p>candidateWithDetails: CandidateWithDetails,</p></li>
+<li><p>feature: Feature[_, Seq[T]]</p></li>
+<li><p>): Option[Seq[T]] =</p></li>
+<li><p>Option(</p></li>
+<li><p>candidateWithDetails.features</p></li>
+<li><p>.getOrElse(feature, Seq.empty)).filter(_.nonEmpty)</p></li>
+<li></li>
+<li><p>override val logPipelinePublisher: EventPublisher[t.ScoredCandidate] = eventBusPublisher</p></li>
+</ul>
+<p>+}</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ScribeScoredCandidatesSideEffect_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

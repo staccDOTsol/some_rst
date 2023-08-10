@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/real_time_aggregates/BaseRealtimeAggregateHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/real_time_aggregates/BaseRealtimeAggregateHydrator.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-real-time-aggregates-baserealtimeaggregatehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-real-time-aggregates-baserealtimeaggregatehydrator-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/real_time_aggregates/BaseRealtimeAggregateHydrator.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/real_time_aggregates/BaseRealtimeAggregateHydrator.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-feature-hydrator-real-time-aggregates-baserealtimeaggregatehydrator-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-real-time-aggregates-baserealtimeaggregatehydrator-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -129,26 +135,4</p>
+<p>Content:</p>
+<p>similarity index 68%</p>
+<blockquote>
+<div><p>rename from home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/real_time_aggregates/BaseRealtimeAggregateHydrator.scala</p>
+<p>rename to home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/real_time_aggregates/BaseRealtimeAggregateHydrator.scala</p>
+<p>index 004312f2f..f97820be0 100644</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/feature_hydrator/real_time_aggregates/BaseRealtimeAggregateHydrator.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/real_time_aggregates/BaseRealtimeAggregateHydrator.scala</p>
+<p>-package com.twitter.home_mixer.functional_component.feature_hydrator.real_time_aggregates</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.feature_hydrator.real_time_aggregates</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.real_time_aggregates.BaseRealtimeAggregateHydrator._</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.real_time_aggregates.BaseRealtimeAggregateHydrator._</p>
+<p>+import com.twitter.home_mixer.util.DataRecordUtil</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.util.ObservedKeyValueResultHandler</p>
+<p>import com.twitter.ml.api.DataRecord</p>
+<p>import com.twitter.ml.api.DataRecordMerger</p>
+<p>import com.twitter.ml.api.FeatureContext</p>
+</div></blockquote>
+<p>+import com.twitter.ml.api.constant.SharedFeatures</p>
+<blockquote>
+<div><p>import com.twitter.ml.api.util.SRichDataRecord</p>
+<p>import com.twitter.ml.api.{Feature =&gt; MLApiFeature}</p>
+<p>import com.twitter.servo.cache.ReadCache</p>
+<p>import com.twitter.servo.keyvalue.KeyValueResult</p>
+</div></blockquote>
+<p>-import com.twitter.stitch.Stitch</p>
+<blockquote>
+<div><p>import com.twitter.timelines.data_processing.ml_util.aggregation_framework.AggregateGroup</p>
+<p>import com.twitter.util.Future</p>
+<p>import com.twitter.util.Time</p>
+<p>import com.twitter.util.Try</p>
+</div></blockquote>
+<p>-import scala.collection.JavaConverters._</p>
+<blockquote>
+<div><p>import java.lang.{Double =&gt; JDouble}</p>
+</div></blockquote>
+<p>+import scala.collection.JavaConverters._</p>
+<blockquote>
+<div><p>trait BaseRealtimeAggregateHydrator[K] extends ObservedKeyValueResultHandler {</p>
+<blockquote>
+<div><p>private lazy val featureContexts: Seq[FeatureContext] = typedAggregateGroupsList.map {</p>
+<blockquote>
+<div><p>typedAggregateGroups =&gt;</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>new FeatureContext(typedAggregateGroups.flatMap(_.allOutputFeatures).asJava)</p></li>
+</ul>
+<ul class="simple">
+<li><p>new FeatureContext(</p></li>
+<li><p>(SharedFeatures.TIMESTAMP +: typedAggregateGroups.flatMap(_.allOutputFeatures)).asJava</p></li>
+<li><p>)</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>private lazy val aggregateFeaturesRenameMap: Map[MLApiFeature[_], MLApiFeature[_]] = {</p>
+<blockquote>
+<div><p>featureContexts.zip(renamedFeatureContexts).zip(decays).foreach {</p>
+<blockquote>
+<div><p>case ((featureContext, renamedFeatureContext), decay) =&gt;</p>
+<blockquote>
+<div><p>val decayedDr = applyDecay(dr, featureContext, decay)</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>val renamedDr = applyRename(</p></li>
+</ul>
+<ul>
+<li><p>val renamedDr = DataRecordUtil.applyRename(</p>
+<blockquote>
+<div><p>dataRecord = decayedDr,</p>
+<p>featureContext,</p>
+<p>renamedFeatureContext,</p>
+</div></blockquote>
+<p>drMerger.merge(newDr, renamedDr)</p>
+</li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>newDr</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>case _ =&gt;</p></li>
+<li><p>new DataRecord</p></li>
+</ul>
+<ul class="simple">
+<li><p>case _ =&gt; new DataRecord</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>}</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>def fetchAndConstructDataRecords(possiblyKeys: Seq[Option[K]]): Stitch[Seq[Try[DataRecord]]] = {</p></li>
+<li><p>Stitch.callFuture {</p></li>
+<li><p>val keys = possiblyKeys.flatten</p></li>
+</ul>
+<ul class="simple">
+<li><p>def fetchAndConstructDataRecords(possiblyKeys: Seq[Option[K]]): Future[Seq[Try[DataRecord]]] = {</p></li>
+<li><p>val keys = possiblyKeys.flatten</p></li>
+</ul>
+<ul class="simple">
+<li><p>val response: Future[KeyValueResult[K, DataRecord]] =</p></li>
+<li><p>if (keys.isEmpty) {</p></li>
+<li><p>Future.value(KeyValueResult.empty)</p></li>
+<li><p>} else {</p></li>
+<li><p>client.get(keys)</p></li>
+<li><p>}</p></li>
+</ul>
+<ul class="simple">
+<li><p>val response: Future[KeyValueResult[K, DataRecord]] =</p></li>
+<li><p>if (keys.isEmpty) Future.value(KeyValueResult.empty)</p></li>
+<li><p>else {</p></li>
+<li><p>val batchResponses = keys</p></li>
+<li><p>.grouped(RequestBatchSize)</p></li>
+<li><p>.map(keyGroup =&gt; client.get(keyGroup))</p></li>
+<li><p>.toSeq</p></li>
+</ul>
+<ul class="simple">
+<li><p>response.map { result =&gt;</p></li>
+<li><p>possiblyKeys.map { possiblyKey =&gt;</p></li>
+<li><p>val value = observedGet(key = possiblyKey, keyValueResult = result)</p></li>
+<li><p>postTransformer(value)</p></li>
+<li><p>}</p></li>
+</ul>
+<ul class="simple">
+<li><p>Future.collect(batchResponses).map(_.reduce(_ ++ _))</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>response.map { result =&gt;</p></li>
+<li><p>possiblyKeys.map { possiblyKey =&gt;</p></li>
+<li><p>val value = observedGet(key = possiblyKey, keyValueResult = result)</p></li>
+<li><p>postTransformer(value)</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>}</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+<p>object BaseRealtimeAggregateHydrator {</p>
+</div></blockquote>
+<ul>
+<li><p>private val RequestBatchSize = 5</p></li>
+<li><p>type TimeDecay = scala.Function2[com.twitter.ml.api.DataRecord, scala.Long, scala.Unit]</p>
+<p>private def applyDecay(</p>
+<blockquote>
+<div><p>decay(resultDr, time)</p>
+<p>resultDr</p>
+</div></blockquote>
+<p>}</p>
+</li>
+</ul>
+<ul class="simple">
+<li></li>
+<li><p>private def applyRename(</p></li>
+<li><p>dataRecord: DataRecord,</p></li>
+<li><p>featureContext: FeatureContext,</p></li>
+<li><p>renamedFeatureContext: FeatureContext,</p></li>
+<li><p>featureRenamingMap: Map[MLApiFeature[_], MLApiFeature[_]]</p></li>
+<li><p>): DataRecord = {</p></li>
+<li><p>val richFullDr = new SRichDataRecord(dataRecord, featureContext)</p></li>
+<li><p>val richNewDr = new SRichDataRecord(new DataRecord, renamedFeatureContext)</p></li>
+<li><p>val featureIterator = featureContext.iterator()</p></li>
+<li><p>featureIterator.forEachRemaining { feature =&gt;</p></li>
+<li><p>if (richFullDr.hasFeature(feature)) {</p></li>
+<li><p>val renamedFeature = featureRenamingMap.getOrElse(feature, feature)</p></li>
+<li></li>
+<li><p>val typedFeature = feature.asInstanceOf[MLApiFeature[JDouble]]</p></li>
+<li><p>val typedRenamedFeature = renamedFeature.asInstanceOf[MLApiFeature[JDouble]]</p></li>
+<li></li>
+<li><p>richNewDr.setFeatureValue(typedRenamedFeature, richFullDr.getFeatureValue(typedFeature))</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li><p>richNewDr.getRecord</p></li>
+<li><p>}</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/BaseRealtimeAggregateHydrator_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

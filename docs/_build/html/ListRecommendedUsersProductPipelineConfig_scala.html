@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersProductPipelineConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersProductPipelineConfig.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-list-recommended-users-listrecommendedusersproductpipelineconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-list-recommended-users-listrecommendedusersproductpipelineconfig-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersProductPipelineConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersProductPipelineConfig.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-list-recommended-users-listrecommendedusersproductpipelineconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-list-recommended-users-listrecommendedusersproductpipelineconfig-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -75,5 +84,19</p>
+<p>Content:</p>
+<p>index e20bb8aec..f0c2ac70e 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersProductPipelineConfig.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersProductPipelineConfig.scala</p>
+<blockquote>
+<div><p>package com.twitter.home_mixer.product.list_recommended_users</p>
+</div></blockquote>
+<p>+import com.twitter.conversions.DurationOps._</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.marshaller.timelines.RecommendedUsersCursorUnmarshaller</p>
+<p>import com.twitter.home_mixer.model.request.HomeMixerRequest</p>
+<p>import com.twitter.home_mixer.model.request.ListRecommendedUsersProduct</p>
+<p>import com.twitter.home_mixer.product.list_recommended_users.param.ListRecommendedUsersParam.ServerMaxResultsParam</p>
+<p>import com.twitter.home_mixer.product.list_recommended_users.param.ListRecommendedUsersParamConfig</p>
+<p>import com.twitter.home_mixer.service.HomeMixerAccessPolicy.DefaultHomeMixerAccessPolicy</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.service.HomeMixerAlertConfig.DefaultNotificationGroup</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.component_library.premarshaller.cursor.UrtCursorSerializer</p>
+<p>import com.twitter.product_mixer.core.functional_component.common.access_policy.AccessPolicy</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.functional_component.common.alert.predicate.TriggerIfBelow</p>
+<p>+import com.twitter.product_mixer.core.functional_component.common.alert.predicate.TriggerIfLatencyAbove</p>
+<p>+import com.twitter.product_mixer.core.functional_component.common.alert.Alert</p>
+<p>+import com.twitter.product_mixer.core.functional_component.common.alert.LatencyAlert</p>
+<p>+import com.twitter.product_mixer.core.functional_component.common.alert.P99</p>
+<p>+import com.twitter.product_mixer.core.functional_component.common.alert.SuccessRateAlert</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.model.common.identifier.ComponentIdentifier</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.ProductPipelineIdentifier</p>
+<p>import com.twitter.product_mixer.core.model.marshalling.request</p>
+<blockquote>
+<div><p>requestedMaxResults = Some(params(ServerMaxResultsParam)),</p>
+<p>debugOptions = debugOptions,</p>
+<p>selectedUserIds = context.selectedUserIds,</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>excludedUserIds = context.excludedUserIds</p></li>
+</ul>
+<ul class="simple">
+<li><p>excludedUserIds = context.excludedUserIds,</p></li>
+<li><p>listName = context.listName</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>}</p>
+<p>override def pipelineSelector(query: ListRecommendedUsersQuery): ComponentIdentifier =</p>
+<blockquote>
+<div><p>listRecommendedUsersMixerPipelineConfig.identifier</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>override val alerts: Seq[Alert] = Seq(</p></li>
+<li><p>SuccessRateAlert(</p></li>
+<li><p>notificationGroup = DefaultNotificationGroup,</p></li>
+<li><p>warnPredicate = TriggerIfBelow(99.9, 20, 30),</p></li>
+<li><p>criticalPredicate = TriggerIfBelow(99.9, 30, 30),</p></li>
+<li><p>),</p></li>
+<li><p>LatencyAlert(</p></li>
+<li><p>notificationGroup = DefaultNotificationGroup,</p></li>
+<li><p>percentile = P99,</p></li>
+<li><p>warnPredicate = TriggerIfLatencyAbove(1000.millis, 15, 30),</p></li>
+<li><p>criticalPredicate = TriggerIfLatencyAbove(1500.millis, 15, 30)</p></li>
+<li><p>)</p></li>
+<li><p>)</p></li>
+<li><blockquote>
+<div><p>override val debugAccessPolicies: Set[AccessPolicy] = DefaultHomeMixerAccessPolicy</p>
+</div></blockquote>
+<p>}</p>
+</li>
+</ul>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ListRecommendedUsersProductPipelineConfig_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

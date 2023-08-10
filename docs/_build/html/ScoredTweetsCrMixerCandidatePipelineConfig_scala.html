@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/candidate_pipeline/ScoredTweetsCrMixerCandidatePipelineConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/candidate_pipeline/ScoredTweetsTweetMixerCandidatePipelineConfig.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-candidate-pipeline-scoredtweetscrmixercandidatepipelineconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-candidate-pipeline-scoredtweetstweetmixercandidatepipelineconfig-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/candidate_pipeline/ScoredTweetsCrMixerCandidatePipelineConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/candidate_pipeline/ScoredTweetsTweetMixerCandidatePipelineConfig.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-candidate-pipeline-scoredtweetscrmixercandidatepipelineconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-candidate-pipeline-scoredtweetstweetmixercandidatepipelineconfig-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -92,7 +94,7</p>
+<p>Content:</p>
+<p>similarity index 70%</p>
+<blockquote>
+<div><p>rename from home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/candidate_pipeline/ScoredTweetsCrMixerCandidatePipelineConfig.scala</p>
+<p>rename to home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/candidate_pipeline/ScoredTweetsTweetMixerCandidatePipelineConfig.scala</p>
+<p>index 1ec9353f8..df16e3f11 100644</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/candidate_pipeline/ScoredTweetsCrMixerCandidatePipelineConfig.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/candidate_pipeline/ScoredTweetsTweetMixerCandidatePipelineConfig.scala</p>
+<blockquote>
+<div><p>package com.twitter.home_mixer.product.scored_tweets.candidate_pipeline</p>
+</div></blockquote>
+<p>-import com.twitter.cr_mixer.{thriftscala =&gt; t}</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.TweetypieStaticEntitiesFeatureHydrator</p>
+<p>-import com.twitter.home_mixer.functional_component.filter.PredicateFeatureFilter</p>
+<p>-import com.twitter.home_mixer.functional_component.gate.MinCachedTweetsGate</p>
+<p>+import com.twitter.tweet_mixer.{thriftscala =&gt; t}</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.AuthorIdFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.TweetypieStaticEntitiesFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.gate.MinCachedTweetsGate</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.scored_tweets.model.ScoredTweetsQuery</p>
+<p>import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.CachedScoredTweets</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.CrMixerSource</p>
+<p>-import com.twitter.home_mixer.product.scored_tweets.response_transformer.ScoredTweetsCrMixerResponseFeatureTransformer</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.CandidatePipeline</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.response_transformer.ScoredTweetsTweetMixerResponseFeatureTransformer</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.util.CachedScoredTweetsHelper</p>
+</div></blockquote>
+<p>-import com.twitter.product_mixer.component_library.candidate_source.cr_mixer.CrMixerTweetRecommendationsCandidateSource</p>
+<p>+import com.twitter.product_mixer.component_library.candidate_source.tweet_mixer.TweetMixerCandidateSource</p>
+<p>+import com.twitter.product_mixer.component_library.filter.PredicateFeatureFilter</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>import com.twitter.product_mixer.core.functional_component.candidate_source.BaseCandidateSource</p>
+<p>import com.twitter.product_mixer.core.functional_component.feature_hydrator.BaseCandidateFeatureHydrator</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.FilterIdentifier</p>
+<p>import com.twitter.product_mixer.core.pipeline.candidate.CandidatePipelineConfig</p>
+<p>import com.twitter.timelines.configapi.decider.DeciderParam</p>
+</div></blockquote>
+<ul>
+<li><p>import javax.inject.Inject</p>
+<p>import javax.inject.Singleton</p>
+<p>/**</p>
+</li>
+</ul>
+<ul class="simple">
+<li><ul>
+<li><p>Candidate Pipeline Config that fetches tweets from CrMixer.</p></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><ul class="simple">
+<li><p>Candidate Pipeline Config that fetches tweets from TweetMixer.</p></li>
+</ul>
+<p><a href="#id1"><span class="problematic" id="id2">*</span></a>/</p>
+</li>
+</ul>
+<blockquote>
+<div><p>&#64;Singleton</p>
+</div></blockquote>
+<p>-class ScoredTweetsCrMixerCandidatePipelineConfig &#64;Inject() (</p>
+<ul class="simple">
+<li><p>crMixerTweetRecommendationsCandidateSource: CrMixerTweetRecommendationsCandidateSource,</p></li>
+</ul>
+<p>+class ScoredTweetsTweetMixerCandidatePipelineConfig &#64;Inject() (</p>
+<ul>
+<li><p>tweetMixerCandidateSource: TweetMixerCandidateSource,</p>
+<p>tweetypieStaticEntitiesFeatureHydrator: TweetypieStaticEntitiesFeatureHydrator)</p>
+<blockquote>
+<div><p>extends CandidatePipelineConfig[</p>
+<blockquote>
+<div><p>ScoredTweetsQuery,</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>t.CrMixerTweetRequest,</p></li>
+<li><p>t.TweetRecommendation,</p></li>
+</ul>
+<ul>
+<li><p>t.TweetMixerRequest,</p></li>
+<li><p>t.TweetResult,</p>
+<p>TweetCandidate</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>] {</p>
+</div></blockquote>
+<p>override val identifier: CandidatePipelineIdentifier =</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>CandidatePipelineIdentifier(“ScoredTweetsCrMixer”)</p></li>
+</ul>
+<ul class="simple">
+<li><p>CandidatePipelineIdentifier(“ScoredTweetsTweetMixer”)</p></li>
+</ul>
+<blockquote>
+<div><p>val HasAuthorFilterId = “HasAuthor”</p>
+<p>override val enabledDeciderParam: Option[DeciderParam[Boolean]] =</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Some(CrMixerSource.EnableCandidatePipelineParam)</p></li>
+</ul>
+<ul class="simple">
+<li><p>Some(CandidatePipeline.EnableTweetMixerParam)</p></li>
+</ul>
+<blockquote>
+<div><p>override val gates: Seq[Gate[ScoredTweetsQuery]] = Seq(</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>MinCachedTweetsGate(identifier, CachedScoredTweets.MinCachedTweetsParam)</p></li>
+</ul>
+<ul class="simple">
+<li><p>MinCachedTweetsGate(identifier, CachedScoredTweets.MinCachedTweetsParam),</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>override val candidateSource: BaseCandidateSource[t.CrMixerTweetRequest, t.TweetRecommendation] =</p></li>
+<li><p>crMixerTweetRecommendationsCandidateSource</p></li>
+</ul>
+<ul class="simple">
+<li><p>override val candidateSource: BaseCandidateSource[t.TweetMixerRequest, t.TweetResult] =</p></li>
+<li><p>tweetMixerCandidateSource</p></li>
+</ul>
+<ul class="simple">
+<li><p>private val MaxTweetsToFetch = 500</p></li>
+</ul>
+<ul>
+<li><p>private val MaxTweetsToFetch = 400</p>
+<p>override val queryTransformer: CandidatePipelineQueryTransformer[</p>
+<blockquote>
+<div><p>ScoredTweetsQuery,</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>t.CrMixerTweetRequest</p></li>
+</ul>
+<ul class="simple">
+<li><p>t.TweetMixerRequest</p></li>
+</ul>
+<blockquote>
+<div><p>] = { query =&gt;</p>
+<blockquote>
+<div><p>val maxCount = (query.getQualityFactorCurrentValue(identifier) * MaxTweetsToFetch).toInt</p>
+<p>val excludedTweetIds = query.features.map(</p>
+<blockquote>
+<div><p>CachedScoredTweetsHelper.tweetImpressionsAndCachedScoredTweets(_, identifier))</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>t.CrMixerTweetRequest(</p></li>
+</ul>
+<ul>
+<li><p>t.TweetMixerRequest(</p>
+<blockquote>
+<div><p>clientContext = ClientContextMarshaller(query.clientContext),</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>product = t.Product.Home,</p></li>
+<li><p>productContext =</p></li>
+<li><p>Some(t.ProductContext.HomeContext(t.HomeContext(maxResults = Some(maxCount)))),</p></li>
+<li><p>excludedTweetIds = excludedTweetIds</p></li>
+</ul>
+<ul class="simple">
+<li><p>product = t.Product.HomeRecommendedTweets,</p></li>
+<li><p>productContext = Some(</p></li>
+<li><p>t.ProductContext.HomeRecommendedTweetsProductContext(</p></li>
+<li><p>t.HomeRecommendedTweetsProductContext(excludedTweetIds = excludedTweetIds.map(_.toSet)))),</p></li>
+<li><p>maxResults = Some(maxCount)</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>}</p>
+<p>] = Seq(tweetypieStaticEntitiesFeatureHydrator)</p>
+<p>override val featuresFromCandidateSourceTransformers: Seq[</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>CandidateFeatureTransformer[t.TweetRecommendation]</p></li>
+<li><p>] = Seq(ScoredTweetsCrMixerResponseFeatureTransformer)</p></li>
+</ul>
+<ul>
+<li><p>CandidateFeatureTransformer[t.TweetResult]</p></li>
+<li><p>] = Seq(ScoredTweetsTweetMixerResponseFeatureTransformer)</p>
+<p>override val filters: Seq[Filter[ScoredTweetsQuery, TweetCandidate]] = Seq(</p>
+<blockquote>
+<div><p>PredicateFeatureFilter.fromPredicate(</p>
+</div></blockquote>
+<p>)</p>
+<p>override val resultTransformer: CandidatePipelineResultsTransformer[</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>t.TweetRecommendation,</p></li>
+</ul>
+<ul>
+<li><p>t.TweetResult,</p>
+<p>TweetCandidate</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>] = { sourceResult =&gt; TweetCandidate(id = sourceResult.tweetId) }</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ScoredTweetsCrMixerCandidatePipelineConfig_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

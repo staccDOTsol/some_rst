@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/federated/HomeMixerColumn.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/federated/HomeMixerColumn.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-federated-homemixercolumn-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-federated-homemixercolumn-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/federated/HomeMixerColumn.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/federated/HomeMixerColumn.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-federated-homemixercolumn-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-federated-homemixercolumn-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -0,0 +1,217</p>
+<p>Content:</p>
+<p>new file mode 100644</p>
+<blockquote>
+<div><p>index 000000000..0ef27b7a0</p>
+<p class="attribution">—/dev/null</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/federated/HomeMixerColumn.scala</p>
+<p>+package com.twitter.home_mixer.federated</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+import com.twitter.gizmoduck.{thriftscala =&gt; gd}</p>
+<p>+import com.twitter.home_mixer.marshaller.request.HomeMixerRequestUnmarshaller</p>
+<p>+import com.twitter.home_mixer.model.request.HomeMixerRequest</p>
+<p>+import com.twitter.home_mixer.{thriftscala =&gt; hm}</p>
+<p>+import com.twitter.product_mixer.core.functional_component.configapi.ParamsBuilder</p>
+<p>+import com.twitter.product_mixer.core.pipeline.product.ProductPipelineRequest</p>
+<p>+import com.twitter.product_mixer.core.pipeline.product.ProductPipelineResult</p>
+<p>+import com.twitter.product_mixer.core.product.registry.ProductPipelineRegistry</p>
+<p>+import com.twitter.product_mixer.core.{thriftscala =&gt; pm}</p>
+<p>+import com.twitter.stitch.Arrow</p>
+<p>+import com.twitter.stitch.Stitch</p>
+<p>+import com.twitter.strato.callcontext.CallContext</p>
+<p>+import com.twitter.strato.catalog.OpMetadata</p>
+<p>+import com.twitter.strato.config._</p>
+<p>+import com.twitter.strato.data._</p>
+<p>+import com.twitter.strato.fed.StratoFed</p>
+<p>+import com.twitter.strato.generated.client.auth_context.AuditIpClientColumn</p>
+<p>+import com.twitter.strato.generated.client.gizmoduck.CompositeOnUserClientColumn</p>
+<p>+import com.twitter.strato.graphql.timelines.{thriftscala =&gt; gql}</p>
+<p>+import com.twitter.strato.thrift.ScroogeConv</p>
+<p>+import com.twitter.timelines.render.{thriftscala =&gt; tr}</p>
+<p>+import com.twitter.util.Try</p>
+<p>+import javax.inject.Inject</p>
+<p>+import javax.inject.Singleton</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p><a class="reference external" href="mailto:+&#37;&#52;&#48;Singleton">+<span>&#64;</span>Singleton</a></p>
+<p>+class HomeMixerColumn &#64;Inject() (</p>
+<ul class="simple">
+<li><p>homeMixerRequestUnmarshaller: HomeMixerRequestUnmarshaller,</p></li>
+<li><p>compositeOnUserClientColumn: CompositeOnUserClientColumn,</p></li>
+<li><p>auditIpClientColumn: AuditIpClientColumn,</p></li>
+<li><p>paramsBuilder: ParamsBuilder,</p></li>
+<li><p>productPipelineRegistry: ProductPipelineRegistry)</p></li>
+<li><p>extends StratoFed.Column(HomeMixerColumn.Path)</p></li>
+<li><p>with StratoFed.Fetch.Arrow {</p></li>
+<li></li>
+<li><p>override val contactInfo: ContactInfo = ContactInfo(</p></li>
+<li><p>contactEmail = “”,</p></li>
+<li><p>ldapGroup = “”,</p></li>
+<li><p>slackRoomId = “”</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>override val metadata: OpMetadata =</p></li>
+<li><p>OpMetadata(</p></li>
+<li><p>lifecycle = Some(Lifecycle.Production),</p></li>
+<li><p>description =</p></li>
+<li><p>Some(Description.PlainText(“Federated Strato column for Timelines served via Home Mixer”))</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>private val bouncerAccess: Seq[Policy] = Seq(BouncerAccess())</p></li>
+<li><p>private val finatraTestServiceIdentifiers: Seq[Policy] = Seq(</p></li>
+<li><p>ServiceIdentifierPattern(</p></li>
+<li><p>role = “”,</p></li>
+<li><p>service = “”,</p></li>
+<li><p>env = “”,</p></li>
+<li><p>zone = Seq(“”))</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>override val policy: Policy = AnyOf(bouncerAccess ++ finatraTestServiceIdentifiers)</p></li>
+<li></li>
+<li><p>override type Key = gql.TimelineKey</p></li>
+<li><p>override type View = gql.HomeTimelineView</p></li>
+<li><p>override type Value = tr.Timeline</p></li>
+<li></li>
+<li><p>override val keyConv: Conv[Key] = ScroogeConv.fromStruct[gql.TimelineKey]</p></li>
+<li><p>override val viewConv: Conv[View] = ScroogeConv.fromStruct[gql.HomeTimelineView]</p></li>
+<li><p>override val valueConv: Conv[Value] = ScroogeConv.fromStruct[tr.Timeline]</p></li>
+<li></li>
+<li><p>private def createHomeMixerRequestArrow(</p></li>
+<li><p>compositeOnUserClientColumn: CompositeOnUserClientColumn,</p></li>
+<li><p>auditIpClientColumn: AuditIpClientColumn</p></li>
+<li><p>): Arrow[(Key, View), hm.HomeMixerRequest] = {</p></li>
+<li></li>
+<li><p>val populateUserRolesAndIp: Arrow[(Key, View), (Option[Set[String]], Option[String])] = {</p></li>
+<li><p>val gizmoduckView: (gd.LookupContext, Set[gd.QueryFields]) =</p></li>
+<li><p>(gd.LookupContext(), Set(gd.QueryFields.Roles))</p></li>
+<li></li>
+<li><p>val populateUserRoles = Arrow</p></li>
+<li><p>.flatMap[(Key, View), Option[Set[String]]] { _ =&gt;</p></li>
+<li><p>Stitch.collect {</p></li>
+<li><p>CallContext.twitterUserId.map { userId =&gt;</p></li>
+<li><p>compositeOnUserClientColumn.fetcher</p></li>
+<li><p>.callStack(HomeMixerColumn.FetchCallstack)</p></li>
+<li><p>.fetch(userId, gizmoduckView).map(_.v)</p></li>
+<li><p>.map {</p></li>
+<li><p>_.flatMap(_.roles.map(_.roles.toSet)).getOrElse(Set.empty)</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>val populateIpAddress = Arrow</p></li>
+<li><p>.flatMap[(Key, View), Option[String]](_ =&gt;</p></li>
+<li><p>auditIpClientColumn.fetcher</p></li>
+<li><p>.callStack(HomeMixerColumn.FetchCallstack)</p></li>
+<li><p>.fetch((), ()).map(_.v))</p></li>
+<li></li>
+<li><p>Arrow.join(</p></li>
+<li><p>populateUserRoles,</p></li>
+<li><p>populateIpAddress</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>Arrow.zipWithArg(populateUserRolesAndIp).map {</p></li>
+<li><p>case ((key, view), (roles, ipAddress)) =&gt;</p></li>
+<li><p>val deviceContextOpt = Some(</p></li>
+<li><p>hm.DeviceContext(</p></li>
+<li><p>isPolling = CallContext.isPolling,</p></li>
+<li><p>requestContext = view.requestContext,</p></li>
+<li><p>latestControlAvailable = view.latestControlAvailable,</p></li>
+<li><p>autoplayEnabled = view.autoplayEnabled</p></li>
+<li><p>))</p></li>
+<li><p>val seenTweetIds = view.seenTweetIds.filter(_.nonEmpty)</p></li>
+<li></li>
+<li><p>val (product, productContext) = key match {</p></li>
+<li><p>case gql.TimelineKey.HomeTimeline(_) | gql.TimelineKey.HomeTimelineV2(_) =&gt;</p></li>
+<li><p>(</p></li>
+<li><p>hm.Product.ForYou,</p></li>
+<li><p>hm.ProductContext.ForYou(</p></li>
+<li><p>hm.ForYou(</p></li>
+<li><p>deviceContextOpt,</p></li>
+<li><p>seenTweetIds,</p></li>
+<li><p>view.dspClientContext,</p></li>
+<li><p>view.pushToHomeTweetId</p></li>
+<li><p>)</p></li>
+<li><p>))</p></li>
+<li><p>case gql.TimelineKey.HomeLatestTimeline(_) | gql.TimelineKey.HomeLatestTimelineV2(_) =&gt;</p></li>
+<li><p>(</p></li>
+<li><p>hm.Product.Following,</p></li>
+<li><p>hm.ProductContext.Following(</p></li>
+<li><p>hm.Following(deviceContextOpt, seenTweetIds, view.dspClientContext)))</p></li>
+<li><p>case gql.TimelineKey.CreatorSubscriptionsTimeline(_) =&gt;</p></li>
+<li><p>(</p></li>
+<li><p>hm.Product.Subscribed,</p></li>
+<li><p>hm.ProductContext.Subscribed(hm.Subscribed(deviceContextOpt, seenTweetIds)))</p></li>
+<li><p>case _ =&gt; throw new UnsupportedOperationException(s”Unknown product: $key”)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>val clientContext = pm.ClientContext(</p></li>
+<li><p>userId = CallContext.twitterUserId,</p></li>
+<li><p>guestId = CallContext.guestId,</p></li>
+<li><p>guestIdAds = CallContext.guestIdAds,</p></li>
+<li><p>guestIdMarketing = CallContext.guestIdMarketing,</p></li>
+<li><p>appId = CallContext.clientApplicationId,</p></li>
+<li><p>ipAddress = ipAddress,</p></li>
+<li><p>userAgent = CallContext.userAgent,</p></li>
+<li><p>countryCode = CallContext.requestCountryCode,</p></li>
+<li><p>languageCode = CallContext.requestLanguageCode,</p></li>
+<li><p>isTwoffice = CallContext.isInternalOrTwoffice,</p></li>
+<li><p>userRoles = roles,</p></li>
+<li><p>deviceId = CallContext.deviceId,</p></li>
+<li><p>mobileDeviceId = CallContext.mobileDeviceId,</p></li>
+<li><p>mobileDeviceAdId = CallContext.adId,</p></li>
+<li><p>limitAdTracking = CallContext.limitAdTracking</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>hm.HomeMixerRequest(</p></li>
+<li><p>clientContext = clientContext,</p></li>
+<li><p>product = product,</p></li>
+<li><p>productContext = Some(productContext),</p></li>
+<li><p>maxResults = Try(view.count.get.toInt).toOption.orElse(HomeMixerColumn.MaxCount),</p></li>
+<li><p>cursor = view.cursor.filter(_.nonEmpty)</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>override val fetch: Arrow[(Key, View), Result[Value]] = {</p></li>
+<li><p>val transformThriftIntoPipelineRequest: Arrow[</p></li>
+<li><p>(Key, View),</p></li>
+<li><p>ProductPipelineRequest[HomeMixerRequest]</p></li>
+<li><p>] = {</p></li>
+<li><p>Arrow</p></li>
+<li><p>.identity[(Key, View)]</p></li>
+<li><p>.andThen {</p></li>
+<li><p>createHomeMixerRequestArrow(compositeOnUserClientColumn, auditIpClientColumn)</p></li>
+<li><p>}</p></li>
+<li><p>.map {</p></li>
+<li><p>case thriftRequest =&gt;</p></li>
+<li><p>val request = homeMixerRequestUnmarshaller(thriftRequest)</p></li>
+<li><p>val params = paramsBuilder.build(</p></li>
+<li><p>clientContext = request.clientContext,</p></li>
+<li><p>product = request.product,</p></li>
+<li><p>featureOverrides =</p></li>
+<li><p>request.debugParams.flatMap(_.featureOverrides).getOrElse(Map.empty),</p></li>
+<li><p>)</p></li>
+<li><p>ProductPipelineRequest(request, params)</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>val underlyingProduct: Arrow[</p></li>
+<li><p>ProductPipelineRequest[HomeMixerRequest],</p></li>
+<li><p>ProductPipelineResult[tr.TimelineResponse]</p></li>
+<li><p>] = Arrow</p></li>
+<li><p>.identity[ProductPipelineRequest[HomeMixerRequest]]</p></li>
+<li><p>.map { pipelineRequest =&gt;</p></li>
+<li><p>val pipelineArrow = productPipelineRegistry</p></li>
+<li><p>.getProductPipeline[HomeMixerRequest, tr.TimelineResponse](</p></li>
+<li><p>pipelineRequest.request.product)</p></li>
+<li><p>.arrow</p></li>
+<li><p>(pipelineArrow, pipelineRequest)</p></li>
+<li><p>}.applyArrow</p></li>
+<li></li>
+<li><p>transformThriftIntoPipelineRequest.andThen(underlyingProduct).map {</p></li>
+<li><p>_.result match {</p></li>
+<li><p>case Some(result) =&gt; found(result.timeline)</p></li>
+<li><p>case _ =&gt; missing</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+</ul>
+<p>+}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+object HomeMixerColumn {</p>
+<ul class="simple">
+<li><p>val Path = “home-mixer/homeMixer.Timeline”</p></li>
+<li><p>private val FetchCallstack = s”$Path:fetch”</p></li>
+<li><p>private val MaxCount: Option[Int] = Some(100)</p></li>
+</ul>
+<p>+}</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/HomeMixerColumn_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/adapters/earlybird/InReplyToEarlybirdAdapter.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/adapters/earlybird/InReplyToEarlybirdAdapter.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-adapters-earlybird-inreplytoearlybirdadapter-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-adapters-earlybird-inreplytoearlybirdadapter-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/adapters/earlybird/InReplyToEarlybirdAdapter.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/adapters/earlybird/InReplyToEarlybirdAdapter.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-adapters-earlybird-inreplytoearlybirdadapter-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-adapters-earlybird-inreplytoearlybirdadapter-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -0,0 +1,206</p>
+<p>Content:</p>
+<p>new file mode 100644</p>
+<blockquote>
+<div><p>index 000000000..b6a7b0ad3</p>
+<p class="attribution">—/dev/null</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/adapters/earlybird/InReplyToEarlybirdAdapter.scala</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.feature_hydrator.adapters.earlybird</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+import com.twitter.ml.api.Feature</p>
+<p>+import com.twitter.ml.api.FeatureContext</p>
+<p>+import com.twitter.ml.api.RichDataRecord</p>
+<p>+import com.twitter.ml.api.util.DataRecordConverters.RichDataRecordWrapper</p>
+<p>+import com.twitter.search.common.features.{thriftscala =&gt; sc}</p>
+<p>+import com.twitter.timelines.prediction.common.adapters.TimelinesMutatingAdapterBase</p>
+<p>+import com.twitter.timelines.prediction.features.common.InReplyToTweetTimelinesSharedFeatures</p>
+<p>+import com.twitter.timelines.prediction.features.recap.InReplyToRecapFeatures</p>
+<p>+import java.lang.{Boolean =&gt; JBoolean}</p>
+<p>+import java.lang.{Double =&gt; JDouble}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+object InReplyToEarlybirdAdapter</p>
+<ul class="simple">
+<li><p>extends TimelinesMutatingAdapterBase[Option[sc.ThriftTweetFeatures]] {</p></li>
+<li></li>
+<li><p>override val getFeatureContext: FeatureContext = new FeatureContext(</p></li>
+<li><p>// TextFeatures</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.WEIGHTED_FAV_COUNT,</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.WEIGHTED_RETWEET_COUNT,</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.WEIGHTED_REPLY_COUNT,</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.WEIGHTED_QUOTE_COUNT,</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.DECAYED_FAVORITE_COUNT,</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.DECAYED_RETWEET_COUNT,</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.DECAYED_REPLY_COUNT,</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.DECAYED_QUOTE_COUNT,</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.QUOTE_COUNT,</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.HAS_QUOTE,</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.EARLYBIRD_SCORE,</p></li>
+<li><p>InReplyToRecapFeatures.PREV_USER_TWEET_ENGAGEMENT,</p></li>
+<li><p>InReplyToRecapFeatures.IS_SENSITIVE,</p></li>
+<li><p>InReplyToRecapFeatures.IS_AUTHOR_NEW,</p></li>
+<li><p>InReplyToRecapFeatures.NUM_MENTIONS,</p></li>
+<li><p>InReplyToRecapFeatures.HAS_MENTION,</p></li>
+<li><p>InReplyToRecapFeatures.HAS_HASHTAG,</p></li>
+<li><p>InReplyToRecapFeatures.IS_AUTHOR_NSFW,</p></li>
+<li><p>InReplyToRecapFeatures.IS_AUTHOR_SPAM,</p></li>
+<li><p>InReplyToRecapFeatures.IS_AUTHOR_BOT,</p></li>
+<li><p>InReplyToRecapFeatures.FROM_MUTUAL_FOLLOW,</p></li>
+<li><p>InReplyToRecapFeatures.USER_REP,</p></li>
+<li><p>InReplyToRecapFeatures.FROM_VERIFIED_ACCOUNT,</p></li>
+<li><p>InReplyToRecapFeatures.HAS_IMAGE,</p></li>
+<li><p>InReplyToRecapFeatures.HAS_NEWS,</p></li>
+<li><p>InReplyToRecapFeatures.HAS_VIDEO,</p></li>
+<li><p>InReplyToRecapFeatures.HAS_VISIBLE_LINK,</p></li>
+<li><p>InReplyToRecapFeatures.IS_OFFENSIVE,</p></li>
+<li><p>InReplyToRecapFeatures.IS_REPLY,</p></li>
+<li><p>InReplyToRecapFeatures.BIDIRECTIONAL_REPLY_COUNT,</p></li>
+<li><p>InReplyToRecapFeatures.UNIDIRECTIONAL_REPLY_COUNT,</p></li>
+<li><p>InReplyToRecapFeatures.BIDIRECTIONAL_RETWEET_COUNT,</p></li>
+<li><p>InReplyToRecapFeatures.UNIDIRECTIONAL_RETWEET_COUNT,</p></li>
+<li><p>InReplyToRecapFeatures.BIDIRECTIONAL_FAV_COUNT,</p></li>
+<li><p>InReplyToRecapFeatures.UNIDIRECTIONAL_FAV_COUNT,</p></li>
+<li><p>InReplyToRecapFeatures.CONVERSATIONAL_COUNT,</p></li>
+<li><p>InReplyToRecapFeatures.REPLY_COUNT,</p></li>
+<li><p>InReplyToRecapFeatures.RETWEET_COUNT,</p></li>
+<li><p>InReplyToRecapFeatures.FAV_COUNT,</p></li>
+<li><p>InReplyToRecapFeatures.TEXT_SCORE,</p></li>
+<li><p>InReplyToRecapFeatures.FAV_COUNT_V2,</p></li>
+<li><p>InReplyToRecapFeatures.RETWEET_COUNT_V2,</p></li>
+<li><p>InReplyToRecapFeatures.REPLY_COUNT_V2)</p></li>
+<li></li>
+<li><p>override val commonFeatures: Set[Feature[_]] = Set.empty</p></li>
+<li></li>
+<li><p>override def setFeatures(</p></li>
+<li><p>ebFeatures: Option[sc.ThriftTweetFeatures],</p></li>
+<li><p>richDataRecord: RichDataRecord</p></li>
+<li><p>): Unit = {</p></li>
+<li><p>if (ebFeatures.nonEmpty) {</p></li>
+<li><p>val features = ebFeatures.get</p></li>
+<li></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.WEIGHTED_FAV_COUNT,</p></li>
+<li><p>features.weightedFavoriteCount.map(_.toDouble)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.WEIGHTED_RETWEET_COUNT,</p></li>
+<li><p>features.weightedRetweetCount.map(_.toDouble)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.WEIGHTED_REPLY_COUNT,</p></li>
+<li><p>features.weightedReplyCount.map(_.toDouble)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.WEIGHTED_QUOTE_COUNT,</p></li>
+<li><p>features.weightedQuoteCount.map(_.toDouble)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.DECAYED_FAVORITE_COUNT,</p></li>
+<li><p>features.decayedFavoriteCount.map(_.toDouble)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.DECAYED_RETWEET_COUNT,</p></li>
+<li><p>features.decayedRetweetCount.map(_.toDouble)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.DECAYED_REPLY_COUNT,</p></li>
+<li><p>features.decayedReplyCount.map(_.toDouble)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.DECAYED_QUOTE_COUNT,</p></li>
+<li><p>features.decayedQuoteCount.map(_.toDouble)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.QUOTE_COUNT,</p></li>
+<li><p>features.quoteCount.map(_.toDouble)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.HAS_QUOTE,</p></li>
+<li><p>features.hasQuote</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>if (features.earlybirdScore &gt; 0)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](</p></li>
+<li><p>InReplyToTweetTimelinesSharedFeatures.EARLYBIRD_SCORE,</p></li>
+<li><p>features.earlybirdScore</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](</p></li>
+<li><p>InReplyToRecapFeatures.PREV_USER_TWEET_ENGAGEMENT,</p></li>
+<li><p>features.prevUserTweetEngagement.toDouble</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>richDataRecord</p></li>
+<li><p>.setFeatureValue[JBoolean](InReplyToRecapFeatures.IS_SENSITIVE, features.isSensitiveContent)</p></li>
+<li><p>richDataRecord</p></li>
+<li><p>.setFeatureValue[JBoolean](InReplyToRecapFeatures.IS_AUTHOR_NEW, features.isAuthorNew)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](</p></li>
+<li><p>InReplyToRecapFeatures.NUM_MENTIONS,</p></li>
+<li><p>features.numMentions.toDouble)</p></li>
+<li><p>richDataRecord</p></li>
+<li><p>.setFeatureValue[JBoolean](InReplyToRecapFeatures.HAS_MENTION, (features.numMentions &gt; 0))</p></li>
+<li><p>richDataRecord</p></li>
+<li><p>.setFeatureValue[JBoolean](InReplyToRecapFeatures.HAS_HASHTAG, (features.numHashtags &gt; 0))</p></li>
+<li><p>richDataRecord</p></li>
+<li><p>.setFeatureValue[JBoolean](InReplyToRecapFeatures.IS_AUTHOR_NSFW, features.isAuthorNSFW)</p></li>
+<li><p>richDataRecord</p></li>
+<li><p>.setFeatureValue[JBoolean](InReplyToRecapFeatures.IS_AUTHOR_SPAM, features.isAuthorSpam)</p></li>
+<li><p>richDataRecord</p></li>
+<li><p>.setFeatureValue[JBoolean](InReplyToRecapFeatures.IS_AUTHOR_BOT, features.isAuthorBot)</p></li>
+<li><p>richDataRecord.setFeatureValue[JBoolean](</p></li>
+<li><p>InReplyToRecapFeatures.FROM_MUTUAL_FOLLOW,</p></li>
+<li><p>features.fromMutualFollow)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](InReplyToRecapFeatures.USER_REP, features.userRep)</p></li>
+<li><p>richDataRecord.setFeatureValue[JBoolean](</p></li>
+<li><p>InReplyToRecapFeatures.FROM_VERIFIED_ACCOUNT,</p></li>
+<li><p>features.fromVerifiedAccount)</p></li>
+<li><p>richDataRecord.setFeatureValue[JBoolean](InReplyToRecapFeatures.HAS_IMAGE, features.hasImage)</p></li>
+<li><p>richDataRecord.setFeatureValue[JBoolean](InReplyToRecapFeatures.HAS_NEWS, features.hasNews)</p></li>
+<li><p>richDataRecord.setFeatureValue[JBoolean](InReplyToRecapFeatures.HAS_VIDEO, features.hasVideo)</p></li>
+<li><p>richDataRecord</p></li>
+<li><p>.setFeatureValue[JBoolean](InReplyToRecapFeatures.HAS_VISIBLE_LINK, features.hasVisibleLink)</p></li>
+<li><p>richDataRecord</p></li>
+<li><p>.setFeatureValue[JBoolean](InReplyToRecapFeatures.IS_OFFENSIVE, features.isOffensive)</p></li>
+<li><p>richDataRecord.setFeatureValue[JBoolean](InReplyToRecapFeatures.IS_REPLY, features.isReply)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](</p></li>
+<li><p>InReplyToRecapFeatures.BIDIRECTIONAL_REPLY_COUNT,</p></li>
+<li><p>features.bidirectionalReplyCount)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](</p></li>
+<li><p>InReplyToRecapFeatures.UNIDIRECTIONAL_REPLY_COUNT,</p></li>
+<li><p>features.unidirectionalReplyCount)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](</p></li>
+<li><p>InReplyToRecapFeatures.BIDIRECTIONAL_RETWEET_COUNT,</p></li>
+<li><p>features.bidirectionalRetweetCount)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](</p></li>
+<li><p>InReplyToRecapFeatures.UNIDIRECTIONAL_RETWEET_COUNT,</p></li>
+<li><p>features.unidirectionalRetweetCount)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](</p></li>
+<li><p>InReplyToRecapFeatures.BIDIRECTIONAL_FAV_COUNT,</p></li>
+<li><p>features.bidirectionalFavCount)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](</p></li>
+<li><p>InReplyToRecapFeatures.UNIDIRECTIONAL_FAV_COUNT,</p></li>
+<li><p>features.unidirectionalFavCount)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](</p></li>
+<li><p>InReplyToRecapFeatures.CONVERSATIONAL_COUNT,</p></li>
+<li><p>features.conversationCount)</p></li>
+<li><p>richDataRecord</p></li>
+<li><p>.setFeatureValue[JDouble](InReplyToRecapFeatures.REPLY_COUNT, features.replyCount.toDouble)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](</p></li>
+<li><p>InReplyToRecapFeatures.RETWEET_COUNT,</p></li>
+<li><p>features.retweetCount.toDouble)</p></li>
+<li><p>richDataRecord</p></li>
+<li><p>.setFeatureValue[JDouble](InReplyToRecapFeatures.FAV_COUNT, features.favCount.toDouble)</p></li>
+<li><p>richDataRecord.setFeatureValue[JDouble](InReplyToRecapFeatures.TEXT_SCORE, features.textScore)</p></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToRecapFeatures.FAV_COUNT_V2,</p></li>
+<li><p>features.favCountV2.map(_.toDouble))</p></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToRecapFeatures.RETWEET_COUNT_V2,</p></li>
+<li><p>features.retweetCountV2.map(_.toDouble)</p></li>
+<li><p>)</p></li>
+<li><p>richDataRecord.setFeatureValueFromOption(</p></li>
+<li><p>InReplyToRecapFeatures.REPLY_COUNT_V2,</p></li>
+<li><p>features.replyCountV2.map(_.toDouble))</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+</ul>
+<p>+}</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/InReplyToEarlybirdAdapter_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

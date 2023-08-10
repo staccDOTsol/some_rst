@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/filter/SocialContextFilter.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/filter/ScoredTweetsSocialContextFilter.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-filter-socialcontextfilter-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-filter-scoredtweetssocialcontextfilter-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/filter/SocialContextFilter.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/filter/ScoredTweetsSocialContextFilter.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-filter-socialcontextfilter-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-filter-scoredtweetssocialcontextfilter-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -51,7 +54,8</p>
+<p>Content:</p>
+<p>similarity index 65%</p>
+<blockquote>
+<div><p>rename from home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/filter/SocialContextFilter.scala</p>
+<p>rename to home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/filter/ScoredTweetsSocialContextFilter.scala</p>
+<p>index 5002137c4..fef427a6d 100644</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/filter/SocialContextFilter.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/filter/ScoredTweetsSocialContextFilter.scala</p>
+<p>-package com.twitter.home_mixer.functional_component.filter</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.ConversationModuleFocalTweetIdFeature</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.InNetworkFeature</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.PerspectiveFilteredLikedByUserIdsFeature</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.SGSValidFollowedByUserIdsFeature</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.SGSValidLikedByUserIdsFeature</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.TopicContextFunctionalityTypeFeature</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.TopicIdSocialContextFeature</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.filter</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+import com.twitter.home_mixer.model.HomeFeatures._</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>import com.twitter.product_mixer.core.functional_component.filter.Filter</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.FilterIdentifier</p>
+<p>import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+<p>import com.twitter.stitch.Stitch</p>
+</div></blockquote>
+<p>+import com.twitter.timelineservice.suggests.{thriftscala =&gt; st}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+object ScoredTweetsSocialContextFilter extends Filter[PipelineQuery, TweetCandidate] {</p>
+<p>-object SocialContextFilter extends Filter[PipelineQuery, TweetCandidate] {</p>
+<ul class="simple">
+<li><p>override val identifier: FilterIdentifier = FilterIdentifier(“ScoredTweetsSocialContext”)</p></li>
+</ul>
+<ul class="simple">
+<li><p>override val identifier: FilterIdentifier = FilterIdentifier(“SocialContext”)</p></li>
+</ul>
+<ul>
+<li><p>// Tweets from candidate sources which don’t need generic like/follow/topic proof</p></li>
+<li><p>private val AllowedSources: Set[st.SuggestType] = Set(</p></li>
+<li><p>st.SuggestType.RankedListTweet,</p></li>
+<li><p>st.SuggestType.RecommendedTrendTweet,</p></li>
+<li><p>st.SuggestType.MediaTweet</p></li>
+<li><p>)</p>
+<p>override def apply(</p>
+<blockquote>
+<div><p>query: PipelineQuery,</p>
+<p>val validTweetIds = candidates</p>
+<blockquote>
+<div><p>.filter { candidate =&gt;</p>
+<blockquote>
+<div><p>candidate.features.getOrElse(InNetworkFeature, true) ||</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p>candidate.features.getOrElse(SuggestTypeFeature, None).exists(AllowedSources.contains) ||</p></li>
+<li><p>candidate.features.getOrElse(InReplyToTweetIdFeature, None).isDefined ||</p>
+<p>hasLikedBySocialContext(candidate.features) ||</p>
+<p>hasFollowedBySocialContext(candidate.features) ||</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>hasTopicSocialContext(candidate.features) ||</p></li>
+<li><p>candidate.features.getOrElse(ConversationModuleFocalTweetIdFeature, None).isDefined</p></li>
+</ul>
+<ul class="simple">
+<li><p>hasTopicSocialContext(candidate.features)</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>}.map(_.candidate.id).toSet</p>
+</div></blockquote>
+<p>val (kept, removed) =</p>
+</div></blockquote>
+<p>private def hasFollowedBySocialContext(candidateFeatures: FeatureMap): Boolean =</p>
+<blockquote>
+<div><p>candidateFeatures.getOrElse(SGSValidFollowedByUserIdsFeature, Seq.empty).nonEmpty</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>private def hasTopicSocialContext(candidateFeatures: FeatureMap): Boolean =</p></li>
+</ul>
+<ul>
+<li><p>private def hasTopicSocialContext(candidateFeatures: FeatureMap): Boolean = {</p>
+<blockquote>
+<div><p>candidateFeatures.getOrElse(TopicIdSocialContextFeature, None).isDefined &amp;&amp;</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>candidateFeatures.getOrElse(TopicContextFunctionalityTypeFeature, None).isDefined</p></li>
+</ul>
+<ul class="simple">
+<li><p>candidateFeatures.getOrElse(TopicContextFunctionalityTypeFeature, None).isDefined</p></li>
+<li><p>}</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/SocialContextFilter_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

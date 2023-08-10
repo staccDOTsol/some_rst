@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/side_effect/ServedStatsSideEffect.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/side_effect/ServedStatsSideEffect.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-side-effect-servedstatssideeffect-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-side-effect-servedstatssideeffect-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/side_effect/ServedStatsSideEffect.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/side_effect/ServedStatsSideEffect.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-side-effect-servedstatssideeffect-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-side-effect-servedstatssideeffect-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -0,0 +1,90</p>
+<p>Content:</p>
+<p>new file mode 100644</p>
+<blockquote>
+<div><p>index 000000000..be7c2a533</p>
+<p class="attribution">—/dev/null</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/side_effect/ServedStatsSideEffect.scala</p>
+<p>+package com.twitter.home_mixer.product.for_you.side_effect</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+import com.twitter.finagle.stats.StatsReceiver</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InNetworkFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.InReplyToTweetIdFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.SuggestTypeFeature</p>
+<p>+import com.twitter.home_mixer.product.for_you.param.ForYouParam.ExperimentStatsParam</p>
+<p>+import com.twitter.home_mixer.util.CandidatesUtil</p>
+<p>+import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>+import com.twitter.product_mixer.core.functional_component.side_effect.PipelineResultSideEffect</p>
+<p>+import com.twitter.product_mixer.core.model.common.identifier.SideEffectIdentifier</p>
+<p>+import com.twitter.product_mixer.core.model.common.presentation.CandidateWithDetails</p>
+<p>+import com.twitter.product_mixer.core.model.common.presentation.ItemCandidateWithDetails</p>
+<p>+import com.twitter.product_mixer.core.model.marshalling.response.urt.Timeline</p>
+<p>+import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+<p>+import com.twitter.stitch.Stitch</p>
+<p>+import javax.inject.Inject</p>
+<p>+import javax.inject.Singleton</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p><a class="reference external" href="mailto:+&#37;&#52;&#48;Singleton">+<span>&#64;</span>Singleton</a></p>
+<p>+class ServedStatsSideEffect &#64;Inject() (statsReceiver: StatsReceiver)</p>
+<ul class="simple">
+<li><p>extends PipelineResultSideEffect[PipelineQuery, Timeline] {</p></li>
+<li></li>
+<li><p>override val identifier: SideEffectIdentifier = SideEffectIdentifier(“ServedStats”)</p></li>
+<li></li>
+<li><p>private val baseStatsReceiver = statsReceiver.scope(identifier.toString)</p></li>
+<li><p>private val suggestTypeStatsReceiver = baseStatsReceiver.scope(“SuggestType”)</p></li>
+<li><p>private val responseSizeStatsReceiver = baseStatsReceiver.scope(“ResponseSize”)</p></li>
+<li><p>private val contentBalanceStatsReceiver = baseStatsReceiver.scope(“ContentBalance”)</p></li>
+<li></li>
+<li><p>private val inNetworkStatsReceiver = contentBalanceStatsReceiver.scope(“InNetwork”)</p></li>
+<li><p>private val outOfNetworkStatsReceiver = contentBalanceStatsReceiver.scope(“OutOfNetwork”)</p></li>
+<li><p>private val replyStatsReceiver = contentBalanceStatsReceiver.scope(“Reply”)</p></li>
+<li><p>private val originalStatsReceiver = contentBalanceStatsReceiver.scope(“Original”)</p></li>
+<li></li>
+<li><p>private val emptyStatsReceiver = responseSizeStatsReceiver.scope(“Empty”)</p></li>
+<li><p>private val lessThan5StatsReceiver = responseSizeStatsReceiver.scope(“LessThan5”)</p></li>
+<li><p>private val lessThan10StatsReceiver = responseSizeStatsReceiver.scope(“LessThan10”)</p></li>
+<li></li>
+<li><p>override def apply(</p></li>
+<li><p>inputs: PipelineResultSideEffect.Inputs[PipelineQuery, Timeline]</p></li>
+<li><p>): Stitch[Unit] = {</p></li>
+<li><p>val tweetCandidates = CandidatesUtil</p></li>
+<li><p>.getItemCandidates(inputs.selectedCandidates).filter(_.isCandidateType[TweetCandidate]())</p></li>
+<li></li>
+<li><p>val expBucket = inputs.query.params(ExperimentStatsParam)</p></li>
+<li></li>
+<li><p>recordSuggestTypeStats(tweetCandidates, expBucket)</p></li>
+<li><p>recordContentBalanceStats(tweetCandidates, expBucket)</p></li>
+<li><p>recordResponseSizeStats(tweetCandidates, expBucket)</p></li>
+<li><p>Stitch.Unit</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>def recordSuggestTypeStats(</p></li>
+<li><p>candidates: Seq[ItemCandidateWithDetails],</p></li>
+<li><p>expBucket: String</p></li>
+<li><p>): Unit = {</p></li>
+<li><p>candidates.groupBy(getSuggestType).foreach {</p></li>
+<li><p>case (suggestType, suggestTypeCandidates) =&gt;</p></li>
+<li><p>suggestTypeStatsReceiver</p></li>
+<li><p>.scope(expBucket).counter(suggestType).incr(suggestTypeCandidates.size)</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>def recordContentBalanceStats(</p></li>
+<li><p>candidates: Seq[ItemCandidateWithDetails],</p></li>
+<li><p>expBucket: String</p></li>
+<li><p>): Unit = {</p></li>
+<li><p>val (in, oon) = candidates.partition(_.features.getOrElse(InNetworkFeature, true))</p></li>
+<li><p>inNetworkStatsReceiver.counter(expBucket).incr(in.size)</p></li>
+<li><p>outOfNetworkStatsReceiver.counter(expBucket).incr(oon.size)</p></li>
+<li></li>
+<li><p>val (reply, original) =</p></li>
+<li><p>candidates.partition(_.features.getOrElse(InReplyToTweetIdFeature, None).isDefined)</p></li>
+<li><p>replyStatsReceiver.counter(expBucket).incr(reply.size)</p></li>
+<li><p>originalStatsReceiver.counter(expBucket).incr(original.size)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>def recordResponseSizeStats(</p></li>
+<li><p>candidates: Seq[ItemCandidateWithDetails],</p></li>
+<li><p>expBucket: String</p></li>
+<li><p>): Unit = {</p></li>
+<li><p>if (candidates.size == 0) emptyStatsReceiver.counter(expBucket).incr()</p></li>
+<li><p>if (candidates.size &lt; 5) lessThan5StatsReceiver.counter(expBucket).incr()</p></li>
+<li><p>if (candidates.size &lt; 10) lessThan10StatsReceiver.counter(expBucket).incr()</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private def getSuggestType(candidate: CandidateWithDetails): String =</p></li>
+<li><p>candidate.features.getOrElse(SuggestTypeFeature, None).map(_.name).getOrElse(“None”)</p></li>
+</ul>
+<p>+}</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ServedStatsSideEffect_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/HomeTweetTypePredicates.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/builder/HomeTweetTypePredicates.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-decorator-hometweettypepredicates-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-decorator-builder-hometweettypepredicates-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/HomeTweetTypePredicates.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/builder/HomeTweetTypePredicates.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-decorator-hometweettypepredicates-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-decorator-builder-hometweettypepredicates-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -204,23 +206,50</p>
+<p>Content:</p>
+<p>similarity index 76%</p>
+<blockquote>
+<div><p>rename from home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/HomeTweetTypePredicates.scala</p>
+<p>rename to home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/builder/HomeTweetTypePredicates.scala</p>
+<p>index 0b06448d7..7272c360d 100644</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/HomeTweetTypePredicates.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/builder/HomeTweetTypePredicates.scala</p>
+<p>-package com.twitter.home_mixer.functional_component.decorator</p>
+<p>+package com.twitter.home_mixer.functional_component.decorator.builder</p>
+<blockquote>
+<div><p>import com.twitter.conversions.DurationOps._</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures._</p>
+<p>import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.model.marshalling.response.urt.metadata.BasicTopicContextFunctionalityType</p>
+<p>+import com.twitter.product_mixer.core.model.marshalling.response.urt.metadata.RecommendationTopicContextFunctionalityType</p>
+<blockquote>
+<div><p>import com.twitter.timelinemixer.injection.model.candidate.SemanticCoreFeatures</p>
+<p>import com.twitter.tweetypie.{thriftscala =&gt; tpt}</p>
+<blockquote>
+<div><p>(</p>
+<blockquote>
+<div><p>“has_exclusive_conversation_author_id”,</p>
+<p>_.getOrElse(ExclusiveConversationAuthorIdFeature, None).nonEmpty),</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>(“is_eligible_for_connect_boost”, _.getOrElse(AuthorIsEligibleForConnectBoostFeature, false)),</p></li>
+</ul>
+<ul>
+<li><p>(“is_eligible_for_connect_boost”, _ =&gt; false),</p>
+<p>(“hashtag”, _.getOrElse(EarlybirdFeature, None).exists(_.numHashtags &gt; 0)),</p>
+<p>(“has_scheduled_space”, _.getOrElse(AudioSpaceMetaDataFeature, None).exists(_.isScheduled)),</p>
+<p>(“has_recorded_space”, _.getOrElse(AudioSpaceMetaDataFeature, None).exists(_.isRecorded)),</p>
+<p>(“is_read_from_cache”, _.getOrElse(IsReadFromCacheFeature, false)),</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>(</p></li>
+<li><p>“is_self_thread_tweet”,</p></li>
+<li><p>_.getOrElse(ConversationFeature, None).exists(_.isSelfThreadTweet.contains(true))),</p></li>
+</ul>
+<blockquote>
+<div><p>(“get_initial”, _.getOrElse(GetInitialFeature, false)),</p>
+<p>(“get_newer”, _.getOrElse(GetNewerFeature, false)),</p>
+<p>(“get_middle”, _.getOrElse(GetMiddleFeature, false)),</p>
+<p>(“get_older”, _.getOrElse(GetOlderFeature, false)),</p>
+<p>(“pull_to_refresh”, _.getOrElse(PullToRefreshFeature, false)),</p>
+<p>(“polling”, _.getOrElse(PollingFeature, false)),</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>(“tls_size_20_plus”, _ =&gt; false),</p></li>
+<li><p>(“near_empty”, _ =&gt; false),</p></li>
+<li><p>(“ranked_request”, _ =&gt; false),</p></li>
+</ul>
+<ul>
+<li><p>(“near_empty”, _.getOrElse(ServedSizeFeature, None).exists(_ &lt; 3)),</p></li>
+<li><p>(“is_request_context_launch”, _.getOrElse(IsLaunchRequestFeature, false)),</p>
+<p>(“mutual_follow”, _.getOrElse(EarlybirdFeature, None).exists(_.fromMutualFollow)),</p>
+</li>
+<li><p>(</p></li>
+<li><p>“less_than_10_mins_since_lnpt”,</p></li>
+<li><p>_.getOrElse(LastNonPollingTimeFeature, None).exists(_.untilNow &lt; 10.minutes)),</p></li>
+<li><p>(“served_in_conversation_module”, _.getOrElse(ServedInConversationModuleFeature, false)),</p>
+<p>(“has_ticketed_space”, _.getOrElse(AudioSpaceMetaDataFeature, None).exists(_.hasTickets)),</p>
+<p>(“in_utis_top5”, _.getOrElse(PositionFeature, None).exists(_ &lt; 5)),</p>
+</li>
+</ul>
+<ul>
+<li><p>(“is_utis_pos0”, _.getOrElse(PositionFeature, None).exists(_ == 0)),</p></li>
+<li><p>(“is_utis_pos1”, _.getOrElse(PositionFeature, None).exists(_ == 1)),</p></li>
+<li><p>(“is_utis_pos2”, _.getOrElse(PositionFeature, None).exists(_ == 2)),</p></li>
+<li><p>(“is_utis_pos3”, _.getOrElse(PositionFeature, None).exists(_ == 3)),</p></li>
+<li><p>(“is_utis_pos4”, _.getOrElse(PositionFeature, None).exists(_ == 4)),</p>
+<p>(</p>
+</li>
+<li><p>“is_signup_request”,</p></li>
+<li><p>candidate =&gt; candidate.getOrElse(AccountAgeFeature, None).exists(_.untilNow &lt; 30.minutes)),</p></li>
+<li><p>(“empty_request”, _ =&gt; false),</p></li>
+<li><p>(“served_size_less_than_5”, _.getOrElse(ServedSizeFeature, None).exists(_ &lt; 5)),</p></li>
+<li><p>(“served_size_less_than_10”, _.getOrElse(ServedSizeFeature, None).exists(_ &lt; 10)),</p></li>
+<li><p>(“served_size_less_than_20”, _.getOrElse(ServedSizeFeature, None).exists(_ &lt; 20)),</p></li>
+</ul>
+<ul>
+<li><p>“conversation_module_has_2_displayed_tweets”,</p></li>
+<li><p>_.getOrElse(ConversationModule2DisplayedTweetsFeature, false)),</p></li>
+<li><p>(“empty_request”, _.getOrElse(ServedSizeFeature, None).exists(_ == 0)),</p>
+<p>(“served_size_less_than_50”, _.getOrElse(ServedSizeFeature, None).exists(_ &lt; 50)),</p>
+<p>(</p>
+<blockquote>
+<div><p>“served_size_between_50_and_100”,</p>
+<p>_.getOrElse(ServedSizeFeature, None).exists(size =&gt; size &gt;= 50 &amp;&amp; size &lt; 100)),</p>
+</div></blockquote>
+<p>(“authored_by_contextual_user”, _.getOrElse(AuthoredByContextualUserFeature, false)),</p>
+</li>
+<li><p>(</p></li>
+<li><p>“is_self_thread_tweet”,</p></li>
+<li><p>_.getOrElse(ConversationFeature, None).exists(_.isSelfThreadTweet.contains(true))),</p></li>
+</ul>
+<blockquote>
+<div><p>(“has_ancestors”, _.getOrElse(AncestorsFeature, Seq.empty).nonEmpty),</p>
+<p>(“full_scoring_succeeded”, _.getOrElse(FullScoringSucceededFeature, false)),</p>
+</div></blockquote>
+<ul>
+<li><p>(“served_size_less_than_20”, _.getOrElse(ServedSizeFeature, None).exists(_ &lt; 20)),</p></li>
+<li><p>(“served_size_less_than_10”, _.getOrElse(ServedSizeFeature, None).exists(_ &lt; 10)),</p></li>
+<li><p>(“served_size_less_than_5”, _.getOrElse(ServedSizeFeature, None).exists(_ &lt; 5)),</p>
+<p>(</p>
+<blockquote>
+<div><p>“account_age_less_than_30_minutes”,</p>
+<p>_.getOrElse(AccountAgeFeature, None).exists(_.untilNow &lt; 30.minutes)),</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>(</p></li>
+<li><p>“account_age_less_than_1_day”,</p></li>
+<li><p>_.getOrElse(AccountAgeFeature, None).exists(_.untilNow &lt; 1.day)),</p></li>
+<li><p>(</p></li>
+<li><p>“account_age_less_than_7_days”,</p></li>
+<li><p>_.getOrElse(AccountAgeFeature, None).exists(_.untilNow &lt; 7.days)),</p></li>
+</ul>
+<ul>
+<li><p>(“conversation_module_has_gap”, _.getOrElse(ConversationModuleHasGapFeature, false)),</p>
+<p>(</p>
+<blockquote>
+<div><p>“directed_at_user_is_in_first_degree”,</p>
+<p>_.getOrElse(EarlybirdFeature, None).exists(_.directedAtUserIdIsInFirstDegree.contains(true))),</p>
+</div></blockquote>
+</li>
+</ul>
+<ul>
+<li><p>(“root_user_is_in_first_degree”, _ =&gt; false),</p>
+<p>(</p>
+<blockquote>
+<div><p>“has_semantic_core_annotation”,</p>
+<p>_.getOrElse(EarlybirdFeature, None).exists(_.semanticCoreAnnotations.nonEmpty)),</p>
+</div></blockquote>
+<p>(“is_request_context_foreground”, _.getOrElse(IsForegroundRequestFeature, false)),</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>(</p></li>
+<li><p>“account_age_less_than_1_day”,</p></li>
+<li><p>_.getOrElse(AccountAgeFeature, None).exists(_.untilNow &lt; 1.day)),</p></li>
+<li><p>(</p></li>
+<li><p>“account_age_less_than_7_days”,</p></li>
+<li><p>_.getOrElse(AccountAgeFeature, None).exists(_.untilNow &lt; 7.days)),</p></li>
+</ul>
+<blockquote>
+<div><p>(</p>
+<blockquote>
+<div><p>“part_of_utt”,</p>
+<p>_.getOrElse(EarlybirdFeature, None)</p>
+<blockquote>
+<div><p>.exists(_.semanticCoreAnnotations.exists(_.exists(annotation =&gt;</p>
+<blockquote>
+<div><p>annotation.domainId == SemanticCoreFeatures.UnifiedTwitterTaxonomy)))),</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>(</p></li>
+<li><p>“has_home_latest_request_past_week”,</p></li>
+<li><p>_.getOrElse(FollowingLastNonPollingTimeFeature, None).exists(_.untilNow &lt; 7.days)),</p></li>
+<li><p>(“is_utis_pos0”, _.getOrElse(PositionFeature, None).exists(_ == 0)),</p></li>
+<li><p>(“is_utis_pos1”, _.getOrElse(PositionFeature, None).exists(_ == 1)),</p></li>
+<li><p>(“is_utis_pos2”, _.getOrElse(PositionFeature, None).exists(_ == 2)),</p></li>
+<li><p>(“is_utis_pos3”, _.getOrElse(PositionFeature, None).exists(_ == 3)),</p></li>
+<li><p>(“is_utis_pos4”, _.getOrElse(PositionFeature, None).exists(_ == 4)),</p>
+<p>(“is_random_tweet”, _.getOrElse(IsRandomTweetFeature, false)),</p>
+<p>(“has_random_tweet_in_response”, _.getOrElse(HasRandomTweetFeature, false)),</p>
+<p>(“is_random_tweet_above_in_utis”, _.getOrElse(IsRandomTweetAboveFeature, false)),</p>
+</li>
+</ul>
+<ul>
+<li><p>(“is_request_context_launch”, _.getOrElse(IsLaunchRequestFeature, false)),</p></li>
+<li><p>(“viewer_is_employee”, _ =&gt; false),</p></li>
+<li><p>(“viewer_is_timelines_employee”, _ =&gt; false),</p></li>
+<li><p>(“viewer_follows_any_topics”, _.getOrElse(UserFollowedTopicsCountFeature, None).exists(_ &gt; 0)),</p>
+<p>(</p>
+<blockquote>
+<div><p>“has_ancestor_authored_by_viewer”,</p>
+<p>candidate =&gt;</p>
+<blockquote>
+<div><p>.getOrElse(AncestorsFeature, Seq.empty).exists(ancestor =&gt;</p>
+<blockquote>
+<div><p>candidate.getOrElse(ViewerIdFeature, 0L) == ancestor.userId)),</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<p>(“ancestor”, _.getOrElse(IsAncestorCandidateFeature, false)),</p>
+</li>
+<li><p>(</p></li>
+<li><p>“root_ancestor”,</p></li>
+<li><p>candidate =&gt;</p></li>
+<li><p>candidate.getOrElse(IsAncestorCandidateFeature, false) &amp;&amp; candidate</p></li>
+<li><p>.getOrElse(InReplyToTweetIdFeature, None).isEmpty),</p></li>
+</ul>
+<blockquote>
+<div><p>(</p>
+<blockquote>
+<div><p>“deep_reply”,</p>
+<p>candidate =&gt;</p>
+<p>“tweet_age_less_than_15_seconds”,</p>
+<p>_.getOrElse(OriginalTweetCreationTimeFromSnowflakeFeature, None)</p>
+<blockquote>
+<div><p>.exists(_.untilNow &lt;= 15.seconds)),</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>(“is_followed_topic_tweet”, _ =&gt; false),</p></li>
+<li><p>(“is_recommended_topic_tweet”, _ =&gt; false),</p></li>
+<li><p>(“is_topic_tweet”, _ =&gt; false),</p></li>
+<li><p>(“preferred_language_matches_tweet_language”, _ =&gt; false),</p></li>
+</ul>
+<ul>
+<li><p>(</p></li>
+<li><p>“less_than_1_hour_since_lnpt”,</p></li>
+<li><p>_.getOrElse(LastNonPollingTimeFeature, None).exists(_.untilNow &lt; 1.hour)),</p></li>
+<li><p>(“has_gte_10_favs”, _.getOrElse(EarlybirdFeature, None).exists(_.favCountV2.exists(_ &gt;= 10))),</p>
+<p>(</p>
+<blockquote>
+<div><p>“device_language_matches_tweet_language”,</p>
+<p>candidate =&gt;</p>
+<blockquote>
+<div><p>candidate.getOrElse(TweetLanguageFeature, None) ==</p>
+<blockquote>
+<div><p>candidate.getOrElse(DeviceLanguageFeature, None)),</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p>(</p></li>
+<li><p>“root_ancestor”,</p></li>
+<li><p>candidate =&gt;</p></li>
+<li><p>candidate.getOrElse(IsAncestorCandidateFeature, false) &amp;&amp; candidate</p></li>
+<li><p>.getOrElse(InReplyToTweetIdFeature, None).isEmpty),</p></li>
+</ul>
+<blockquote>
+<div><p>(“question”, _.getOrElse(EarlybirdFeature, None).exists(_.hasQuestion.contains(true))),</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>(“in_network”, _.getOrElse(FromInNetworkSourceFeature, true)),</p></li>
+<li><p>(“viewer_follows_original_author”, _ =&gt; false),</p></li>
+<li><p>(“has_account_follow_prompt”, _ =&gt; false),</p></li>
+<li><p>(“has_relevance_prompt”, _ =&gt; false),</p></li>
+<li><p>(“has_topic_annotation_haug_prompt”, _ =&gt; false),</p></li>
+<li><p>(“has_topic_annotation_random_precision_prompt”, _ =&gt; false),</p></li>
+<li><p>(“has_topic_annotation_prompt”, _ =&gt; false),</p></li>
+</ul>
+<ul>
+<li><p>(“in_network”, _.getOrElse(InNetworkFeature, true)),</p>
+<p>(</p>
+<blockquote>
+<div><p>“has_political_annotation”,</p>
+<p>_.getOrElse(EarlybirdFeature, None).exists(</p>
+<p>_.getOrElse(EarlybirdFeature, None)</p>
+<blockquote>
+<div><p>.exists(_.conversationControl.exists(_.isInstanceOf[tpt.ConversationControl.Community]))),</p>
+</div></blockquote>
+</div></blockquote>
+<p>(“has_zero_score”, _.getOrElse(ScoreFeature, None).exists(_ == 0.0)),</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>(“is_viewer_not_invited_to_reply”, _ =&gt; false),</p></li>
+<li><p>(“is_viewer_invited_to_reply”, _ =&gt; false),</p></li>
+<li><p>(“has_gte_10_favs”, _.getOrElse(EarlybirdFeature, None).exists(_.favCountV2.exists(_ &gt;= 10))),</p></li>
+</ul>
+<ul class="simple">
+<li><p>(</p></li>
+<li><p>“is_followed_topic_tweet”,</p></li>
+<li><p>_.getOrElse(TopicContextFunctionalityTypeFeature, None)</p></li>
+<li><p>.exists(_ == BasicTopicContextFunctionalityType)),</p></li>
+<li><p>(</p></li>
+<li><p>“is_recommended_topic_tweet”,</p></li>
+<li><p>_.getOrElse(TopicContextFunctionalityTypeFeature, None)</p></li>
+<li><p>.exists(_ == RecommendationTopicContextFunctionalityType)),</p></li>
+</ul>
+<blockquote>
+<div><p>(“has_gte_100_favs”, _.getOrElse(EarlybirdFeature, None).exists(_.favCountV2.exists(_ &gt;= 100))),</p>
+<p>(“has_gte_1k_favs”, _.getOrElse(EarlybirdFeature, None).exists(_.favCountV2.exists(_ &gt;= 1000))),</p>
+<p>(</p>
+<p>(</p>
+<blockquote>
+<div><p>“has_gte_100k_favs”,</p>
+<p>_.getOrElse(EarlybirdFeature, None).exists(_.favCountV2.exists(_ &gt;= 100000))),</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>(“above_neighbor_is_topic_tweet”, _ =&gt; false),</p></li>
+<li><p>(“is_topic_tweet_with_neighbor_below”, _ =&gt; false),</p>
+<p>(“has_audio_space”, _.getOrElse(AudioSpaceMetaDataFeature, None).exists(_.hasSpace)),</p>
+<p>(“has_live_audio_space”, _.getOrElse(AudioSpaceMetaDataFeature, None).exists(_.isLive)),</p>
+<p>(</p>
+<p>(</p>
+<blockquote>
+<div><p>“has_toxicity_score_above_threshold”,</p>
+<p>_.getOrElse(EarlybirdFeature, None).exists(_.toxicityScore.exists(_ &gt; 0.91))),</p>
+</div></blockquote>
+</li>
+</ul>
+<ul>
+<li><p>(“is_topic_tweet”, _.getOrElse(TopicIdSocialContextFeature, None).isDefined),</p>
+<p>(</p>
+<blockquote>
+<div><p>“text_only”,</p>
+<p>candidate =&gt;</p>
+</div></blockquote>
+<p>(“has_3_images”, _.getOrElse(NumImagesFeature, None).exists(_ == 3)),</p>
+<p>(“has_4_images”, _.getOrElse(NumImagesFeature, None).exists(_ == 4)),</p>
+<p>(“has_card”, _.getOrElse(EarlybirdFeature, None).exists(_.hasCard)),</p>
+</li>
+</ul>
+<ul>
+<li><p>(“3_or_more_consecutive_not_in_network”, _ =&gt; false),</p></li>
+<li><p>(“2_or_more_consecutive_not_in_network”, _ =&gt; false),</p></li>
+<li><p>(“5_out_of_7_not_in_network”, _ =&gt; false),</p></li>
+<li><p>(“7_out_of_7_not_in_network”, _ =&gt; false),</p></li>
+<li><p>(“5_out_of_5_not_in_network”, _ =&gt; false),</p>
+<p>(“user_follow_count_gte_50”, _.getOrElse(UserFollowingCountFeature, None).exists(_ &gt; 50)),</p>
+</li>
+<li><p>(“has_liked_by_social_context”, _ =&gt; false),</p></li>
+<li><p>(“has_followed_by_social_context”, _ =&gt; false),</p></li>
+<li><p>(“has_topic_social_context”, _ =&gt; false),</p></li>
+<li><p>(“timeline_entry_has_banner”, _ =&gt; false),</p></li>
+<li><p>(“served_in_conversation_module”, _.getOrElse(ServedInConversationModuleFeature, false)),</p>
+<p>(</p>
+</li>
+<li><p>“conversation_module_has_2_displayed_tweets”,</p></li>
+<li><p>_.getOrElse(ConversationModule2DisplayedTweetsFeature, false)),</p></li>
+<li><p>(“conversation_module_has_gap”, _.getOrElse(ConversationModuleHasGapFeature, false)),</p></li>
+<li><p>(“served_in_recap_tweet_candidate_module_injection”, _ =&gt; false),</p></li>
+<li><p>(“served_in_threaded_conversation_module”, _ =&gt; false)</p></li>
+</ul>
+<ul class="simple">
+<li><p>“has_liked_by_social_context”,</p></li>
+<li><p>candidateFeatures =&gt;</p></li>
+<li><p>candidateFeatures</p></li>
+<li><p>.getOrElse(SGSValidLikedByUserIdsFeature, Seq.empty)</p></li>
+<li><p>.exists(candidateFeatures</p></li>
+<li><p>.getOrElse(PerspectiveFilteredLikedByUserIdsFeature, Seq.empty).toSet.contains)),</p></li>
+<li><p>(</p></li>
+<li><p>“has_followed_by_social_context”,</p></li>
+<li><p>_.getOrElse(SGSValidFollowedByUserIdsFeature, Seq.empty).nonEmpty),</p></li>
+<li><p>(</p></li>
+<li><p>“has_topic_social_context”,</p></li>
+<li><p>candidateFeatures =&gt;</p></li>
+<li><p>candidateFeatures</p></li>
+<li><p>.getOrElse(TopicIdSocialContextFeature, None)</p></li>
+<li><p>.isDefined &amp;&amp;</p></li>
+<li><p>candidateFeatures.getOrElse(TopicContextFunctionalityTypeFeature, None).isDefined),</p></li>
+<li><p>(“video_lte_10_sec”, _.getOrElse(VideoDurationMsFeature, None).exists(_ &lt;= 10000)),</p></li>
+<li><p>(</p></li>
+<li><p>“video_bt_10_60_sec”,</p></li>
+<li><p>_.getOrElse(VideoDurationMsFeature, None).exists(duration =&gt;</p></li>
+<li><p>duration &gt; 10000 &amp;&amp; duration &lt;= 60000)),</p></li>
+<li><p>(“video_gt_60_sec”, _.getOrElse(VideoDurationMsFeature, None).exists(_ &gt; 60000)),</p></li>
+<li><p>(</p></li>
+<li><p>“tweet_age_lte_30_minutes”,</p></li>
+<li><p>_.getOrElse(OriginalTweetCreationTimeFromSnowflakeFeature, None)</p></li>
+<li><p>.exists(_.untilNow &lt;= 30.minutes)),</p></li>
+<li><p>(</p></li>
+<li><p>“tweet_age_lte_1_hour”,</p></li>
+<li><p>_.getOrElse(OriginalTweetCreationTimeFromSnowflakeFeature, None)</p></li>
+<li><p>.exists(_.untilNow &lt;= 1.hour)),</p></li>
+<li><p>(</p></li>
+<li><p>“tweet_age_lte_6_hours”,</p></li>
+<li><p>_.getOrElse(OriginalTweetCreationTimeFromSnowflakeFeature, None)</p></li>
+<li><p>.exists(_.untilNow &lt;= 6.hours)),</p></li>
+<li><p>(</p></li>
+<li><p>“tweet_age_lte_12_hours”,</p></li>
+<li><p>_.getOrElse(OriginalTweetCreationTimeFromSnowflakeFeature, None)</p></li>
+<li><p>.exists(_.untilNow &lt;= 12.hours)),</p></li>
+<li><p>(</p></li>
+<li><p>“tweet_age_gte_24_hours”,</p></li>
+<li><p>_.getOrElse(OriginalTweetCreationTimeFromSnowflakeFeature, None)</p></li>
+<li><p>.exists(_.untilNow &gt;= 24.hours)),</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>val PredicateMap = CandidatePredicates.toMap</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/HomeTweetTypePredicates_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

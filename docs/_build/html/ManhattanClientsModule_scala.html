@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanClientsModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanClientsModule.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-manhattanclientsmodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-manhattanclientsmodule-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanClientsModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanClientsModule.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-manhattanclientsmodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-manhattanclientsmodule-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -13,44 +14,28</p>
+<p>Content:</p>
+<p>index 5bdbf9e97..fc0e282af 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanClientsModule.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanClientsModule.scala</p>
+<blockquote>
+<div><p>package com.twitter.home_mixer.module</p>
+<p>import com.google.inject.Provides</p>
+</div></blockquote>
+<p>+import com.twitter.conversions.DurationOps._</p>
+<blockquote>
+<div><p>import com.twitter.finagle.mtls.authentication.ServiceIdentifier</p>
+<p>import com.twitter.home_mixer.param.HomeMixerInjectionNames.RealGraphManhattanEndpoint</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.param.HomeMixerInjectionNames.UserMetadataManhattanEndpoint</p>
+<blockquote>
+<div><p>import com.twitter.inject.TwitterModule</p>
+</div></blockquote>
+<p>+import com.twitter.inject.annotations.Flag</p>
+<blockquote>
+<div><p>import com.twitter.storage.client.manhattan.kv._</p>
+<p>import com.twitter.timelines.config.ConfigUtils</p>
+<p>import com.twitter.util.Duration</p>
+<p>object ManhattanClientsModule extends TwitterModule with ConfigUtils {</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>private val starbuckDest: String = “/s/manhattan/starbuck.native-thrift”</p></li>
+<li><p>private val apolloDest: String = “/s/manhattan/apollo.native-thrift”</p></li>
+</ul>
+<ul>
+<li><p>private val ApolloDest = “/s/manhattan/apollo.native-thrift”</p></li>
+<li><p>private final val Timeout = “mh_real_graph.timeout”</p></li>
+<li></li>
+<li><p>flag[Duration](Timeout, 150.millis, “Timeout total”)</p>
+<p>&#64;Provides</p>
+<p>&#64;Singleton</p>
+<p>&#64;Named(RealGraphManhattanEndpoint)</p>
+<p>def providesRealGraphManhattanEndpoint(</p>
+</li>
+<li><p>&#64;Flag(Timeout) timeout: Duration,</p>
+<p>serviceIdentifier: ServiceIdentifier</p>
+</li>
+</ul>
+<blockquote>
+<div><p>): ManhattanKVEndpoint = {</p>
+<blockquote>
+<div><p>lazy val client = ManhattanKVClient(</p>
+<blockquote>
+<div><p>appId = “real_graph”,</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>dest = apolloDest,</p></li>
+</ul>
+<ul>
+<li><p>dest = ApolloDest,</p>
+<p>mtlsParams = ManhattanKVClientMtlsParams(serviceIdentifier = serviceIdentifier),</p>
+<p>label = “real-graph-data”</p>
+</li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>ManhattanKVEndpointBuilder(client)</p>
+<blockquote>
+<div><p>.maxRetryCount(2)</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>.defaultMaxTimeout(Duration.fromMilliseconds(100))</p></li>
+<li><p>.build()</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>&#64;Provides</p></li>
+<li><p>&#64;Singleton</p></li>
+<li><p>&#64;Named(UserMetadataManhattanEndpoint)</p></li>
+<li><p>def providesUserMetadataManhattanEndpoint(</p></li>
+<li><p>serviceIdentifier: ServiceIdentifier</p></li>
+<li><p>): ManhattanKVEndpoint = {</p></li>
+<li><p>val client = ManhattanKVClient(</p></li>
+<li><p>appId = “user_metadata”,</p></li>
+<li><p>dest = starbuckDest,</p></li>
+<li><p>mtlsParams = ManhattanKVClientMtlsParams(serviceIdentifier = serviceIdentifier),</p></li>
+<li><p>label = “user-metadata”</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>ManhattanKVEndpointBuilder(client)</p></li>
+<li><p>.maxRetryCount(1)</p></li>
+<li><p>.defaultMaxTimeout(Duration.fromMilliseconds(70))</p></li>
+</ul>
+<ul>
+<li><p>.defaultMaxTimeout(timeout)</p>
+<p>.build()</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>}</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ManhattanClientsModule_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

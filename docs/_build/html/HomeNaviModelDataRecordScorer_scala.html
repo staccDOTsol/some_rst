@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/HomeNaviModelDataRecordScorer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/HomeNaviModelDataRecordScorer.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-homenavimodeldatarecordscorer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-homenavimodeldatarecordscorer-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/HomeNaviModelDataRecordScorer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/HomeNaviModelDataRecordScorer.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-homenavimodeldatarecordscorer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-scorer-homenavimodeldatarecordscorer-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -1,233 +0,0</p>
+<p>Content:</p>
+<p>deleted file mode 100644</p>
+<blockquote>
+<div><p>index 23bf07da6..000000000</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/scorer/HomeNaviModelDataRecordScorer.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ /dev/null</p>
+<p>-package com.twitter.home_mixer.product.scored_tweets.scorer</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>-import com.twitter.dal.personal_data.{thriftjava =&gt; pd}</p>
+<p>-import com.twitter.finagle.stats.Stat</p>
+<p>-import com.twitter.finagle.stats.StatsReceiver</p>
+<p>-import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam.Scoring.ModelWeights</p>
+<p>-import com.twitter.ml.api.DataRecord</p>
+<p>-import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>-import com.twitter.product_mixer.core.feature.Feature</p>
+<p>-import com.twitter.product_mixer.core.feature.FeatureWithDefaultOnFailure</p>
+<p>-import com.twitter.product_mixer.core.feature.datarecord.BaseDataRecordFeature</p>
+<p>-import com.twitter.product_mixer.core.feature.datarecord.DataRecordInAFeature</p>
+<p>-import com.twitter.product_mixer.core.feature.datarecord.DataRecordOptionalFeature</p>
+<p>-import com.twitter.product_mixer.core.feature.datarecord.DoubleDataRecordCompatible</p>
+<p>-import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>-import com.twitter.product_mixer.core.feature.featuremap.datarecord.AllFeatures</p>
+<p>-import com.twitter.product_mixer.core.feature.featuremap.datarecord.DataRecordConverter</p>
+<p>-import com.twitter.product_mixer.core.feature.featuremap.datarecord.DataRecordExtractor</p>
+<p>-import com.twitter.product_mixer.core.feature.featuremap.datarecord.FeaturesScope</p>
+<p>-import com.twitter.product_mixer.core.functional_component.scorer.Scorer</p>
+<p>-import com.twitter.product_mixer.core.model.common.CandidateWithFeatures</p>
+<p>-import com.twitter.product_mixer.core.model.common.UniversalNoun</p>
+<p>-import com.twitter.product_mixer.core.model.common.identifier.ScorerIdentifier</p>
+<p>-import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+<p>-import com.twitter.product_mixer.core.pipeline.pipeline_failure.IllegalStateFailure</p>
+<p>-import com.twitter.product_mixer.core.pipeline.pipeline_failure.PipelineFailure</p>
+<p>-import com.twitter.product_mixer.core.util.OffloadFuturePools</p>
+<p>-import com.twitter.stitch.Stitch</p>
+<p>-import com.twitter.timelines.clients.predictionservice.PredictionServiceGRPCClient</p>
+<p>-import com.twitter.timelines.configapi.FSBoundedParam</p>
+<p>-import com.twitter.timelines.prediction.features.recap.RecapFeatures</p>
+<p>-import com.twitter.util.Future</p>
+<p>-import com.twitter.util.Return</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>-object CommonFeaturesDataRecordFeature</p>
+<ul class="simple">
+<li><p>extends DataRecordInAFeature[PipelineQuery]</p></li>
+<li><p>with FeatureWithDefaultOnFailure[PipelineQuery, DataRecord] {</p></li>
+<li><p>override def defaultValue: DataRecord = new DataRecord()</p></li>
+</ul>
+<p>-}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>-object CandidateFeaturesDataRecordFeature</p>
+<ul class="simple">
+<li><p>extends DataRecordInAFeature[TweetCandidate]</p></li>
+<li><p>with FeatureWithDefaultOnFailure[TweetCandidate, DataRecord] {</p></li>
+<li><p>override def defaultValue: DataRecord = new DataRecord()</p></li>
+</ul>
+<p>-}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>-case class HomeNaviModelDataRecordScorer[</p>
+<ul class="simple">
+<li><p>Query &lt;: PipelineQuery,</p></li>
+<li><p>Candidate &lt;: UniversalNoun[Any],</p></li>
+<li><p>CandidateFeatures &lt;: BaseDataRecordFeature[Candidate, _],</p></li>
+<li><p>ResultFeatures &lt;: BaseDataRecordFeature[Candidate, _]</p></li>
+</ul>
+<p>-](</p>
+<ul class="simple">
+<li><p>override val identifier: ScorerIdentifier,</p></li>
+<li><p>modelClient: PredictionServiceGRPCClient,</p></li>
+<li><p>candidateFeatures: FeaturesScope[CandidateFeatures],</p></li>
+<li><p>resultFeatures: Set[ResultFeatures],</p></li>
+<li><p>statsReceiver: StatsReceiver)</p></li>
+<li><p>extends Scorer[Query, Candidate] {</p></li>
+<li></li>
+<li><p>require(resultFeatures.nonEmpty, “Result features cannot be empty”)</p></li>
+<li></li>
+<li><p>override val features: Set[Feature[_, _]] =</p></li>
+<li><p>resultFeatures.asInstanceOf[</p></li>
+<li><p>Set[Feature[_, _]]] + CommonFeaturesDataRecordFeature + CandidateFeaturesDataRecordFeature</p></li>
+<li></li>
+<li><p>private val queryDataRecordAdapter = new DataRecordConverter(AllFeatures())</p></li>
+<li><p>private val candidatesDataRecordAdapter = new DataRecordConverter(candidateFeatures)</p></li>
+<li><p>private val resultDataRecordExtractor = new DataRecordExtractor(resultFeatures)</p></li>
+<li></li>
+<li><p>private val scopedStatsReceiver = statsReceiver.scope(getClass.getSimpleName)</p></li>
+<li><p>private val failuresStat = scopedStatsReceiver.stat(“failures”)</p></li>
+<li><p>private val responsesStat = scopedStatsReceiver.stat(“responses”)</p></li>
+<li><p>private val invalidResponsesSizeCounter = scopedStatsReceiver.counter(“invalidResponsesSize”)</p></li>
+<li><p>private val candidatesDataRecordAdapterLatencyStat =</p></li>
+<li><p>scopedStatsReceiver.scope(“candidatesDataRecordAdapter”).stat(“latency_ms”)</p></li>
+<li></li>
+<li><p>private val DataRecordConstructionParallelism = 32</p></li>
+<li></li>
+<li><p>override def apply(</p></li>
+<li><p>query: Query,</p></li>
+<li><p>candidates: Seq[CandidateWithFeatures[Candidate]]</p></li>
+<li><p>): Stitch[Seq[FeatureMap]] = {</p></li>
+<li><p>val commonRecord = query.features.map(queryDataRecordAdapter.toDataRecord)</p></li>
+<li><p>val candidateRecords: Future[Seq[DataRecord]] =</p></li>
+<li><p>Stat.time(candidatesDataRecordAdapterLatencyStat) {</p></li>
+<li><p>OffloadFuturePools.parallelize[FeatureMap, DataRecord](</p></li>
+<li><p>candidates.map(_.features),</p></li>
+<li><p>candidatesDataRecordAdapter.toDataRecord(_),</p></li>
+<li><p>DataRecordConstructionParallelism,</p></li>
+<li><p>new DataRecord</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>Stitch.callFuture {</p></li>
+<li><p>candidateRecords.flatMap { records =&gt;</p></li>
+<li><p>val predictionResponses =</p></li>
+<li><p>modelClient.getPredictions(</p></li>
+<li><p>records = records,</p></li>
+<li><p>commonFeatures = commonRecord,</p></li>
+<li><p>modelId = Some(“Home”)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>predictionResponses.map { responses =&gt;</p></li>
+<li><p>failuresStat.add(responses.count(_.isThrow))</p></li>
+<li><p>responsesStat.add(responses.size)</p></li>
+<li></li>
+<li><p>if (responses.size == candidates.size) {</p></li>
+<li><p>val predictedScoreFeatureMaps = responses.map {</p></li>
+<li><p>case Return(dataRecord) =&gt;</p></li>
+<li><p>resultDataRecordExtractor.fromDataRecord(dataRecord)</p></li>
+<li><p>case _ =&gt;</p></li>
+<li><p>resultDataRecordExtractor.fromDataRecord(new DataRecord())</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>// add Data Record to feature map, which will be used for logging in later stage</p></li>
+<li><p>predictedScoreFeatureMaps.zip(records).map {</p></li>
+<li><p>case (predictedScoreFeatureMap, candidateRecord) =&gt;</p></li>
+<li><p>predictedScoreFeatureMap +</p></li>
+<li><p>(key = CandidateFeaturesDataRecordFeature, value = candidateRecord) +</p></li>
+<li><p>(key = CommonFeaturesDataRecordFeature, value =</p></li>
+<li><p>commonRecord.getOrElse(new DataRecord()))</p></li>
+<li><p>}</p></li>
+<li><p>} else {</p></li>
+<li><p>invalidResponsesSizeCounter.incr()</p></li>
+<li><p>throw PipelineFailure(IllegalStateFailure, “Result Size mismatched candidates size”)</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+<li><p>}</p></li>
+</ul>
+<p>-}</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>-/**</p>
+<ul class="simple">
+<li><ul>
+<li><p>Features for results returned by Navi user-tweet prediction models.</p></li>
+</ul>
+</li>
+<li><p><a href="#id1"><span class="problematic" id="id2">*</span></a>/</p></li>
+</ul>
+<p>-object HomeNaviModelDataRecordScorer {</p>
+<ul class="simple">
+<li><p>val RequestBatchSize = 32</p></li>
+<li></li>
+<li><p>sealed trait PredictedScoreFeature</p></li>
+<li><p>extends DataRecordOptionalFeature[TweetCandidate, Double]</p></li>
+<li><p>with DoubleDataRecordCompatible {</p></li>
+<li><p>def statName: String</p></li>
+<li></li>
+<li><p>def modelWeightParam: FSBoundedParam[Double]</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object PredictedFavoriteScoreFeature extends PredictedScoreFeature {</p></li>
+<li><p>override val featureName: String = RecapFeatures.PREDICTED_IS_FAVORITED.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>override val statName = “fav”</p></li>
+<li><p>override val modelWeightParam = ModelWeights.FavParam</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object PredictedReplyScoreFeature extends PredictedScoreFeature {</p></li>
+<li><p>override val featureName: String = RecapFeatures.PREDICTED_IS_REPLIED.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>override val statName = “reply”</p></li>
+<li><p>override val modelWeightParam = ModelWeights.ReplyParam</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object PredictedRetweetScoreFeature extends PredictedScoreFeature {</p></li>
+<li><p>override val featureName: String = RecapFeatures.PREDICTED_IS_RETWEETED.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>override val statName = “retweet”</p></li>
+<li><p>override val modelWeightParam = ModelWeights.RetweetParam</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object PredictedReplyEngagedByAuthorScoreFeature extends PredictedScoreFeature {</p></li>
+<li><p>override val featureName: String =</p></li>
+<li><p>RecapFeatures.PREDICTED_IS_REPLIED_REPLY_ENGAGED_BY_AUTHOR.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>override val statName = “reply_engaged_by_author”</p></li>
+<li><p>override val modelWeightParam = ModelWeights.ReplyEngagedByAuthorParam</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object PredictedGoodClickConvoDescFavoritedOrRepliedScoreFeature extends PredictedScoreFeature {</p></li>
+<li><p>override val featureName: String = RecapFeatures.PREDICTED_IS_GOOD_CLICKED_V1.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>override val statName = “good_click_convo_desc_favorited_or_replied”</p></li>
+<li><p>override val modelWeightParam = ModelWeights.GoodClickParam</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object PredictedGoodClickConvoDescUamGt2ScoreFeature extends PredictedScoreFeature {</p></li>
+<li><p>override val featureName: String = RecapFeatures.PREDICTED_IS_GOOD_CLICKED_V2.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>override val statName = “good_click_convo_desc_uam_gt_2”</p></li>
+<li><p>override val modelWeightParam = ModelWeights.GoodClickV2Param</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object PredictedNegativeFeedbackV2ScoreFeature extends PredictedScoreFeature {</p></li>
+<li><p>override val featureName: String =</p></li>
+<li><p>RecapFeatures.PREDICTED_IS_NEGATIVE_FEEDBACK_V2.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>override val statName = “negative_feedback_v2”</p></li>
+<li><p>override val modelWeightParam = ModelWeights.NegativeFeedbackV2Param</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object PredictedGoodProfileClickScoreFeature extends PredictedScoreFeature {</p></li>
+<li><p>override val featureName: String =</p></li>
+<li><p>RecapFeatures.PREDICTED_IS_PROFILE_CLICKED_AND_PROFILE_ENGAGED.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>override val statName = “good_profile_click”</p></li>
+<li><p>override val modelWeightParam = ModelWeights.GoodProfileClickParam</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object PredictedReportedScoreFeature extends PredictedScoreFeature {</p></li>
+<li><p>override val featureName: String =</p></li>
+<li><p>RecapFeatures.PREDICTED_IS_REPORT_TWEET_CLICKED.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>override val statName = “reported”</p></li>
+<li><p>override val modelWeightParam = ModelWeights.ReportParam</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>object PredictedVideoPlayback50ScoreFeature extends PredictedScoreFeature {</p></li>
+<li><p>override val featureName: String = RecapFeatures.PREDICTED_IS_VIDEO_PLAYBACK_50.getFeatureName</p></li>
+<li><p>override val personalDataTypes: Set[pd.PersonalDataType] = Set.empty</p></li>
+<li><p>override val statName = “video_playback_50”</p></li>
+<li><p>override val modelWeightParam = ModelWeights.VideoPlayback50Param</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>val PredictedScoreFeatures: Seq[PredictedScoreFeature] = Seq(</p></li>
+<li><p>PredictedFavoriteScoreFeature,</p></li>
+<li><p>PredictedReplyScoreFeature,</p></li>
+<li><p>PredictedRetweetScoreFeature,</p></li>
+<li><p>PredictedReplyEngagedByAuthorScoreFeature,</p></li>
+<li><p>PredictedGoodClickConvoDescFavoritedOrRepliedScoreFeature,</p></li>
+<li><p>PredictedGoodClickConvoDescUamGt2ScoreFeature,</p></li>
+<li><p>PredictedNegativeFeedbackV2ScoreFeature,</p></li>
+<li><p>PredictedGoodProfileClickScoreFeature,</p></li>
+<li><p>PredictedReportedScoreFeature,</p></li>
+<li><p>PredictedVideoPlayback50ScoreFeature,</p></li>
+<li><p>)</p></li>
+</ul>
+<p>-}</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/HomeNaviModelDataRecordScorer_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

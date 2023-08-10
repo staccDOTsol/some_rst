@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/UpdateTimelinesPersistenceStoreSideEffect.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/UpdateTimelinesPersistenceStoreSideEffect.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-side-effect-updatetimelinespersistencestoresideeffect-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-side-effect-updatetimelinespersistencestoresideeffect-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/UpdateTimelinesPersistenceStoreSideEffect.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/UpdateTimelinesPersistenceStoreSideEffect.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-side-effect-updatetimelinespersistencestoresideeffect-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-side-effect-updatetimelinespersistencestoresideeffect-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -216,8 +233,11</p>
+<p>Content:</p>
+<p>index ef8a737a8..5a1bb0f6b 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/UpdateTimelinesPersistenceStoreSideEffect.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/side_effect/UpdateTimelinesPersistenceStoreSideEffect.scala</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures._</p>
+<p>import com.twitter.home_mixer.model.request.FollowingProduct</p>
+<p>import com.twitter.home_mixer.model.request.ForYouProduct</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.IsTweetPreviewFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.service.HomeMixerAlertConfig</p>
+<p>import com.twitter.product_mixer.component_library.pipeline.candidate.who_to_follow_module.WhoToFollowCandidateDecorator</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.component_library.pipeline.candidate.who_to_subscribe_module.WhoToSubscribeCandidateDecorator</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>import com.twitter.product_mixer.core.functional_component.side_effect.PipelineResultSideEffect</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.SideEffectIdentifier</p>
+<blockquote>
+<div><p>val entries = inputs.response.instructions.collect {</p>
+<blockquote>
+<div><p>case AddEntriesTimelineInstruction(entries) =&gt;</p>
+<blockquote>
+<div><p>entries.collect {</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>// includes both tweets and promoted tweets</p></li>
+<li><p>case entry: TweetItem if entry.sortIndex.isDefined =&gt;</p></li>
+</ul>
+<ul>
+<li><p>// includes tweets, tweet previews, and promoted tweets</p></li>
+<li><p>case entry: TweetItem if entry.sortIndex.isDefined =&gt; {</p>
+<blockquote>
+<div><p>Seq(</p>
+<blockquote>
+<div><p>buildTweetEntryWithItemIds(</p>
+<blockquote>
+<div><p>tweetIdToItemCandidateMap(entry.id),</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>entry.sortIndex.get))</p></li>
+</ul>
+<ul>
+<li><p>entry.sortIndex.get</p></li>
+<li><p>))</p></li>
+<li><p>}</p>
+<p>// tweet conversation modules are flattened to individual tweets in the persistence store</p>
+<p>case module: TimelineModule</p>
+<blockquote>
+<div><p>if module.sortIndex.isDefined &amp;&amp; module.items.headOption.exists(</p>
+<blockquote>
+<div><p>size = module.items.size.toShort,</p>
+<p>itemIds = Some(userIds)</p>
+</div></blockquote>
+<p>))</p>
+</div></blockquote>
+</li>
+<li><p>case module: TimelineModule</p></li>
+<li><p>if module.sortIndex.isDefined &amp;&amp; module.entryNamespace.toString == WhoToSubscribeCandidateDecorator.EntryNamespaceString =&gt;</p></li>
+<li><p>val userIds = module.items</p></li>
+<li><p>.map(item =&gt;</p></li>
+<li><p>UpdateTimelinesPersistenceStoreSideEffect.EmptyItemIds.copy(userId =</p></li>
+<li><p>Some(item.item.id.asInstanceOf[Long])))</p></li>
+<li><p>Seq(</p></li>
+<li><p>EntryWithItemIds(</p></li>
+<li><p>entityIdType = EntityIdType.WhoToSubscribe,</p></li>
+<li><p>sortIndex = module.sortIndex.get,</p></li>
+<li><p>size = module.items.size.toShort,</p></li>
+<li><p>itemIds = Some(userIds)</p></li>
+<li><p>))</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>}.flatten</p>
+</div></blockquote>
+<p>case ShowCoverInstruction(cover) =&gt;</p>
+<blockquote>
+<div><p>Seq(</p>
+</div></blockquote>
+</div></blockquote>
+<p>userId = None</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>val isPreview = features.getOrElse(IsTweetPreviewFeature, default = false)</p></li>
+<li><p>val entityType = if (isPreview) EntityIdType.TweetPreview else EntityIdType.Tweet</p></li>
+<li><p>EntryWithItemIds(</p></li>
+</ul>
+<ul class="simple">
+<li><p>entityIdType = EntityIdType.Tweet,</p></li>
+</ul>
+<ul>
+<li><p>entityIdType = entityType,</p>
+<p>sortIndex = sortIndex,</p>
+<p>size = 1.toShort,</p>
+<p>itemIds = Some(Seq(itemIds))</p>
+</li>
+</ul>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/UpdateTimelinesPersistenceStoreSideEffect_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

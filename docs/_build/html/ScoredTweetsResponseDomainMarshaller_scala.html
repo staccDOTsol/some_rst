@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseDomainMarshaller.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseDomainMarshaller.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-marshaller-scoredtweetsresponsedomainmarshaller-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-marshaller-scoredtweetsresponsedomainmarshaller-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseDomainMarshaller.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseDomainMarshaller.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-marshaller-scoredtweetsresponsedomainmarshaller-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-marshaller-scoredtweetsresponsedomainmarshaller-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -25,40 +18,5</p>
+<p>Content:</p>
+<p>index 3ba4b201b..796970bec 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseDomainMarshaller.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/marshaller/ScoredTweetsResponseDomainMarshaller.scala</p>
+<blockquote>
+<div><p>package com.twitter.home_mixer.product.scored_tweets.marshaller</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.model.HomeFeatures._</p>
+<p>-import com.twitter.home_mixer.product.scored_tweets.model.ScoredTweet</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.scored_tweets.model.ScoredTweetsQuery</p>
+<p>import com.twitter.home_mixer.product.scored_tweets.model.ScoredTweetsResponse</p>
+</div></blockquote>
+<p>-import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>-import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>-import com.twitter.product_mixer.core.functional_component.marshaller.response.urt.metadata.TopicContextFunctionalityTypeMarshaller</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.functional_component.premarshaller.DomainMarshaller</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.DomainMarshallerIdentifier</p>
+<p>import com.twitter.product_mixer.core.model.common.presentation.CandidateWithDetails</p>
+</div></blockquote>
+<p>-import com.twitter.product_mixer.core.model.common.presentation.ItemCandidateWithDetails</p>
+<p>-import com.twitter.product_mixer.core.model.common.presentation.ModuleCandidateWithDetails</p>
+<blockquote>
+<div><p>/**</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Creates a domain model of the Scored Tweets product response from the set of candidates selected</p></li>
+</ul>
+<blockquote>
+<div><p>override def apply(</p>
+<blockquote>
+<div><p>query: ScoredTweetsQuery,</p>
+<p>selections: Seq[CandidateWithDetails]</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>): ScoredTweetsResponse = ScoredTweetsResponse(</p></li>
+<li><p>scoredTweets = selections.collect {</p></li>
+<li><p>case ItemCandidateWithDetails(candidate: TweetCandidate, _, features) =&gt;</p></li>
+<li><p>Seq(mkScoredTweet(candidate.id, features))</p></li>
+<li><p>case ModuleCandidateWithDetails(candidates, _, _) =&gt;</p></li>
+<li><p>candidates.map { candidate =&gt; mkScoredTweet(candidate.candidateIdLong, candidate.features) }</p></li>
+<li><p>}.flatten</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>private def mkScoredTweet(tweetId: Long, features: FeatureMap): ScoredTweet = {</p></li>
+<li><p>val topicFunctionalityType = features</p></li>
+<li><p>.getOrElse(TopicContextFunctionalityTypeFeature, None)</p></li>
+<li><p>.map(TopicContextFunctionalityTypeMarshaller(_))</p></li>
+<li></li>
+<li><p>ScoredTweet(</p></li>
+<li><p>tweetId = tweetId,</p></li>
+<li><p>authorId = features.get(AuthorIdFeature).get,</p></li>
+<li><p>score = features.get(ScoreFeature),</p></li>
+<li><p>suggestType = features.get(SuggestTypeFeature).get,</p></li>
+<li><p>sourceTweetId = features.getOrElse(SourceTweetIdFeature, None),</p></li>
+<li><p>sourceUserId = features.getOrElse(SourceUserIdFeature, None),</p></li>
+<li><p>quotedTweetId = features.getOrElse(QuotedTweetIdFeature, None),</p></li>
+<li><p>quotedUserId = features.getOrElse(QuotedUserIdFeature, None),</p></li>
+<li><p>inReplyToTweetId = features.getOrElse(InReplyToTweetIdFeature, None),</p></li>
+<li><p>inReplyToUserId = features.getOrElse(InReplyToUserIdFeature, None),</p></li>
+<li><p>directedAtUserId = features.getOrElse(DirectedAtUserIdFeature, None),</p></li>
+<li><p>inNetwork = Some(features.getOrElse(InNetworkFeature, false)),</p></li>
+<li><p>favoritedByUserIds = Some(features.getOrElse(FavoritedByUserIdsFeature, Seq.empty)),</p></li>
+<li><p>followedByUserIds = Some(features.getOrElse(FollowedByUserIdsFeature, Seq.empty)),</p></li>
+<li><p>topicId = features.getOrElse(TopicIdSocialContextFeature, None),</p></li>
+<li><p>topicFunctionalityType = topicFunctionalityType,</p></li>
+<li><p>ancestors = Some(features.getOrElse(AncestorsFeature, Seq.empty)),</p></li>
+<li><p>isReadFromCache = Some(features.getOrElse(IsReadFromCacheFeature, false)),</p></li>
+<li><p>streamToKafka = Some(features.getOrElse(StreamToKafkaFeature, false))</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+</ul>
+<ul class="simple">
+<li><p>): ScoredTweetsResponse = ScoredTweetsResponse(scoredTweets = selections)</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ScoredTweetsResponseDomainMarshaller_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

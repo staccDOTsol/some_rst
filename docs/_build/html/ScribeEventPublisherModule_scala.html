@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ScribeEventPublisherModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ScribeEventPublisherModule.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-scribeeventpublishermodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-scribeeventpublishermodule-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ScribeEventPublisherModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ScribeEventPublisherModule.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-scribeeventpublishermodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-scribeeventpublishermodule-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -2,124 +2,76</p>
+<p>Content:</p>
+<p>index 9c74fb1c3..99bf61630 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ScribeEventPublisherModule.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ScribeEventPublisherModule.scala</p>
+<blockquote>
+<div><p>import com.google.inject.Provides</p>
+<p>import com.twitter.clientapp.{thriftscala =&gt; ca}</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.param.HomeMixerFlagName.ScribeClientEventsFlag</p>
+<p>-import com.twitter.home_mixer.param.HomeMixerFlagName.ScribeServedCommonFeaturesAndCandidateFeaturesFlag</p>
+<p>-import com.twitter.home_mixer.param.HomeMixerFlagName.ScribeServedEntriesFlag</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.param.HomeMixerInjectionNames.CandidateFeaturesScribeEventPublisher</p>
+<p>import com.twitter.home_mixer.param.HomeMixerInjectionNames.CommonFeaturesScribeEventPublisher</p>
+<p>import com.twitter.home_mixer.param.HomeMixerInjectionNames.MinimumFeaturesScribeEventPublisher</p>
+<p>import com.twitter.inject.TwitterModule</p>
+</div></blockquote>
+<p>-import com.twitter.inject.annotations.Flag</p>
+<blockquote>
+<div><p>import com.twitter.logpipeline.client.EventPublisherManager</p>
+<p>import com.twitter.logpipeline.client.common.EventPublisher</p>
+<p>import com.twitter.logpipeline.client.serializers.EventLogMsgTBinarySerializer</p>
+<p>import com.twitter.logpipeline.client.serializers.EventLogMsgThriftStructSerializer</p>
+<p>import com.twitter.timelines.suggests.common.poly_data_record.{thriftjava =&gt; pldr}</p>
+<p>import com.twitter.timelines.timeline_logging.{thriftscala =&gt; tl}</p>
+</div></blockquote>
+<ul>
+<li><p>import javax.inject.Named</p>
+<p>import javax.inject.Singleton</p>
+<p>object ScribeEventPublisherModule extends TwitterModule {</p>
+</li>
+<li><p>val InMemoryBufferSize = 10000</p>
+<p>val ClientEventLogCategory = “client_event”</p>
+</li>
+<li><p>val ServedEntriesLogCategory = “home_timeline_served_entries”</p></li>
+</ul>
+<ul>
+<li><p>val ServedCandidatesLogCategory = “home_timeline_served_candidates_flattened”</p></li>
+<li><p>val ScoredCandidatesLogCategory = “home_timeline_scored_candidates”</p>
+<p>val ServedCommonFeaturesLogCategory = “tq_served_common_features_offline”</p>
+<p>val ServedCandidateFeaturesLogCategory = “tq_served_candidate_features_offline”</p>
+<p>val ServedMinimumFeaturesLogCategory = “tq_served_minimum_features_offline”</p>
+<p>&#64;Provides</p>
+<p>&#64;Singleton</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>def providesClientEventsScribeEventPublisher(</p></li>
+<li><p>&#64;Flag(ScribeClientEventsFlag) sendToScribe: Boolean</p></li>
+<li><p>): EventPublisher[ca.LogEvent] = {</p></li>
+</ul>
+<ul>
+<li><p>def providesClientEventsScribeEventPublisher: EventPublisher[ca.LogEvent] = {</p>
+<blockquote>
+<div><p>val serializer = EventLogMsgThriftStructSerializer.getNewSerializer[ca.LogEvent]()</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li></li>
+<li><p>if (sendToScribe)</p></li>
+<li><p>EventPublisherManager.buildScribeLogPipelinePublisher(ClientEventLogCategory, serializer)</p></li>
+<li><p>else</p></li>
+<li><p>EventPublisherManager.buildInMemoryPublisher(</p></li>
+<li><p>ClientEventLogCategory,</p></li>
+<li><p>serializer,</p></li>
+<li><p>InMemoryBufferSize</p></li>
+<li><p>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>EventPublisherManager.buildScribeLogPipelinePublisher(ClientEventLogCategory, serializer)</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>&#64;Provides</p>
+<p>&#64;Singleton</p>
+<p>&#64;Named(CommonFeaturesScribeEventPublisher)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>def providesCommonFeaturesScribeEventPublisher(</p></li>
+<li><p>&#64;Flag(ScribeServedCommonFeaturesAndCandidateFeaturesFlag) sendToScribe: Boolean</p></li>
+<li><p>): EventPublisher[pldr.PolyDataRecord] = {</p></li>
+</ul>
+<ul>
+<li><p>def providesCommonFeaturesScribeEventPublisher: EventPublisher[pldr.PolyDataRecord] = {</p>
+<blockquote>
+<div><p>val serializer = EventLogMsgTBinarySerializer.getNewSerializer</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li></li>
+<li><p>if (sendToScribe)</p></li>
+<li><p>EventPublisherManager.buildScribeLogPipelinePublisher(</p></li>
+<li><p>ServedCommonFeaturesLogCategory,</p></li>
+<li><p>serializer)</p></li>
+<li><p>else</p></li>
+<li><p>EventPublisherManager.buildInMemoryPublisher(</p></li>
+<li><p>ServedCommonFeaturesLogCategory,</p></li>
+<li><p>serializer,</p></li>
+<li><p>InMemoryBufferSize</p></li>
+<li><p>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>EventPublisherManager.buildScribeLogPipelinePublisher(</p></li>
+<li><p>ServedCommonFeaturesLogCategory,</p></li>
+<li><p>serializer)</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>&#64;Provides</p>
+<p>&#64;Singleton</p>
+<p>&#64;Named(CandidateFeaturesScribeEventPublisher)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>def providesCandidateFeaturesScribeEventPublisher(</p></li>
+<li><p>&#64;Flag(ScribeServedCommonFeaturesAndCandidateFeaturesFlag) sendToScribe: Boolean</p></li>
+<li><p>): EventPublisher[pldr.PolyDataRecord] = {</p></li>
+</ul>
+<ul>
+<li><p>def providesCandidateFeaturesScribeEventPublisher: EventPublisher[pldr.PolyDataRecord] = {</p>
+<blockquote>
+<div><p>val serializer = EventLogMsgTBinarySerializer.getNewSerializer</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li></li>
+<li><p>if (sendToScribe)</p></li>
+<li><p>EventPublisherManager.buildScribeLogPipelinePublisher(</p></li>
+<li><p>ServedCandidateFeaturesLogCategory,</p></li>
+<li><p>serializer)</p></li>
+<li><p>else</p></li>
+<li><p>EventPublisherManager.buildInMemoryPublisher(</p></li>
+<li><p>ServedCandidateFeaturesLogCategory,</p></li>
+<li><p>serializer,</p></li>
+<li><p>InMemoryBufferSize</p></li>
+<li><p>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>EventPublisherManager.buildScribeLogPipelinePublisher(</p></li>
+<li><p>ServedCandidateFeaturesLogCategory,</p></li>
+<li><p>serializer)</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>&#64;Provides</p>
+<p>&#64;Singleton</p>
+<p>&#64;Named(MinimumFeaturesScribeEventPublisher)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>def providesMinimumFeaturesScribeEventPublisher(</p></li>
+<li><p>&#64;Flag(ScribeServedCommonFeaturesAndCandidateFeaturesFlag) sendToScribe: Boolean</p></li>
+<li><p>): EventPublisher[pldr.PolyDataRecord] = {</p></li>
+</ul>
+<ul>
+<li><p>def providesMinimumFeaturesScribeEventPublisher: EventPublisher[pldr.PolyDataRecord] = {</p>
+<blockquote>
+<div><p>val serializer = EventLogMsgTBinarySerializer.getNewSerializer</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li></li>
+<li><p>if (sendToScribe)</p></li>
+<li><p>EventPublisherManager.buildScribeLogPipelinePublisher(</p></li>
+<li><p>ServedMinimumFeaturesLogCategory,</p></li>
+<li><p>serializer)</p></li>
+<li><p>else</p></li>
+<li><p>EventPublisherManager.buildInMemoryPublisher(</p></li>
+<li><p>ServedMinimumFeaturesLogCategory,</p></li>
+<li><p>serializer,</p></li>
+<li><p>InMemoryBufferSize</p></li>
+<li><p>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>EventPublisherManager.buildScribeLogPipelinePublisher(</p></li>
+<li><p>ServedMinimumFeaturesLogCategory,</p></li>
+<li><p>serializer)</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>&#64;Provides</p>
+<p>&#64;Singleton</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>def providesServedEntriesScribeEventPublisher(</p></li>
+<li><p>&#64;Flag(ScribeServedEntriesFlag) sendToScribe: Boolean</p></li>
+<li><p>): EventPublisher[tl.Timeline] = {</p></li>
+<li><p>val serializer = EventLogMsgThriftStructSerializer.getNewSerializer[tl.Timeline]()</p></li>
+</ul>
+<ul class="simple">
+<li><p>def providesServedCandidatesScribeEventPublisher: EventPublisher[tl.ServedEntry] = {</p></li>
+<li><p>val serializer = EventLogMsgThriftStructSerializer.getNewSerializer[tl.ServedEntry]()</p></li>
+<li><p>EventPublisherManager.buildScribeLogPipelinePublisher(ServedCandidatesLogCategory, serializer)</p></li>
+<li><p>}</p></li>
+</ul>
+<ul class="simple">
+<li><p>if (sendToScribe)</p></li>
+<li><p>EventPublisherManager.buildScribeLogPipelinePublisher(ServedEntriesLogCategory, serializer)</p></li>
+<li><p>else</p></li>
+<li><p>EventPublisherManager.buildInMemoryPublisher(</p></li>
+<li><p>ServedEntriesLogCategory,</p></li>
+<li><p>serializer,</p></li>
+<li><p>InMemoryBufferSize</p></li>
+<li><p>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>&#64;Provides</p></li>
+<li><p>&#64;Singleton</p></li>
+<li><p>def provideScoredCandidatesScribeEventPublisher: EventPublisher[tl.ScoredCandidate] = {</p></li>
+<li><p>val serializer = EventLogMsgThriftStructSerializer.getNewSerializer[tl.ScoredCandidate]()</p></li>
+<li><p>EventPublisherManager.buildScribeLogPipelinePublisher(ScoredCandidatesLogCategory, serializer)</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>}</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ScribeEventPublisherModule_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

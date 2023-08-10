@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanFeatureRepositoryModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanFeatureRepositoryModule.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-manhattanfeaturerepositorymodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-manhattanfeaturerepositorymodule-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanFeatureRepositoryModule.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanFeatureRepositoryModule.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-manhattanfeaturerepositorymodule-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-module-manhattanfeaturerepositorymodule-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -430,24 +451,18</p>
+<p>Content:</p>
+<p>index f9afc1dcb..5668ba0ee 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanFeatureRepositoryModule.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/module/ManhattanFeatureRepositoryModule.scala</p>
+<blockquote>
+<div><p>import com.twitter.finagle.mtls.authentication.ServiceIdentifier</p>
+<p>import com.twitter.home_mixer.param.HomeMixerInjectionNames._</p>
+<p>import com.twitter.home_mixer.util.InjectionTransformerImplicits._</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.util.LanguageUtil</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.util.TensorFlowUtil</p>
+<p>import com.twitter.inject.TwitterModule</p>
+</div></blockquote>
+<p>-import com.twitter.manhattan.v1.thriftscala.ManhattanCoordinator</p>
+<blockquote>
+<div><p>import com.twitter.manhattan.v1.{thriftscala =&gt; mh}</p>
+</div></blockquote>
+<p>-import com.twitter.ml.api.thriftscala.FloatTensor</p>
+<blockquote>
+<div><p>import com.twitter.ml.api.{thriftscala =&gt; ml}</p>
+<p>import com.twitter.ml.featurestore.lib.UserId</p>
+</div></blockquote>
+<p>-import com.twitter.ml.featurestore.thriftscala.EntityId</p>
+<p>+import com.twitter.ml.featurestore.{thriftscala =&gt; fs}</p>
+<blockquote>
+<div><p>import com.twitter.onboarding.relevance.features.{thriftjava =&gt; rf}</p>
+<p>import com.twitter.product_mixer.shared_library.manhattan_client.ManhattanClientBuilder</p>
+<p>import com.twitter.scalding_internal.multiformat.format.keyval.KeyValInjection.ScalaBinaryThrift</p>
+</div></blockquote>
+<p>+import com.twitter.search.common.constants.{thriftscala =&gt; scc}</p>
+<p>+import com.twitter.service.metastore.gen.{thriftscala =&gt; smg}</p>
+<blockquote>
+<div><p>import com.twitter.servo.cache._</p>
+<p>import com.twitter.servo.manhattan.ManhattanKeyValueRepository</p>
+<p>import com.twitter.servo.repository.CachingKeyValueRepository</p>
+<p>import com.twitter.servo.repository.Repository</p>
+<p>import com.twitter.servo.repository.keysAsQuery</p>
+<p>import com.twitter.servo.util.Transformer</p>
+</div></blockquote>
+<p>+import com.twitter.storage.client.manhattan.bijections.Bijections</p>
+<blockquote>
+<div><p>import com.twitter.storehaus_internal.manhattan.ManhattanClusters</p>
+<p>import com.twitter.timelines.author_features.v1.{thriftjava =&gt; af}</p>
+</div></blockquote>
+<p>-import com.twitter.timelines.suggests.common.dense_data_record.thriftscala.DenseFeatureMetadata</p>
+<p>-import com.twitter.user_session_store.thriftscala.UserSession</p>
+<p>+import com.twitter.timelines.suggests.common.dense_data_record.{thriftscala =&gt; ddr}</p>
+<p>+import com.twitter.user_session_store.{thriftscala =&gt; uss_scala}</p>
+<blockquote>
+<div><p>import com.twitter.user_session_store.{thriftjava =&gt; uss}</p>
+<p>import com.twitter.util.Duration</p>
+<p>import com.twitter.util.Try</p>
+<blockquote>
+<div><p>private val DEFAULT_RPC_CHUNK_SIZE = 50</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>private val ThriftEntityIdInjection = ScalaBinaryThrift(EntityId)</p></li>
+</ul>
+<ul class="simple">
+<li><p>private val ThriftEntityIdInjection = ScalaBinaryThrift(fs.EntityId)</p></li>
+</ul>
+<ul class="simple">
+<li><p>val UserIdKeyTransformer = new Transformer[Long, ByteBuffer] {</p></li>
+</ul>
+<ul>
+<li><p>private val FeatureStoreUserIdKeyTransformer = new Transformer[Long, ByteBuffer] {</p>
+<blockquote>
+<div><p>override def to(userId: Long): Try[ByteBuffer] = {</p>
+<blockquote>
+<div><p>Try(ByteBuffer.wrap(ThriftEntityIdInjection.apply(UserId(userId).toThrift)))</p>
+</div></blockquote>
+<p>}</p>
+<p>override def from(b: ByteBuffer): Try[Long] = ???</p>
+</div></blockquote>
+<p>}</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>val FloatTensorTransformer = new Transformer[ByteBuffer, FloatTensor] {</p></li>
+<li><p>override def to(input: ByteBuffer): Try[FloatTensor] = {</p></li>
+</ul>
+<ul>
+<li><p>private val FloatTensorTransformer = new Transformer[ByteBuffer, ml.FloatTensor] {</p></li>
+<li><p>override def to(input: ByteBuffer): Try[ml.FloatTensor] = {</p>
+<blockquote>
+<div><p>val floatTensor = TensorFlowUtil.embeddingByteBufferToFloatTensor(input)</p>
+<p>Try(floatTensor)</p>
+</div></blockquote>
+<p>}</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>override def from(b: FloatTensor): Try[ByteBuffer] = ???</p></li>
+</ul>
+<ul class="simple">
+<li><p>override def from(b: ml.FloatTensor): Try[ByteBuffer] = ???</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+<ul>
+<li><p>private val LanguageTransformer = new Transformer[ByteBuffer, Seq[scc.ThriftLanguage]] {</p></li>
+<li><p>override def to(input: ByteBuffer): Try[Seq[scc.ThriftLanguage]] = {</p></li>
+<li><p>Try.fromScala(</p></li>
+<li><p>Bijections</p></li>
+<li><p>.BinaryScalaInjection(smg.UserLanguages)</p></li>
+<li><p>.andThen(Bijections.byteBuffer2Buf.inverse)</p></li>
+<li><p>.invert(input).map(LanguageUtil.computeLanguages(_)))</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>override def from(b: Seq[scc.ThriftLanguage]): Try[ByteBuffer] = ???</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private val LongKeyTransformer = Injection</p></li>
+<li><p>.connect[Long, Array[Byte]]</p></li>
+<li><p>.toByteBufferTransformer()</p></li>
+<li><p>// manhattan clients</p>
+<p>&#64;Provides</p>
+<blockquote>
+<div><p>&#64;Named(ManhattanStarbuckClient) client: mh.ManhattanCoordinator.MethodPerEndpoint</p>
+</div></blockquote>
+<p>): KeyValueRepository[Seq[Long], Long, rf.MCUserCountingFeatures] = {</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>val keyTransformer = Injection</p></li>
+<li><p>.connect[Long, Array[Byte]]</p></li>
+<li><p>.toByteBufferTransformer()</p></li>
+<li><p>val valueTransformer = ThriftCodec</p></li>
+<li><p>.toCompact[rf.MCUserCountingFeatures]</p></li>
+</ul>
+<ul>
+<li><p>.toBinary[rf.MCUserCountingFeatures]</p>
+<p>.toByteBufferTransformer()</p>
+<p>.flip</p>
+</li>
+</ul>
+<blockquote>
+<div><p>batchedManhattanKeyValueRepository[Long, rf.MCUserCountingFeatures](</p>
+<blockquote>
+<div><p>client = client,</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>keyTransformer = keyTransformer,</p></li>
+</ul>
+<ul>
+<li><p>keyTransformer = LongKeyTransformer,</p>
+<p>valueTransformer = valueTransformer,</p>
+<p>appId = “wtf_ml”,</p>
+<p>dataset = “mc_user_counting_features_v0_starbuck”,</p>
+</li>
+</ul>
+<blockquote>
+<div><p>&#64;Named(TimelineAggregateMetadataRepository)</p>
+<p>def providesTimelineAggregateMetadataRepository(</p>
+<blockquote>
+<div><p>&#64;Named(ManhattanAthenaClient) client: mh.ManhattanCoordinator.MethodPerEndpoint</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>): Repository[Int, Option[DenseFeatureMetadata]] = {</p></li>
+</ul>
+<ul>
+<li><p>): Repository[Int, Option[ddr.DenseFeatureMetadata]] = {</p>
+<blockquote>
+<div><p>val keyTransformer = Injection</p>
+<blockquote>
+<div><p>.connect[Int, Array[Byte]]</p>
+<p>.toByteBufferTransformer()</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>val valueTransformer = new Transformer[ByteBuffer, DenseFeatureMetadata] {</p></li>
+</ul>
+<ul>
+<li><p>val valueTransformer = new Transformer[ByteBuffer, ddr.DenseFeatureMetadata] {</p>
+<blockquote>
+<div><p>private val compactProtocolFactory = new TCompactProtocol.Factory</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>def to(buffer: ByteBuffer): Try[DenseFeatureMetadata] = Try {</p></li>
+</ul>
+<ul>
+<li><p>def to(buffer: ByteBuffer): Try[ddr.DenseFeatureMetadata] = Try {</p>
+<blockquote>
+<div><p>val transport = transportFromByteBuffer(buffer)</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>DenseFeatureMetadata.decode(compactProtocolFactory.getProtocol(transport))</p></li>
+</ul>
+<ul class="simple">
+<li><p>ddr.DenseFeatureMetadata.decode(compactProtocolFactory.getProtocol(transport))</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>// Encoding intentionally not implemented as it is never used</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>def from(metadata: DenseFeatureMetadata): Try[ByteBuffer] = ???</p></li>
+</ul>
+<ul class="simple">
+<li><p>def from(metadata: ddr.DenseFeatureMetadata): Try[ByteBuffer] = ???</p></li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>val inProcessCache: Cache[Int, Cached[DenseFeatureMetadata]] = InProcessLruCacheFactory(</p></li>
+</ul>
+<ul>
+<li><p>val inProcessCache: Cache[Int, Cached[ddr.DenseFeatureMetadata]] = InProcessLruCacheFactory(</p>
+<blockquote>
+<div><p>ttl = Duration.fromMinutes(20),</p>
+<p>lruSize = 30</p>
+</div></blockquote>
+<p>).apply(serializer = Transformer(_ =&gt; ???, _ =&gt; ???)) // Serialization is not necessary here.</p>
+<p>KeyValueRepository</p>
+<blockquote>
+<div><p>.singular(</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>new CachingKeyValueRepository[Seq[Int], Int, DenseFeatureMetadata](</p></li>
+</ul>
+<ul>
+<li><p>new CachingKeyValueRepository[Seq[Int], Int, ddr.DenseFeatureMetadata](</p>
+<blockquote>
+<div><p>keyValueRepository,</p>
+<p>new NonLockingCache(inProcessCache),</p>
+<p>keysAsQuery[Int]</p>
+</div></blockquote>
+</li>
+</ul>
+<blockquote>
+<div><p>&#64;Singleton</p>
+<p>&#64;Named(RealGraphFeatureRepository)</p>
+<p>def providesRealGraphFeatureRepository(</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>&#64;Named(ManhattanApolloClient) client: mh.ManhattanCoordinator.MethodPerEndpoint</p></li>
+<li><p>): Repository[Long, Option[UserSession]] = {</p></li>
+<li><p>val valueTransformer = CompactScalaCodec(UserSession).toByteBufferTransformer().flip</p></li>
+</ul>
+<ul>
+<li><p>&#64;Named(ManhattanAthenaClient) client: mh.ManhattanCoordinator.MethodPerEndpoint</p></li>
+<li><p>): Repository[Long, Option[uss_scala.UserSession]] = {</p></li>
+<li><p>val valueTransformer = CompactScalaCodec(uss_scala.UserSession).toByteBufferTransformer().flip</p>
+<p>KeyValueRepository.singular(</p>
+<blockquote>
+<div><p>new ManhattanKeyValueRepository(</p>
+<blockquote>
+<div><p>client = client,</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>keyTransformer = UserIdKeyTransformer,</p></li>
+</ul>
+<ul>
+<li><p>keyTransformer = LongKeyTransformer,</p>
+<p>valueTransformer = valueTransformer,</p>
+<p>appId = “real_graph”,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>dataset = “real_graph_user_features”,</p></li>
+</ul>
+<ul>
+<li><p>dataset = “split_real_graph_features”,</p>
+<p>timeoutInMillis = 100,</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>)</p>
+<p>&#64;Named(HomeAuthorFeaturesCacheClient) cacheClient: Memcache</p>
+</div></blockquote>
+<p>): KeyValueRepository[Seq[Long], Long, af.AuthorFeatures] = {</p>
+</div></blockquote>
+<ul>
+<li><p>val keyTransformer = Injection</p></li>
+<li><p>.connect[Long, Array[Byte]]</p></li>
+<li><p>.toByteBufferTransformer()</p></li>
+<li><p>val valueInjection = ThriftCodec</p>
+<blockquote>
+<div><p>.toCompact[af.AuthorFeatures]</p>
+</div></blockquote>
+<p>val keyValueRepository = batchedManhattanKeyValueRepository(</p>
+<blockquote>
+<div><p>client = client,</p>
+</div></blockquote>
+</li>
+<li><p>keyTransformer = keyTransformer,</p></li>
+</ul>
+<ul>
+<li><p>keyTransformer = LongKeyTransformer,</p>
+<p>valueTransformer = valueInjection.toByteBufferTransformer().flip,</p>
+<p>appId = “timelines_author_feature_store_athena”,</p>
+<p>dataset = “timelines_author_features”,</p>
+</li>
+</ul>
+<blockquote>
+<div><p>&#64;Provides</p>
+<p>&#64;Singleton</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>&#64;Named(TwhinAuthorFollow20200101FeatureRepository)</p></li>
+<li><p>def providesTwhinAuthorFollow20200101FeatureRepository(</p></li>
+</ul>
+<ul>
+<li><p>&#64;Named(TwhinAuthorFollowFeatureRepository)</p></li>
+<li><p>def providesTwhinAuthorFollowFeatureRepository(</p>
+<blockquote>
+<div><p>&#64;Named(ManhattanApolloClient) client: mh.ManhattanCoordinator.MethodPerEndpoint,</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>&#64;Named(TwhinAuthorFollow20200101FeatureCacheClient) cacheClient: Memcache</p></li>
+<li><p>): KeyValueRepository[Seq[Long], Long, ml.Embedding] = {</p></li>
+<li></li>
+<li><p>val keyTransformer = Injection</p></li>
+<li><p>.connect[Long, Array[Byte]]</p></li>
+<li><p>.toByteBufferTransformer()</p></li>
+</ul>
+<ul class="simple">
+<li><p>&#64;Named(TwhinAuthorFollowFeatureCacheClient) cacheClient: Memcache</p></li>
+<li><p>): KeyValueRepository[Seq[Long], Long, ml.FloatTensor] = {</p></li>
+<li><p>val keyValueRepository =</p></li>
+<li><p>batchedManhattanKeyValueRepository(</p></li>
+<li><p>client = client,</p></li>
+<li><p>keyTransformer = FeatureStoreUserIdKeyTransformer,</p></li>
+<li><p>valueTransformer = FloatTensorTransformer,</p></li>
+<li><p>appId = “ml_features_apollo”,</p></li>
+<li><p>dataset = “twhin_author_follow_embedding_fsv1__v1_thrift__embedding”,</p></li>
+<li><p>timeoutInMillis = 100</p></li>
+<li><p>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>val valueInjection: Injection[ml.Embedding, Array[Byte]] =</p></li>
+<li><p>BinaryScalaCodec(ml.Embedding)</p></li>
+<li></li>
+<li><p>val keyValueRepository = batchedManhattanKeyValueRepository(</p></li>
+<li><p>client = client,</p></li>
+<li><p>keyTransformer = keyTransformer,</p></li>
+<li><p>valueTransformer = valueInjection.toByteBufferTransformer().flip,</p></li>
+<li><p>appId = “twhin”,</p></li>
+<li><p>dataset = “twhinauthor_follow_0101”,</p></li>
+<li><p>timeoutInMillis = 100</p></li>
+<li><p>)</p></li>
+</ul>
+<ul class="simple">
+<li><p>val valueInjection: Injection[ml.FloatTensor, Array[Byte]] =</p></li>
+<li><p>BinaryScalaCodec(ml.FloatTensor)</p></li>
+</ul>
+<blockquote>
+<div><p>buildMemCachedRepository(</p>
+<blockquote>
+<div><p>keyValueRepository = keyValueRepository,</p>
+<p>cacheClient = cacheClient,</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>cachePrefix = “TwhinAuthorFollow20200101FeatureHydrator”,</p></li>
+<li><p>ttl = 48.hours,</p></li>
+</ul>
+<ul>
+<li><p>cachePrefix = “twhinAuthorFollows”,</p></li>
+<li><p>ttl = 24.hours,</p>
+<p>valueInjection = valueInjection</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul>
+<li><p>&#64;Provides</p></li>
+<li><p>&#64;Singleton</p></li>
+<li><p>&#64;Named(UserLanguagesRepository)</p></li>
+<li><p>def providesUserLanguagesFeatureRepository(</p></li>
+<li><p>&#64;Named(ManhattanStarbuckClient) client: mh.ManhattanCoordinator.MethodPerEndpoint</p></li>
+<li><p>): KeyValueRepository[Seq[Long], Long, Seq[scc.ThriftLanguage]] = {</p></li>
+<li><p>batchedManhattanKeyValueRepository(</p></li>
+<li><p>client = client,</p></li>
+<li><p>keyTransformer = LongKeyTransformer,</p></li>
+<li><p>valueTransformer = LanguageTransformer,</p></li>
+<li><p>appId = “user_metadata”,</p></li>
+<li><p>dataset = “languages”,</p></li>
+<li><p>timeoutInMillis = 70</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li><p>&#64;Provides</p>
+<p>&#64;Singleton</p>
+<p>&#64;Named(TwhinUserFollowFeatureRepository)</p>
+<p>def providesTwhinUserFollowFeatureRepository(</p>
+<blockquote>
+<div><p>&#64;Named(ManhattanApolloClient) client: mh.ManhattanCoordinator.MethodPerEndpoint</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>): KeyValueRepository[Seq[Long], Long, FloatTensor] = {</p></li>
+<li></li>
+</ul>
+<ul>
+<li><p>): KeyValueRepository[Seq[Long], Long, ml.FloatTensor] = {</p>
+<blockquote>
+<div><p>batchedManhattanKeyValueRepository(</p>
+<blockquote>
+<div><p>client = client,</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>keyTransformer = UserIdKeyTransformer,</p></li>
+</ul>
+<ul>
+<li><p>keyTransformer = FeatureStoreUserIdKeyTransformer,</p>
+<p>valueTransformer = FloatTensorTransformer,</p>
+<p>appId = “ml_features_apollo”,</p>
+<p>dataset = “twhin_user_follow_embedding_fsv1__v1_thrift__embedding”,</p>
+</li>
+</ul>
+<blockquote>
+<div><p>&#64;Named(TwhinUserEngagementFeatureRepository)</p>
+<p>def providesTwhinUserEngagementFeatureRepository(</p>
+<blockquote>
+<div><p>&#64;Named(ManhattanApolloClient) client: mh.ManhattanCoordinator.MethodPerEndpoint</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>): KeyValueRepository[Seq[Long], Long, FloatTensor] = {</p></li>
+</ul>
+<ul>
+<li><p>): KeyValueRepository[Seq[Long], Long, ml.FloatTensor] = {</p>
+<blockquote>
+<div><p>batchedManhattanKeyValueRepository(</p>
+<blockquote>
+<div><p>client = client,</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>keyTransformer = UserIdKeyTransformer,</p></li>
+</ul>
+<ul>
+<li><p>keyTransformer = FeatureStoreUserIdKeyTransformer,</p>
+<p>valueTransformer = FloatTensorTransformer,</p>
+<p>appId = “ml_features_apollo”,</p>
+<p>dataset = “twhin_user_engagement_embedding_fsv1__v1_thrift__embedding”,</p>
+</li>
+</ul>
+<blockquote>
+<div><p>}</p>
+<p>private def batchedManhattanKeyValueRepository[K, V](</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>client: ManhattanCoordinator.MethodPerEndpoint,</p></li>
+</ul>
+<ul>
+<li><p>client: mh.ManhattanCoordinator.MethodPerEndpoint,</p>
+<p>keyTransformer: Transformer[K, ByteBuffer],</p>
+<p>valueTransformer: Transformer[ByteBuffer, V],</p>
+<p>appId: String,</p>
+<p>mhDataset: String,</p>
+<p>mhAppId: String</p>
+</li>
+</ul>
+<blockquote>
+<div><p>): Repository[Long, Option[uss.UserSession]] = {</p>
+</div></blockquote>
+<ul>
+<li><p>val keyTransformer = Injection</p></li>
+<li><p>.connect[Long, Array[Byte]]</p></li>
+<li><p>.toByteBufferTransformer()</p></li>
+<li><p>val valueInjection = ThriftCodec</p>
+<blockquote>
+<div><p>.toCompact[uss.UserSession]</p>
+</div></blockquote>
+<p>KeyValueRepository.singular(</p>
+<blockquote>
+<div><p>new ManhattanKeyValueRepository(</p>
+<blockquote>
+<div><p>client = mhClient,</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p>keyTransformer = keyTransformer,</p></li>
+</ul>
+<ul>
+<li><p>keyTransformer = LongKeyTransformer,</p>
+<p>valueTransformer = valueInjection.toByteBufferTransformer().flip,</p>
+<p>appId = mhAppId,</p>
+<p>dataset = mhDataset,</p>
+<p>timeoutInMillis = 100</p>
+</li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>)</p>
+</div></blockquote>
+<p>)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>}</p></li>
+<li><p>}</p></li>
+</ul>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ManhattanFeatureRepositoryModule_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/YouMightLikeSocialContextBuilder.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/urt/builder/PopularVideoSocialContextBuilder.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-decorator-youmightlikesocialcontextbuilder-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-decorator-urt-builder-popularvideosocialcontextbuilder-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/YouMightLikeSocialContextBuilder.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/urt/builder/PopularVideoSocialContextBuilder.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-decorator-youmightlikesocialcontextbuilder-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-functional-component-decorator-urt-builder-popularvideosocialcontextbuilder-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -1,50 +1,48</p>
+<p>Content:</p>
+<p>similarity index 60%</p>
+<blockquote>
+<div><p>rename from home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/YouMightLikeSocialContextBuilder.scala</p>
+<p>rename to home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/urt/builder/PopularVideoSocialContextBuilder.scala</p>
+<p>index e131a67f0..7eef7f180 100644</p>
+<p class="attribution">—a/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/YouMightLikeSocialContextBuilder.scala</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/functional_component/decorator/urt/builder/PopularVideoSocialContextBuilder.scala</p>
+<p>-package com.twitter.home_mixer.functional_component.decorator</p>
+<p>+package com.twitter.home_mixer.functional_component.decorator.urt.builder</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.InNetworkFeature</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.IsRetweetFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.SuggestTypeFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.following.model.HomeMixerExternalStrings</p>
+<p>import com.twitter.product_mixer.component_library.model.candidate.TweetCandidate</p>
+<p>import com.twitter.product_mixer.core.feature.featuremap.FeatureMap</p>
+<p>import com.twitter.product_mixer.core.functional_component.decorator.urt.builder.social_context.BaseSocialContextBuilder</p>
+</div></blockquote>
+<p>-import com.twitter.product_mixer.core.model.marshalling.response.urt.metadata.SocialContext</p>
+<blockquote>
+<div><p>import com.twitter.product_mixer.core.model.marshalling.response.urt.metadata._</p>
+<p>import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+<p>import com.twitter.product_mixer.core.product.guice.scope.ProductScoped</p>
+<p>import com.twitter.stringcenter.client.StringCenter</p>
+</div></blockquote>
+<p>+import com.twitter.timelineservice.suggests.{thriftscala =&gt; st}</p>
+<blockquote>
+<div><p>import javax.inject.Inject</p>
+<p>import javax.inject.Provider</p>
+<p>import javax.inject.Singleton</p>
+</div></blockquote>
+<p>-/**</p>
+<ul class="simple">
+<li><ul>
+<li><p>Renders a fixed ‘You Might Like’ string above all OON Tweets.</p></li>
+</ul>
+</li>
+<li><p><a href="#id1"><span class="problematic" id="id2">*</span></a>/</p></li>
+</ul>
+<blockquote>
+<div><p>&#64;Singleton</p>
+</div></blockquote>
+<p>-case class YouMightLikeSocialContextBuilder &#64;Inject() (</p>
+<p>+case class PopularVideoSocialContextBuilder &#64;Inject() (</p>
+<blockquote>
+<div><p>externalStrings: HomeMixerExternalStrings,</p>
+<p>&#64;ProductScoped stringCenterProvider: Provider[StringCenter])</p>
+<blockquote>
+<div><p>extends BaseSocialContextBuilder[PipelineQuery, TweetCandidate] {</p>
+</div></blockquote>
+<p>private val stringCenter = stringCenterProvider.get()</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>private val youMightLikeString = externalStrings.socialContextYouMightLikeString</p></li>
+</ul>
+<ul>
+<li><p>private val popularVideoString = externalStrings.socialContextPopularVideoString</p>
+<p>def apply(</p>
+<blockquote>
+<div><p>query: PipelineQuery,</p>
+<p>candidate: TweetCandidate,</p>
+<p>candidateFeatures: FeatureMap</p>
+</div></blockquote>
+<p>): Option[SocialContext] = {</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>val isInNetwork = candidateFeatures.getOrElse(InNetworkFeature, true)</p></li>
+<li><p>val isRetweet = candidateFeatures.getOrElse(IsRetweetFeature, false)</p></li>
+<li><p>if (!isInNetwork &amp;&amp; !isRetweet) {</p></li>
+</ul>
+<ul>
+<li><p>val suggestTypeOpt = candidateFeatures.getOrElse(SuggestTypeFeature, None)</p></li>
+<li><p>if (suggestTypeOpt.contains(st.SuggestType.MediaTweet)) {</p>
+<blockquote>
+<div><p>Some(</p>
+<blockquote>
+<div><p>GeneralContext(</p>
+<blockquote>
+<div><p>contextType = SparkleGeneralContextType,</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>text = stringCenter.prepare(youMightLikeString),</p></li>
+</ul>
+<ul>
+<li><p>text = stringCenter.prepare(popularVideoString),</p>
+<p>url = None,</p>
+<p>contextImageUrls = None,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>landingUrl = None</p></li>
+</ul>
+<ul class="simple">
+<li><p>landingUrl = Some(</p></li>
+<li><p>Url(</p></li>
+<li><p>urlType = DeepLink,</p></li>
+<li><p>url = “”</p></li>
+<li><p>)</p></li>
+<li><p>)</p></li>
+</ul>
+<blockquote>
+<div><p>))</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>} else {</p></li>
+<li><p>None</p></li>
+<li><p>}</p></li>
+</ul>
+<ul class="simple">
+<li><p>} else None</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p>}</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/YouMightLikeSocialContextBuilder_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

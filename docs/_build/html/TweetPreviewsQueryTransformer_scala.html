@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/query_transformer/TweetPreviewsQueryTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/query_transformer/TweetPreviewsQueryTransformer.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-query-transformer-tweetpreviewsquerytransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-query-transformer-tweetpreviewsquerytransformer-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/query_transformer/TweetPreviewsQueryTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/query_transformer/TweetPreviewsQueryTransformer.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-query-transformer-tweetpreviewsquerytransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-for-you-query-transformer-tweetpreviewsquerytransformer-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -0,0 +1,92</p>
+<p>Content:</p>
+<p>new file mode 100644</p>
+<blockquote>
+<div><p>index 000000000..41940b823</p>
+<p class="attribution">—/dev/null</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/for_you/query_transformer/TweetPreviewsQueryTransformer.scala</p>
+<p>+package com.twitter.home_mixer.product.for_you.query_transformer</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+import com.twitter.conversions.DurationOps.richDurationFromInt</p>
+<p>+import com.twitter.finagle.thrift.ClientId</p>
+<p>+import com.twitter.finagle.tracing.Trace</p>
+<p>+import com.twitter.product_mixer.component_library.feature_hydrator.query.social_graph.PreviewCreatorsFeature</p>
+<p>+import com.twitter.product_mixer.core.functional_component.transformer.CandidatePipelineQueryTransformer</p>
+<p>+import com.twitter.product_mixer.core.pipeline.PipelineQuery</p>
+<p>+import com.twitter.search.common.ranking.{thriftscala =&gt; scr}</p>
+<p>+import com.twitter.search.common.schema.earlybird.EarlybirdFieldConstants.EarlybirdFieldConstant</p>
+<p>+import com.twitter.search.earlybird.{thriftscala =&gt; t}</p>
+<p>+import com.twitter.search.queryparser.query.Conjunction</p>
+<p>+import com.twitter.search.queryparser.query.Query</p>
+<p>+import com.twitter.search.queryparser.query.search.SearchOperator</p>
+<p>+import javax.inject.Inject</p>
+<p>+import javax.inject.Singleton</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p><a class="reference external" href="mailto:+&#37;&#52;&#48;Singleton">+<span>&#64;</span>Singleton</a></p>
+<p>+class TweetPreviewsQueryTransformer &#64;Inject() (clientId: ClientId)</p>
+<ul class="simple">
+<li><p>extends CandidatePipelineQueryTransformer[PipelineQuery, t.EarlybirdRequest] {</p></li>
+<li></li>
+<li><p>private val MaxPreviewTweets = 200</p></li>
+<li><p>private val EarlybirdRelevanceTensorflowModel = “timelines_rectweet_replica”</p></li>
+<li><p>private val SinceDuration = 7.days</p></li>
+<li></li>
+<li><p>val MetadataOptions = t.ThriftSearchResultMetadataOptions(</p></li>
+<li><p>getReferencedTweetAuthorId = true,</p></li>
+<li><p>getFromUserId = true</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>override def transform(query: PipelineQuery): t.EarlybirdRequest = {</p></li>
+<li><p>val candidatePreviewCreatorIds =</p></li>
+<li><p>query.features.map(_.get(PreviewCreatorsFeature)).getOrElse(Seq.empty)</p></li>
+<li></li>
+<li><p>val searchQuery = new Conjunction(</p></li>
+<li><p>// Include subscriber only (aka exclusive) Tweets</p></li>
+<li><p>new SearchOperator.Builder()</p></li>
+<li><p>.setType(SearchOperator.Type.FILTER)</p></li>
+<li><p>.addOperand(EarlybirdFieldConstant.EXCLUSIVE_FILTER_TERM)</p></li>
+<li><p>.build(),</p></li>
+<li><p>// Include only original Tweets</p></li>
+<li><p>new SearchOperator.Builder()</p></li>
+<li><p>.setType(SearchOperator.Type.FILTER)</p></li>
+<li><p>.addOperand(EarlybirdFieldConstant.NATIVE_RETWEETS_FILTER_TERM)</p></li>
+<li><p>.setOccur(Query.Occur.MUST_NOT)</p></li>
+<li><p>.build(),</p></li>
+<li><p>new SearchOperator.Builder()</p></li>
+<li><p>.setType(SearchOperator.Type.FILTER)</p></li>
+<li><p>.addOperand(EarlybirdFieldConstant.REPLIES_FILTER_TERM)</p></li>
+<li><p>.setOccur(Query.Occur.MUST_NOT)</p></li>
+<li><p>.build(),</p></li>
+<li><p>new SearchOperator.Builder()</p></li>
+<li><p>.setType(SearchOperator.Type.FILTER)</p></li>
+<li><p>.addOperand(EarlybirdFieldConstant.QUOTE_FILTER_TERM)</p></li>
+<li><p>.setOccur(Query.Occur.MUST_NOT)</p></li>
+<li><p>.build(),</p></li>
+<li><p>new SearchOperator(SearchOperator.Type.SINCE_TIME, SinceDuration.ago.inSeconds.toString)</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>t.EarlybirdRequest(</p></li>
+<li><p>searchQuery = t.ThriftSearchQuery(</p></li>
+<li><p>serializedQuery = Some(searchQuery.serialize),</p></li>
+<li><p>fromUserIDFilter64 = Some(candidatePreviewCreatorIds),</p></li>
+<li><p>numResults = MaxPreviewTweets,</p></li>
+<li><p>rankingMode = t.ThriftSearchRankingMode.Relevance,</p></li>
+<li><p>relevanceOptions = Some(</p></li>
+<li><p>t.ThriftSearchRelevanceOptions(</p></li>
+<li><p>filterDups = true,</p></li>
+<li><p>keepDupWithHigherScore = true,</p></li>
+<li><p>proximityScoring = true,</p></li>
+<li><p>maxConsecutiveSameUser = Some(5),</p></li>
+<li><p>rankingParams = Some(</p></li>
+<li><p>scr.ThriftRankingParams(</p></li>
+<li><p><cite>type</cite> = Some(scr.ThriftScoringFunctionType.TensorflowBased),</p></li>
+<li><p>selectedTensorflowModel = Some(EarlybirdRelevanceTensorflowModel),</p></li>
+<li><p>minScore = -1.0e100,</p></li>
+<li><p>applyBoosts = false,</p></li>
+<li><p>)</p></li>
+<li><p>),</p></li>
+<li><p>),</p></li>
+<li><p>),</p></li>
+<li><p>resultMetadataOptions = Some(MetadataOptions),</p></li>
+<li><p>searcherId = query.getOptionalUserId,</p></li>
+<li><p>),</p></li>
+<li><p>getOlderResults = Some(true), // needed for archive access to older tweets</p></li>
+<li><p>clientRequestID = Some(s”${Trace.id.traceId}”),</p></li>
+<li><p>followedUserIds = Some(candidatePreviewCreatorIds.toSeq),</p></li>
+<li><p>numResultsToReturnAtRoot = Some(MaxPreviewTweets),</p></li>
+<li><p>clientId = Some(clientId.name),</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+</ul>
+<p>+}</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/TweetPreviewsQueryTransformer_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/CachedScoredTweetsResponseFeatureTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/CachedScoredTweetsResponseFeatureTransformer.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-cachedscoredtweetsresponsefeaturetransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-cachedscoredtweetsresponsefeaturetransformer-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/CachedScoredTweetsResponseFeatureTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/CachedScoredTweetsResponseFeatureTransformer.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-cachedscoredtweetsresponsefeaturetransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-cachedscoredtweetsresponsefeaturetransformer-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -63,32 +77,43</p>
+<p>Content:</p>
+<p>index 9822a5331..0fbe7a438 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/CachedScoredTweetsResponseFeatureTransformer.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/CachedScoredTweetsResponseFeatureTransformer.scala</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.AncestorsFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.AuthorIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.AuthorIsBlueVerifiedFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIsCreatorFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIsGoldVerifiedFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIsGrayVerifiedFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.AuthorIsLegacyVerifiedFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.CachedCandidatePipelineIdentifierFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.DirectedAtUserIdFeature</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.FavoritedByUserIdsFeature</p>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.FollowedByUserIdsFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.ExclusiveConversationAuthorIdFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.InNetworkFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.InReplyToTweetIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.InReplyToUserIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.IsReadFromCacheFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.IsRetweetFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.LastScoredTimestampMsFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.PerspectiveFilteredLikedByUserIdsFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.QuotedTweetIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.QuotedUserIdFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.SGSValidFollowedByUserIdsFeature</p>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.SGSValidLikedByUserIdsFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.ScoreFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.SourceTweetIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.SourceUserIdFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.StreamToKafkaFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.SuggestTypeFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.TopicContextFunctionalityTypeFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.TopicIdSocialContextFeature</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.TransformerIdentifier</p>
+<p>object CachedScoredTweetsResponseFeatureTransformer</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>extends CandidateFeatureTransformer[hmt.CachedScoredTweet] {</p></li>
+</ul>
+<ul class="simple">
+<li><p>extends CandidateFeatureTransformer[hmt.ScoredTweet] {</p></li>
+</ul>
+<blockquote>
+<div><p>override val identifier: TransformerIdentifier =</p>
+<blockquote>
+<div><p>TransformerIdentifier(“CachedScoredTweetsResponse”)</p>
+<p>AncestorsFeature,</p>
+<p>AuthorIdFeature,</p>
+<p>AuthorIsBlueVerifiedFeature,</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>AuthorIsCreatorFeature,</p></li>
+<li><p>AuthorIsGoldVerifiedFeature,</p></li>
+<li><p>AuthorIsGrayVerifiedFeature,</p></li>
+<li><p>AuthorIsLegacyVerifiedFeature,</p>
+<p>CachedCandidatePipelineIdentifierFeature,</p>
+<p>DirectedAtUserIdFeature,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>FavoritedByUserIdsFeature,</p></li>
+<li><p>FollowedByUserIdsFeature,</p></li>
+</ul>
+<ul>
+<li><p>ExclusiveConversationAuthorIdFeature,</p>
+<p>InNetworkFeature,</p>
+<p>InReplyToTweetIdFeature,</p>
+<p>InReplyToUserIdFeature,</p>
+<p>IsReadFromCacheFeature,</p>
+<p>IsRetweetFeature,</p>
+<p>LastScoredTimestampMsFeature,</p>
+</li>
+<li><p>PerspectiveFilteredLikedByUserIdsFeature,</p>
+<p>QuotedTweetIdFeature,</p>
+<p>QuotedUserIdFeature,</p>
+</li>
+<li><p>SGSValidFollowedByUserIdsFeature,</p></li>
+<li><p>SGSValidLikedByUserIdsFeature,</p>
+<p>ScoreFeature,</p>
+<p>SourceTweetIdFeature,</p>
+<p>SourceUserIdFeature,</p>
+</li>
+<li><p>StreamToKafkaFeature,</p>
+<p>SuggestTypeFeature,</p>
+<p>TopicContextFunctionalityTypeFeature,</p>
+<p>TopicIdSocialContextFeature,</p>
+<p>WeightedModelScoreFeature</p>
+</li>
+</ul>
+<blockquote>
+<div><p>)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>override def transform(candidate: hmt.CachedScoredTweet): FeatureMap =</p></li>
+</ul>
+<ul>
+<li><p>override def transform(candidate: hmt.ScoredTweet): FeatureMap =</p>
+<blockquote>
+<div><p>FeatureMapBuilder()</p>
+<blockquote>
+<div><p>.add(AncestorsFeature, candidate.ancestors.getOrElse(Seq.empty))</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>.add(AuthorIdFeature, candidate.userId)</p></li>
+<li><p>.add(AuthorIsBlueVerifiedFeature, candidate.authorIsBlueVerified.getOrElse(false))</p></li>
+</ul>
+<ul>
+<li><p>.add(AuthorIdFeature, Some(candidate.authorId))</p></li>
+<li><p>.add(AuthorIsBlueVerifiedFeature, candidate.authorMetadata.exists(_.blueVerified))</p></li>
+<li><p>.add(AuthorIsGoldVerifiedFeature, candidate.authorMetadata.exists(_.goldVerified))</p></li>
+<li><p>.add(AuthorIsGrayVerifiedFeature, candidate.authorMetadata.exists(_.grayVerified))</p></li>
+<li><p>.add(AuthorIsLegacyVerifiedFeature, candidate.authorMetadata.exists(_.legacyVerified))</p></li>
+<li><p>.add(AuthorIsCreatorFeature, candidate.authorMetadata.exists(_.creator))</p>
+<p>.add(CachedCandidatePipelineIdentifierFeature, candidate.candidatePipelineIdentifier)</p>
+<p>.add(DirectedAtUserIdFeature, candidate.directedAtUserId)</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>.add(FavoritedByUserIdsFeature, candidate.favoritedByUserIds.getOrElse(Seq.empty))</p></li>
+<li><p>.add(FollowedByUserIdsFeature, candidate.followedByUserIds.getOrElse(Seq.empty))</p></li>
+<li><p>.add(InNetworkFeature, candidate.isInNetwork.getOrElse(false))</p></li>
+</ul>
+<ul>
+<li><p>.add(ExclusiveConversationAuthorIdFeature, candidate.exclusiveConversationAuthorId)</p></li>
+<li><p>.add(InNetworkFeature, candidate.inNetwork.getOrElse(true))</p>
+<p>.add(InReplyToTweetIdFeature, candidate.inReplyToTweetId)</p>
+<p>.add(InReplyToUserIdFeature, candidate.inReplyToUserId)</p>
+<p>.add(IsReadFromCacheFeature, true)</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>.add(IsRetweetFeature, candidate.isRetweet.getOrElse(false))</p></li>
+</ul>
+<ul>
+<li><p>.add(IsRetweetFeature, candidate.sourceTweetId.isDefined)</p>
+<p>.add(LastScoredTimestampMsFeature, candidate.lastScoredTimestampMs)</p>
+</li>
+<li><p>.add(</p></li>
+<li><p>PerspectiveFilteredLikedByUserIdsFeature,</p></li>
+<li><p>candidate.perspectiveFilteredLikedByUserIds.getOrElse(Seq.empty))</p></li>
+</ul>
+<blockquote>
+<div><p>.add(QuotedTweetIdFeature, candidate.quotedTweetId)</p>
+<p>.add(QuotedUserIdFeature, candidate.quotedUserId)</p>
+<p>.add(ScoreFeature, candidate.score)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>.add(SGSValidLikedByUserIdsFeature, candidate.sgsValidLikedByUserIds.getOrElse(Seq.empty))</p></li>
+<li><p>.add(</p></li>
+<li><p>SGSValidFollowedByUserIdsFeature,</p></li>
+<li><p>candidate.sgsValidFollowedByUserIds.getOrElse(Seq.empty))</p></li>
+</ul>
+<blockquote>
+<div><p>.add(SourceTweetIdFeature, candidate.sourceTweetId)</p>
+<p>.add(SourceUserIdFeature, candidate.sourceUserId)</p>
+</div></blockquote>
+<ul>
+<li><p>.add(StreamToKafkaFeature, false)</p>
+<p>.add(SuggestTypeFeature, candidate.suggestType)</p>
+<p>.add(</p>
+<blockquote>
+<div><p>TopicContextFunctionalityTypeFeature,</p>
+<p>candidate.topicFunctionalityType.map(TopicContextFunctionalityTypeUnmarshaller(_)))</p>
+</div></blockquote>
+<p>.add(TopicIdSocialContextFeature, candidate.topicId)</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>.add(TweetUrlsFeature, candidate.urlsList.getOrElse(Seq.empty))</p></li>
+</ul>
+<ul>
+<li><p>.add(TweetUrlsFeature, candidate.tweetUrls.getOrElse(Seq.empty))</p>
+<p>.add(WeightedModelScoreFeature, candidate.score)</p>
+<p>.build()</p>
+</li>
+</ul>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/CachedScoredTweetsResponseFeatureTransformer_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

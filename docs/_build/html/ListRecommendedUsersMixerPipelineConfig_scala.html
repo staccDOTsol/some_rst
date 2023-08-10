@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersMixerPipelineConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersMixerPipelineConfig.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-list-recommended-users-listrecommendedusersmixerpipelineconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-list-recommended-users-listrecommendedusersmixerpipelineconfig-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersMixerPipelineConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersMixerPipelineConfig.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-list-recommended-users-listrecommendedusersmixerpipelineconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-list-recommended-users-listrecommendedusersmixerpipelineconfig-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -46,22 +48,31</p>
+<p>Content:</p>
+<p>index d370c1057..8c72aefec 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersMixerPipelineConfig.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/list_recommended_users/ListRecommendedUsersMixerPipelineConfig.scala</p>
+<blockquote>
+<div><p>package com.twitter.home_mixer.product.list_recommended_users</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.ListMembersQueryFeatureHydrator</p>
+<p>-import com.twitter.home_mixer.functional_component.gate.ViewerIsListOwnerGate</p>
+<p>-import com.twitter.home_mixer.product.list_recommended_users.model.ListFeatures.GizmoduckUserFeature</p>
+<p>+import com.twitter.home_mixer.product.list_recommended_users.feature_hydrator.RecentListMembersQueryFeatureHydrator</p>
+<p>+import com.twitter.home_mixer.product.list_recommended_users.gate.ViewerIsListOwnerGate</p>
+<p>+import com.twitter.home_mixer.product.list_recommended_users.model.ListRecommendedUsersFeatures.IsGizmoduckValidUserFeature</p>
+<p>+import com.twitter.home_mixer.product.list_recommended_users.model.ListRecommendedUsersFeatures.IsSGSValidUserFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.list_recommended_users.model.ListRecommendedUsersQuery</p>
+<p>import com.twitter.home_mixer.product.list_recommended_users.param.ListRecommendedUsersParam.ExcludedIdsMaxLengthParam</p>
+<p>import com.twitter.home_mixer.product.list_recommended_users.param.ListRecommendedUsersParam.ServerMaxResultsParam</p>
+<p>&#64;Singleton</p>
+<p>class ListRecommendedUsersMixerPipelineConfig &#64;Inject() (</p>
+<blockquote>
+<div><p>listMemberBasedUsersCandidatePipelineConfig: ListMemberBasedUsersCandidatePipelineConfig,</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>blenderUsersCandidatePipelineConfig: BlenderUsersCandidatePipelineConfig,</p>
+<p>viewerIsListOwnerGate: ViewerIsListOwnerGate,</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>listMembersQueryFeatureHydrator: ListMembersQueryFeatureHydrator,</p></li>
+</ul>
+<ul>
+<li><p>recentListMembersQueryFeatureHydrator: RecentListMembersQueryFeatureHydrator,</p>
+<p>urtTransportMarshaller: UrtTransportMarshaller)</p>
+<blockquote>
+<div><p>extends MixerPipelineConfig[ListRecommendedUsersQuery, Timeline, urt.TimelineResponse] {</p>
+</div></blockquote>
+<p>override val gates = Seq(viewerIsListOwnerGate)</p>
+<p>override val fetchQueryFeatures: Seq[QueryFeatureHydrator[ListRecommendedUsersQuery]] =</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>Seq(listMembersQueryFeatureHydrator)</p></li>
+</ul>
+<ul class="simple">
+<li><p>Seq(recentListMembersQueryFeatureHydrator)</p></li>
+</ul>
+<blockquote>
+<div><p>override val candidatePipelines: Seq[</p>
+<blockquote>
+<div><p>CandidatePipelineConfig[ListRecommendedUsersQuery, _, _, _]</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>] =</p></li>
+<li><p>Seq(listMemberBasedUsersCandidatePipelineConfig)</p></li>
+</ul>
+<ul>
+<li><p>] = Seq(</p></li>
+<li><p>listMemberBasedUsersCandidatePipelineConfig,</p></li>
+<li><p>blenderUsersCandidatePipelineConfig</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>private val candidatePipelineIdentifiers = Set(</p></li>
+<li><p>listMemberBasedUsersCandidatePipelineConfig.identifier,</p></li>
+<li><p>blenderUsersCandidatePipelineConfig.identifier</p></li>
+<li><p>)</p>
+<p>override val resultSelectors: Seq[Selector[ListRecommendedUsersQuery]] = Seq(</p>
+<blockquote>
+<div><p>DropFilteredCandidates(</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>candidatePipeline = listMemberBasedUsersCandidatePipelineConfig.identifier,</p></li>
+<li><p>filter = candidate =&gt; candidate.features.getOrElse(GizmoduckUserFeature, None).isDefined</p></li>
+</ul>
+<ul class="simple">
+<li><p>candidatePipelines = candidatePipelineIdentifiers,</p></li>
+<li><p>filter = candidate =&gt;</p></li>
+<li><p>candidate.features.getOrElse(IsSGSValidUserFeature, false) &amp;&amp;</p></li>
+<li><p>candidate.features.getOrElse(IsGizmoduckValidUserFeature, false)</p></li>
+</ul>
+<blockquote>
+<div><p>),</p>
+<p>DropMaxCandidates(</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>candidatePipeline = listMemberBasedUsersCandidatePipelineConfig.identifier,</p></li>
+</ul>
+<ul>
+<li><p>candidatePipelines = candidatePipelineIdentifiers,</p>
+<p>maxSelectionsParam = ServerMaxResultsParam),</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>InsertAppendResults(listMemberBasedUsersCandidatePipelineConfig.identifier)</p></li>
+</ul>
+<ul class="simple">
+<li><p>InsertAppendResults(candidatePipelineIdentifiers)</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>override val domainMarshaller: DomainMarshaller[ListRecommendedUsersQuery, Timeline] = {</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ListRecommendedUsersMixerPipelineConfig_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

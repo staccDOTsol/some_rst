@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/param/ScoredTweetsParamConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/param/ScoredTweetsParamConfig.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-param-scoredtweetsparamconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-param-scoredtweetsparamconfig-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/param/ScoredTweetsParamConfig.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/param/ScoredTweetsParamConfig.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-param-scoredtweetsparamconfig-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-param-scoredtweetsparamconfig-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -47,10 +70,17</p>
+<p>Content:</p>
+<p>index ae82db20f..10b9de49d 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/param/ScoredTweetsParamConfig.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/param/ScoredTweetsParamConfig.scala</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.scored_tweets.param.ScoredTweetsParam._</p>
+<p>import com.twitter.product_mixer.core.product.ProductParamConfig</p>
+<p>import com.twitter.servo.decider.DeciderKeyName</p>
+</div></blockquote>
+<ul>
+<li><p>import javax.inject.Inject</p>
+<p>import javax.inject.Singleton</p>
+<blockquote>
+<div><p>override val supportedClientFSName: String = SupportedClientFSName</p>
+<p>override val booleanDeciderOverrides = Seq(</p>
+</div></blockquote>
+</li>
+<li><p>CrMixerSource.EnableCandidatePipelineParam,</p></li>
+<li><p>FrsTweetSource.EnableCandidatePipelineParam,</p></li>
+<li><p>InNetworkSource.EnableCandidatePipelineParam,</p></li>
+<li><p>UtegSource.EnableCandidatePipelineParam,</p></li>
+</ul>
+<ul>
+<li><p>CandidatePipeline.EnableBackfillParam,</p></li>
+<li><p>CandidatePipeline.EnableTweetMixerParam,</p></li>
+<li><p>CandidatePipeline.EnableFrsParam,</p></li>
+<li><p>CandidatePipeline.EnableInNetworkParam,</p></li>
+<li><p>CandidatePipeline.EnableListsParam,</p></li>
+<li><p>CandidatePipeline.EnablePopularVideosParam,</p></li>
+<li><p>CandidatePipeline.EnableUtegParam,</p>
+<p>ScoredTweetsParam.EnableSimClustersSimilarityFeatureHydrationDeciderParam</p>
+</li>
+</ul>
+<blockquote>
+<div><p>)</p>
+</div></blockquote>
+<ul>
+<li><p>override val booleanFSOverrides = Seq(</p></li>
+<li><p>EnableBackfillCandidatePipelineParam,</p></li>
+<li><p>EnableScribeScoredCandidatesParam</p></li>
+<li><p>)</p></li>
+<li><p>override val boundedIntFSOverrides = Seq(</p>
+<blockquote>
+<div><p>CachedScoredTweets.MinCachedTweetsParam,</p>
+</div></blockquote>
+</li>
+</ul>
+<ul class="simple">
+<li><p>QualityFactor.CrMixerMaxTweetsToScoreParam,</p></li>
+<li><p>QualityFactor.MaxTweetsToScoreParam,</p></li>
+</ul>
+<ul>
+<li><p>MaxInNetworkResultsParam,</p></li>
+<li><p>MaxOutOfNetworkResultsParam,</p></li>
+<li><p>QualityFactor.BackfillMaxTweetsToScoreParam,</p></li>
+<li><p>QualityFactor.TweetMixerMaxTweetsToScoreParam,</p></li>
+<li><p>QualityFactor.FrsMaxTweetsToScoreParam,</p></li>
+<li><p>QualityFactor.InNetworkMaxTweetsToScoreParam,</p></li>
+<li><p>QualityFactor.ListsMaxTweetsToScoreParam,</p></li>
+<li><p>QualityFactor.PopularVideosMaxTweetsToScoreParam,</p></li>
+<li><p>QualityFactor.UtegMaxTweetsToScoreParam,</p>
+<p>ServerMaxResultsParam</p>
+</li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>)</p>
+<p>override val stringFSOverrides = Seq(</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Scoring.HomeModelParam</p></li>
+</ul>
+<ul class="simple">
+<li><p>Scoring.HomeModelParam,</p></li>
+<li><p>EarlybirdTensorflowModel.InNetworkParam,</p></li>
+<li><p>EarlybirdTensorflowModel.FrsParam,</p></li>
+<li><p>EarlybirdTensorflowModel.UtegParam</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>override val boundedDoubleFSOverrides = Seq(</p>
+</div></blockquote>
+<ul>
+<li><p>BlueVerifiedAuthorInNetworkMultiplierParam,</p></li>
+<li><p>BlueVerifiedAuthorOutOfNetworkMultiplierParam,</p></li>
+<li><p>CreatorInNetworkMultiplierParam,</p></li>
+<li><p>CreatorOutOfNetworkMultiplierParam,</p></li>
+<li><p>OutOfNetworkScaleFactorParam,</p></li>
+<li><p>// Model Weights</p>
+<p>Scoring.ModelWeights.FavParam,</p>
+<p>Scoring.ModelWeights.ReplyParam,</p>
+<p>Scoring.ModelWeights.RetweetParam,</p>
+<p>Scoring.ModelWeights.VideoPlayback50Param,</p>
+<p>Scoring.ModelWeights.ReportParam,</p>
+<p>Scoring.ModelWeights.NegativeFeedbackV2Param,</p>
+</li>
+<li><p>Scoring.ModelWeights.TweetDetailDwellParam,</p></li>
+<li><p>Scoring.ModelWeights.ProfileDwelledParam,</p></li>
+<li><p>Scoring.ModelWeights.BookmarkParam,</p></li>
+<li><p>Scoring.ModelWeights.ShareParam,</p></li>
+<li><p>Scoring.ModelWeights.ShareMenuClickParam,</p></li>
+<li><p>Scoring.ModelWeights.StrongNegativeFeedbackParam,</p></li>
+<li><p>Scoring.ModelWeights.WeakNegativeFeedbackParam</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>override val longSetFSOverrides = Seq(</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>CompetitorSetParam,</p></li>
+</ul>
+<ul class="simple">
+<li><p>CompetitorSetParam</p></li>
+</ul>
+<blockquote>
+<div><p>)</p>
+<p>override val stringSeqFSOverrides = Seq(</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ScoredTweetsParamConfig_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

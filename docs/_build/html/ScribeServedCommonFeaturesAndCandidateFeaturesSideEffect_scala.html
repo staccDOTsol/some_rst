@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/ScribeServedCommonFeaturesAndCandidateFeaturesSideEffect.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/ScribeServedCommonFeaturesAndCandidateFeaturesSideEffect.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-scribeservedcommonfeaturesandcandidatefeaturessideeffect-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-scribeservedcommonfeaturesandcandidatefeaturessideeffect-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/ScribeServedCommonFeaturesAndCandidateFeaturesSideEffect.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/ScribeServedCommonFeaturesAndCandidateFeaturesSideEffect.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-scribeservedcommonfeaturesandcandidatefeaturessideeffect-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-side-effect-scribeservedcommonfeaturesandcandidatefeaturessideeffect-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -115,6 +119,14</p>
+<p>Content:</p>
+<p>index 2599832cc..c93adee27 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/ScribeServedCommonFeaturesAndCandidateFeaturesSideEffect.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/side_effect/ScribeServedCommonFeaturesAndCandidateFeaturesSideEffect.scala</p>
+<blockquote>
+<div><p>import com.twitter.finagle.mysql.Transactions</p>
+<p>import com.twitter.finagle.stats.StatsReceiver</p>
+<p>import com.twitter.finagle.util.DefaultTimer</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.adapters.non_ml_features.NonMLCandidateFeatures</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.adapters.non_ml_features.NonMLCandidateFeaturesAdapter</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.adapters.non_ml_features.NonMLCommonFeatures</p>
+<p>-import com.twitter.home_mixer.functional_component.feature_hydrator.adapters.non_ml_features.NonMLCommonFeaturesAdapter</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.ServedRequestIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.SourceTweetIdFeature</p>
+<p>import com.twitter.home_mixer.param.HomeMixerFlagName.DataRecordMetadataStoreConfigsYmlFlag</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.param.HomeMixerFlagName.ScribeServedCommonFeaturesAndCandidateFeaturesFlag</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.param.HomeMixerInjectionNames.CandidateFeaturesScribeEventPublisher</p>
+<p>import com.twitter.home_mixer.param.HomeMixerInjectionNames.CommonFeaturesScribeEventPublisher</p>
+<p>import com.twitter.home_mixer.param.HomeMixerInjectionNames.MinimumFeaturesScribeEventPublisher</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.adapters.non_ml_features.NonMLCandidateFeatures</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.adapters.non_ml_features.NonMLCandidateFeaturesAdapter</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.adapters.non_ml_features.NonMLCommonFeatures</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.feature_hydrator.adapters.non_ml_features.NonMLCommonFeaturesAdapter</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.product.scored_tweets.model.ScoredTweetsQuery</p>
+<p>import com.twitter.home_mixer.product.scored_tweets.model.ScoredTweetsResponse</p>
+<p>import com.twitter.home_mixer.product.scored_tweets.scorer.CandidateFeaturesDataRecordFeature</p>
+<p>import com.twitter.home_mixer.product.scored_tweets.scorer.CommonFeaturesDataRecordFeature</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.product.scored_tweets.scorer.HomeNaviModelDataRecordScorer.PredictedScoreFeatures</p>
+<p>+import com.twitter.home_mixer.product.scored_tweets.scorer.PredictedScoreFeature.PredictedScoreFeatures</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.util.CandidatesUtil.getOriginalAuthorId</p>
+<p>import com.twitter.inject.annotations.Flag</p>
+<p>import com.twitter.logpipeline.client.common.EventPublisher</p>
+<p>import com.twitter.product_mixer.core.feature.featuremap.datarecord.SpecificFeatures</p>
+<p>import com.twitter.product_mixer.core.functional_component.side_effect.PipelineResultSideEffect</p>
+<p>import com.twitter.product_mixer.core.model.common.identifier.SideEffectIdentifier</p>
+</div></blockquote>
+<p>+import com.twitter.product_mixer.core.model.common.presentation.CandidateWithDetails</p>
+<blockquote>
+<div><p>import com.twitter.stitch.Stitch</p>
+<p>import com.twitter.timelines.ml.cont_train.common.domain.non_scalding.CandidateAndCommonFeaturesStreamingUtils</p>
+<p>import com.twitter.timelines.ml.pldr.client.MysqlClientUtils</p>
+<p>&#64;Singleton</p>
+<p>class ScribeServedCommonFeaturesAndCandidateFeaturesSideEffect &#64;Inject() (</p>
+<blockquote>
+<div><p>&#64;Flag(DataRecordMetadataStoreConfigsYmlFlag) dataRecordMetadataStoreConfigsYml: String,</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>&#64;Flag(ScribeServedCommonFeaturesAndCandidateFeaturesFlag) enableScribeServedCommonFeaturesAndCandidateFeatures: Boolean,</p>
+<p>&#64;Named(CommonFeaturesScribeEventPublisher) commonFeaturesScribeEventPublisher: EventPublisher[</p>
+<blockquote>
+<div><p>pldr.PolyDataRecord</p>
+</div></blockquote>
+<p>],</p>
+<p>],</p>
+<p>statsReceiver: StatsReceiver,</p>
+</li>
+</ul>
+<blockquote>
+<div><p>) extends PipelineResultSideEffect[ScoredTweetsQuery, ScoredTweetsResponse]</p>
+</div></blockquote>
+<ul>
+<li><p>with PipelineResultSideEffect.Conditionally[ScoredTweetsQuery, ScoredTweetsResponse]</p>
+<p>with Logging {</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>override val identifier: SideEffectIdentifier = SideEffectIdentifier(</p></li>
+<li><p>“ScribeServedCommonFeaturesAndCandidateFeatures”)</p></li>
+</ul>
+<ul class="simple">
+<li><p>override val identifier: SideEffectIdentifier =</p></li>
+<li><p>SideEffectIdentifier(“ScribeServedCommonFeaturesAndCandidateFeatures”)</p></li>
+</ul>
+<blockquote>
+<div><p>private val drMerger = new DataRecordMerger</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>private val postScoringCandidateFeatures = SpecificFeatures(PredictedScoreFeatures.toSet)</p></li>
+<li><p>private val postScoringCandidateFeaturesDataRecordAdapter = new DataRecordConverter(</p></li>
+<li><p>postScoringCandidateFeatures)</p></li>
+</ul>
+<ul class="simple">
+<li><p>private val postScoringCandidateFeatures = SpecificFeatures(PredictedScoreFeatures)</p></li>
+<li><p>private val postScoringCandidateFeaturesDataRecordAdapter =</p></li>
+<li><p>new DataRecordConverter(postScoringCandidateFeatures)</p></li>
+</ul>
+<blockquote>
+<div><p>private val scopedStatsReceiver = statsReceiver.scope(getClass.getSimpleName)</p>
+<p>private val metadataFetchFailedCounter = scopedStatsReceiver.counter(“metadataFetchFailed”)</p>
+<p>private val commonFeaturesScribeCounter = scopedStatsReceiver.counter(“commonFeaturesScribe”)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>private val commonFeaturesPLDROptionObserver = OptionObserver(</p></li>
+<li><p>scopedStatsReceiver.scope(“commonFeaturesPLDR”))</p></li>
+</ul>
+<ul class="simple">
+<li><p>private val commonFeaturesPLDROptionObserver =</p></li>
+<li><p>OptionObserver(scopedStatsReceiver.scope(“commonFeaturesPLDR”))</p></li>
+</ul>
+<blockquote>
+<div><p>private val candidateFeaturesScribeCounter =</p>
+<blockquote>
+<div><p>scopedStatsReceiver.counter(“candidateFeaturesScribe”)</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>private val candidateFeaturesPLDROptionObserver = OptionObserver(</p></li>
+<li><p>scopedStatsReceiver.scope(“candidateFeaturesPLDR”))</p></li>
+<li><p>private val minimumFeaturesPLDROptionObserver = OptionObserver(</p></li>
+<li><p>scopedStatsReceiver.scope(“minimumFeaturesPLDR”))</p></li>
+</ul>
+<ul class="simple">
+<li><p>private val candidateFeaturesPLDROptionObserver =</p></li>
+<li><p>OptionObserver(scopedStatsReceiver.scope(“candidateFeaturesPLDR”))</p></li>
+<li><p>private val minimumFeaturesPLDROptionObserver =</p></li>
+<li><p>OptionObserver(scopedStatsReceiver.scope(“minimumFeaturesPLDR”))</p></li>
+</ul>
+<blockquote>
+<div><p>private val minimumFeaturesScribeCounter =</p>
+<blockquote>
+<div><p>scopedStatsReceiver.counter(“minimumFeaturesScribe”)</p>
+<blockquote>
+<div><p>)</p>
+</div></blockquote>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul>
+<li><p>override def onlyIf(</p></li>
+<li><p>query: ScoredTweetsQuery,</p></li>
+<li><p>selectedCandidates: Seq[CandidateWithDetails],</p></li>
+<li><p>remainingCandidates: Seq[CandidateWithDetails],</p></li>
+<li><p>droppedCandidates: Seq[CandidateWithDetails],</p></li>
+<li><p>response: ScoredTweetsResponse</p></li>
+<li><p>): Boolean = enableScribeServedCommonFeaturesAndCandidateFeatures</p></li>
+<li><p>override def apply(</p>
+<blockquote>
+<div><p>inputs: PipelineResultSideEffect.Inputs[ScoredTweetsQuery, ScoredTweetsResponse]</p>
+</div></blockquote>
+<p>): Stitch[Unit] = {</p>
+</li>
+</ul>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ScribeServedCommonFeaturesAndCandidateFeaturesSideEffect_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

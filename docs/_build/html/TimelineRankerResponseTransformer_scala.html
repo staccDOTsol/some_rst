@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/TimelineRankerResponseTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/TimelineRankerResponseTransformer.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-timelinerankerresponsetransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-timelinerankerresponsetransformer-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/TimelineRankerResponseTransformer.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/TimelineRankerResponseTransformer.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-timelinerankerresponsetransformer-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-response-transformer-timelinerankerresponsetransformer-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -79,7 +80,6</p>
+<p>Content:</p>
+<p>index e431ef6f4..a261b2fc2 100644</p>
+<blockquote>
+<div><p>— a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/TimelineRankerResponseTransformer.scala</p>
+<p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/response_transformer/TimelineRankerResponseTransformer.scala</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.DirectedAtUserIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.EarlybirdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.EarlybirdScoreFeature</p>
+</div></blockquote>
+<p>+import com.twitter.home_mixer.model.HomeFeatures.ExclusiveConversationAuthorIdFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.FromInNetworkSourceFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.HasImageFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.HasVideoFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.MentionUserIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.QuotedTweetIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.QuotedUserIdFeature</p>
+</div></blockquote>
+<p>-import com.twitter.home_mixer.model.HomeFeatures.SemanticAnnotationFeature</p>
+<blockquote>
+<div><p>import com.twitter.home_mixer.model.HomeFeatures.SourceTweetIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.SourceUserIdFeature</p>
+<p>import com.twitter.home_mixer.model.HomeFeatures.StreamToKafkaFeature</p>
+<blockquote>
+<div><p>DirectedAtUserIdFeature,</p>
+<p>EarlybirdFeature,</p>
+<p>EarlybirdScoreFeature,</p>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p>ExclusiveConversationAuthorIdFeature,</p>
+<p>FromInNetworkSourceFeature,</p>
+<p>HasImageFeature,</p>
+<p>HasVideoFeature,</p>
+<p>IsRetweetFeature,</p>
+<p>MentionScreenNameFeature,</p>
+<p>MentionUserIdFeature,</p>
+</li>
+</ul>
+<ul>
+<li><p>SemanticAnnotationFeature,</p>
+<p>StreamToKafkaFeature,</p>
+<p>QuotedTweetIdFeature,</p>
+<p>QuotedUserIdFeature,</p>
+</li>
+</ul>
+<blockquote>
+<div><p>def transform(candidate: tlr.CandidateTweet): FeatureMap = {</p>
+<blockquote>
+<div><p>val tweet = candidate.tweet</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>val quotedTweet = tweet.flatMap(_.quotedTweet)</p></li>
+</ul>
+<ul>
+<li><p>val quotedTweet = tweet.filter(_.quotedTweet.exists(_.tweetId != 0)).flatMap(_.quotedTweet)</p>
+<p>val mentions = tweet.flatMap(_.mentions).getOrElse(Seq.empty)</p>
+<p>val coreData = tweet.flatMap(_.coreData)</p>
+<p>val share = coreData.flatMap(_.share)</p>
+<p>val reply = coreData.flatMap(_.reply)</p>
+</li>
+</ul>
+<ul class="simple">
+<li><p>val semanticAnnotations =</p></li>
+<li><p>tweet.flatMap(_.escherbirdEntityAnnotations.map(_.entityAnnotations)).getOrElse(Seq.empty)</p></li>
+</ul>
+<blockquote>
+<div><p>FeatureMapBuilder()</p>
+<blockquote>
+<div><p>.add(AuthorIdFeature, coreData.map(_.userId))</p>
+<p>.add(DirectedAtUserIdFeature, coreData.flatMap(_.directedAtUser.map(_.userId)))</p>
+<p>.add(EarlybirdFeature, candidate.features)</p>
+<p>.add(EarlybirdScoreFeature, candidate.features.map(_.earlybirdScore))</p>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>.add(</p></li>
+<li><p>ExclusiveConversationAuthorIdFeature,</p></li>
+<li><p>tweet.flatMap(_.exclusiveTweetControl.map(_.conversationAuthorId)))</p></li>
+</ul>
+<blockquote>
+<div><p>.add(FromInNetworkSourceFeature, false)</p>
+<p>.add(HasImageFeature, tweet.exists(TweetMediaFeaturesExtractor.hasImage))</p>
+<p>.add(HasVideoFeature, tweet.exists(TweetMediaFeaturesExtractor.hasVideo))</p>
+<p>.add(IsRetweetFeature, share.isDefined)</p>
+<p>.add(MentionScreenNameFeature, mentions.map(_.screenName))</p>
+<p>.add(MentionUserIdFeature, mentions.flatMap(_.userId))</p>
+</div></blockquote>
+<ul>
+<li><p>.add(SemanticAnnotationFeature, semanticAnnotations)</p>
+<p>.add(StreamToKafkaFeature, true)</p>
+<p>.add(QuotedTweetIdFeature, quotedTweet.map(_.tweetId))</p>
+<p>.add(QuotedUserIdFeature, quotedTweet.map(_.userId))</p>
+</li>
+</ul>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/TimelineRankerResponseTransformer_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

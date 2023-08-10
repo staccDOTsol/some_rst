@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/adapters/author_features/AuthorFeaturesAdapter.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/adapters/author_features/AuthorFeaturesAdapter.scala &#8212; twitter-algo-diff  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-adapters-author-features-authorfeaturesadapter-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-adapters-author-features-authorfeaturesadapter-scala">
+<h1>a/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/adapters/author_features/AuthorFeaturesAdapter.scala vs b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/adapters/author_features/AuthorFeaturesAdapter.scala<a class="headerlink" href="#a-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-adapters-author-features-authorfeaturesadapter-scala-vs-b-home-mixer-server-src-main-scala-com-twitter-home-mixer-product-scored-tweets-feature-hydrator-adapters-author-features-authorfeaturesadapter-scala" title="Permalink to this heading">¶</a></h1>
+<p>Change Range: -0,0 +1,92</p>
+<p>Content:</p>
+<p>new file mode 100644</p>
+<blockquote>
+<div><p>index 000000000..cbaa3f18c</p>
+<p class="attribution">—/dev/null</p>
+</div></blockquote>
+<blockquote>
+<div><p>+++ b/home-mixer/server/src/main/scala/com/twitter/home_mixer/product/scored_tweets/feature_hydrator/adapters/author_features/AuthorFeaturesAdapter.scala</p>
+<p>+package com.twitter.home_mixer.product.scored_tweets.feature_hydrator.adapters.author_features</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+import com.twitter.home_mixer.util.DataRecordUtil</p>
+<p>+import com.twitter.ml.api.DataRecord</p>
+<p>+import com.twitter.ml.api.Feature</p>
+<p>+import com.twitter.ml.api.FeatureContext</p>
+<p>+import com.twitter.ml.api.util.CompactDataRecordConverter</p>
+<p>+import com.twitter.ml.api.util.FDsl._</p>
+<p>+import com.twitter.timelines.author_features.v1.{thriftjava =&gt; af}</p>
+<p>+import com.twitter.timelines.prediction.common.adapters.TimelinesAdapterBase</p>
+<p>+import com.twitter.timelines.prediction.common.aggregates.TimelinesAggregationConfig</p>
+<p>+import com.twitter.timelines.prediction.features.user_health.UserHealthFeatures</p>
+<p>+import scala.collection.JavaConverters._</p>
+<ul class="simple">
+<li></li>
+</ul>
+<p>+object AuthorFeaturesAdapter extends TimelinesAdapterBase[af.AuthorFeatures] {</p>
+<ul class="simple">
+<li></li>
+<li><p>private val Prefix = “original_author.timelines.original_author_aggregates.”</p></li>
+<li></li>
+<li><p>private val typedAggregateGroups =</p></li>
+<li><p>TimelinesAggregationConfig.originalAuthorAggregatesV1.buildTypedAggregateGroups()</p></li>
+<li></li>
+<li><p>private val aggregateFeaturesRenameMap: Map[Feature[_], Feature[_]] =</p></li>
+<li><p>typedAggregateGroups.map(_.outputFeaturesToRenamedOutputFeatures(Prefix)).reduce(_ ++ _)</p></li>
+<li></li>
+<li><p>private val prefixedOriginalAuthorAggregateFeatures =</p></li>
+<li><p>typedAggregateGroups.flatMap(_.allOutputFeatures).map { feature =&gt;</p></li>
+<li><p>aggregateFeaturesRenameMap.getOrElse(feature, feature)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>private val authorFeatures = prefixedOriginalAuthorAggregateFeatures ++ Seq(</p></li>
+<li><p>UserHealthFeatures.AuthorState,</p></li>
+<li><p>UserHealthFeatures.NumAuthorFollowers,</p></li>
+<li><p>UserHealthFeatures.NumAuthorConnectDays,</p></li>
+<li><p>UserHealthFeatures.NumAuthorConnect</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>private val aggregateFeatureContext: FeatureContext =</p></li>
+<li><p>new FeatureContext(typedAggregateGroups.flatMap(_.allOutputFeatures).asJava)</p></li>
+<li></li>
+<li><p>private lazy val prefixedAggregateFeatureContext: FeatureContext =</p></li>
+<li><p>new FeatureContext(prefixedOriginalAuthorAggregateFeatures.asJava)</p></li>
+<li></li>
+<li><p>override val getFeatureContext: FeatureContext = new FeatureContext(authorFeatures: _*)</p></li>
+<li></li>
+<li><p>override val commonFeatures: Set[Feature[_]] = Set.empty</p></li>
+<li></li>
+<li><p>private val compactDataRecordConverter = new CompactDataRecordConverter()</p></li>
+<li></li>
+<li><p>override def adaptToDataRecords(</p></li>
+<li><p>authorFeatures: af.AuthorFeatures</p></li>
+<li><p>): java.util.List[DataRecord] = {</p></li>
+<li><p>val dataRecord =</p></li>
+<li><p>if (authorFeatures.aggregates != null) {</p></li>
+<li><p>val originalAuthorAggregatesDataRecord =</p></li>
+<li><p>compactDataRecordConverter.compactDataRecordToDataRecord(authorFeatures.aggregates)</p></li>
+<li></li>
+<li><p>DataRecordUtil.applyRename(</p></li>
+<li><p>originalAuthorAggregatesDataRecord,</p></li>
+<li><p>aggregateFeatureContext,</p></li>
+<li><p>prefixedAggregateFeatureContext,</p></li>
+<li><p>aggregateFeaturesRenameMap)</p></li>
+<li><p>} else new DataRecord</p></li>
+<li></li>
+<li><p>if (authorFeatures.user_health != null) {</p></li>
+<li><p>val userHealth = authorFeatures.user_health</p></li>
+<li></li>
+<li><p>if (userHealth.user_state != null) {</p></li>
+<li><p>dataRecord.setFeatureValue(</p></li>
+<li><p>UserHealthFeatures.AuthorState,</p></li>
+<li><p>userHealth.user_state.getValue.toLong</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>dataRecord.setFeatureValue(</p></li>
+<li><p>UserHealthFeatures.NumAuthorFollowers,</p></li>
+<li><p>userHealth.num_followers.toDouble</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>dataRecord.setFeatureValue(</p></li>
+<li><p>UserHealthFeatures.NumAuthorConnectDays,</p></li>
+<li><p>userHealth.num_connect_days.toDouble</p></li>
+<li><p>)</p></li>
+<li></li>
+<li><p>dataRecord.setFeatureValue(</p></li>
+<li><p>UserHealthFeatures.NumAuthorConnect,</p></li>
+<li><p>userHealth.num_connect.toDouble</p></li>
+<li><p>)</p></li>
+<li><p>}</p></li>
+<li></li>
+<li><p>List(dataRecord).asJava</p></li>
+<li><p>}</p></li>
+</ul>
+<p>+}</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">twitter-algo-diff</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, jare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/AuthorFeaturesAdapter_scala.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
